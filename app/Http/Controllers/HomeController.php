@@ -31,8 +31,22 @@ class HomeController extends Controller
      *
      * @return Response
      */
-    public function index()
+    /*public function index()
     {
         return view('adminlte::home');
+    }*/
+
+    public function index(Request $request)
+    {
+        $request->user()->authorizeRoles(['admin', 'supervisor', 'agente']);
+        return view('adminlte::home');
     }
+
+    /*
+    public function someAdminStuff(Request $request)
+    {
+        $request->user()->authorizeRoles(‘admin’);
+        return view(‘some.view’);
+    }
+    */
 }

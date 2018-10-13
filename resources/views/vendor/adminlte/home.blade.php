@@ -13,6 +13,17 @@
 					<div class="panel-heading">Home</div>
 
 					<div class="panel-body">
+						@if(Auth::user()->hasRole('admin'))
+						    <div>Acceso como administrador</div>
+
+						@elseif(Auth::user()->hasRole('supervisor'))
+						    <div>Acceso supervisor</div>
+
+						@elseif(Auth::user()->hasRole('agente'))
+						    <div>Acceso agente</div>
+
+						@endif
+
 						{{ trans('adminlte_lang::message.logged') }}
 					</div>
 				</div>
@@ -20,3 +31,4 @@
 		</div>
 	</div>
 @endsection
+

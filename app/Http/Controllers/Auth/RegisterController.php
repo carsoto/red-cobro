@@ -6,6 +6,7 @@ use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Role;
 
 /**
  * Class RegisterController
@@ -82,5 +83,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+        $user->roles()->attach(Role::where('name', 'agente')->first());
     }
 }
