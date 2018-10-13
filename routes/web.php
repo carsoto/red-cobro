@@ -23,3 +23,8 @@ Route::group(['middleware' => 'auth'], function () {
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
 });
+/*
+	Route::put('post/{id}', function ($id) {
+	    //
+	})->middleware('auth', 'role:admin');
+*/
