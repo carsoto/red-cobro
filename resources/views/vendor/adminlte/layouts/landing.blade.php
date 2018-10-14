@@ -11,7 +11,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
 
     <meta property="og:title" content="Adminlte-laravel" />
     <meta property="og:type" content="website" />
-    <meta property="og:description" content="Adminlte-laravel - {{ trans('adminlte_lang::message.landingdescription') }}" />
+    <meta property="og:description" content="{{ env('APP_NAME') }} - {{ trans('adminlte_lang::message.landingdescription') }}" />
     <meta property="og:url" content="http://demo.adminlte.acacha.org/" />
     <meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE.png" />
     <meta property="og:image" content="http://demo.adminlte.acacha.org/img/AcachaAdminLTE600x600.png" />
@@ -45,7 +45,7 @@ Landing page based on Pratt: http://blacktie.co/demo/pratt/
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><b>adminlte-laravel</b></a>
+                <a class="navbar-brand" href="#"><b>{{ env('APP_NAME') }}</b></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">

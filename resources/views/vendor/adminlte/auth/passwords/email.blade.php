@@ -11,7 +11,7 @@
 
         <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/home') }}"><b>Admin</b>LTE</a>
+            <a href="{{ url('/home') }}">{{ env('APP_NAME') }}</a>
         </div><!-- /.login-logo -->
 
         @if (session('status'))
@@ -32,7 +32,7 @@
         @endif
 
         <div class="login-box-body">
-            <p class="login-box-msg">Reset Password</p>
+            <p class="login-box-msg">Reestablecer Contraseña</p>
             <form action="{{ url('/password/email') }}" method="post">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group has-feedback">
@@ -41,17 +41,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-2">
-                    </div><!-- /.col -->
-                    <div class="col-xs-8">
+                    <div class="col-xs-12">
                         <button type="submit" class="btn btn-primary btn-block btn-flat">{{ trans('adminlte_lang::message.sendpassword') }}</button>
-                    </div><!-- /.col -->
-                    <div class="col-xs-2">
                     </div><!-- /.col -->
                 </div>
             </form>
 
-            <a href="{{ url('/login') }}">Log in</a><br>
+            <br><a href="{{ url('/login') }}">{{ trans('adminlte_lang::message.login') }}</a><br>
             <a href="{{ url('/register') }}" class="text-center">{{ trans('adminlte_lang::message.registermember') }}</a>
 
         </div><!-- /.login-box-body -->
