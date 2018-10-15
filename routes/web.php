@@ -31,3 +31,4 @@ Route::group(['middleware' => 'auth'], function () {
 */
 
 	Route::resource('usuarios', 'UserController')->middleware('auth', 'role:admin');
+	Route::get('usuarios/{usuario}', 'UserController@destroy')->name('usuarios.borrar');

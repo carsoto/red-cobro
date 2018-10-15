@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Response;
 
 class UserController extends Controller
 {
@@ -81,6 +82,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //User::destroy(decrypt($id));
+        $status = 'success';
+        
+        return Response::json(array(
+                    'success' => true));
     }
 }

@@ -61,17 +61,17 @@
 											<ul class="list-inline" style="margin-bottom:0px;">
 												<li><a href="{{ route('usuarios.edit', encrypt($usuario->id)) }}" title="Editar" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a></li>
 												<li>
-												
-													<!-- Form::open([
+												{!!
+													Form::open([
 														'class'=>'delete',
-														'url'  => route('usuarios.destroy', encrypt($usuario->id)),
-														'method' => 'DELETE',
-													])-->
-												
+														'url'  => route('usuarios.borrar', encrypt($usuario->id)),
+														'method' => 'GET',
+													])
+												!!}
 
 												<button class="btn btn-danger btn-xs" title="Eliminar"><i class="fa fa-trash"></i></button>
 
-												
+												{!! Form::close() !!}
 												</li>
 									      	</ul>
 										</td>
