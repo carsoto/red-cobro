@@ -28,58 +28,17 @@
 					<div class="panel-body">
 						
 						<div class="table-responsive" style="padding-top: 15px;">
-							<table id="tabla_usuarios" class="table data-tables table-striped table-hover" cellspacing="0" width="100%">
-								<thead>
-									<tr>
-										<th>Nombre</th>
-										<th>Correo electrónico</th>
-										<th>Perfil</th>
-										<th>Estado</th>
-										<th class="no-sort"></th>
-									</tr>
-								</thead>
-
-								<tfoot>
-									<tr>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th class="actions"></th>
-									</tr>
-								</tfoot>
-
-								<tbody>
-									@foreach ($usuarios as $usuario)
-
-									<tr>
-										<td><a href="{{ route('usuarios.edit', encrypt($usuario->id)) }}">{{ $usuario->name }}</a></td>
-										<td>{{ $usuario->email }}</td>
-										<td>{{ $usuario->roles[0]->name }}</td>
-										<td>{{ $usuario->status }}</td>
-										<td class="actions">
-											<ul class="list-inline" style="margin-bottom:0px;">
-												<li><a href="{{ route('usuarios.edit', encrypt($usuario->id)) }}" title="Editar" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a></li>
-												<li>
-												{!!
-													Form::open([
-														'class'=>'delete',
-														'url'  => route('usuarios.borrar', encrypt($usuario->id)),
-														'method' => 'GET',
-													])
-												!!}
-
-												<button class="btn btn-danger btn-xs" title="Eliminar"><i class="fa fa-trash"></i></button>
-
-												{!! Form::close() !!}
-												</li>
-									      	</ul>
-										</td>
-									</tr>
-
-									@endforeach
-								</tbody>
-							</table>
+							<table id='tabla_usuarios' class="table table-hover table-bordered table-striped datatable" style="width:100%">
+		                        <thead>
+		                            <tr>
+		                                <th>Nombre</th>
+		                                <th>Correo electrónico</th>
+		                                <th>Perfil</th>
+		                                <th>Estado</th>
+		                                <th><i class="fa fa-gears"></i></th>
+		                            </tr>
+		                        </thead>
+		                    </table>
 						</div>
 					</div>
 				</div>

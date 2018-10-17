@@ -174,6 +174,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
@@ -227,6 +228,7 @@ return [
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
+        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
     ],
 
 ];

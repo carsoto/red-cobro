@@ -16,25 +16,25 @@
         'csrfToken' => csrf_token(),
     ]) !!};
 
+    
+
     (function($) {
     	var table_user = document.getElementById('tabla_usuarios');
     	if(table_user != undefined){
-    		/*swal({
-				  title: "¿Está seguro?",
-				  text: "Una vez eliminado, no podrás recuperar los datos de este usuario!",
-				  icon: "warning",
-				  dangerMode: true,
-				  buttons: ["Cancelar", true],
-				})
-				.then((willDelete) => {
-				  if (willDelete) {
-				    swal("El usuario fue eliminado satisfactoriamente!", {
-				      icon: "success",
-				    });
-				  }
-				});*/
+	    	var datatable_usuarios = $('#tabla_usuarios').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'usuarios/table/listado',
+		        columns: [		
+		            {data: 'name', name: 'name'},
+		            {data: 'email', name: 'email'},
+		            {data: 'role', name: 'role'},
+		            {data: 'status', name: 'status'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
 
-			$(document).on('click', "form.delete button", function(e) {
+			$(document).on('click', ".eliminar_usuario", function(e) {
 		        var _this = $(this);
 		        e.preventDefault();
 		        swal({
@@ -48,40 +48,29 @@
 		            closeOnConfirm: false
 		        }).then(function(isConfirm) {
 		            if (isConfirm) {
-		                /*_this.closest("form").submit();*/
-		                //var results = fetch();
-						//console.log(results);
-						  /*swal("El usuario fue eliminado satisfactoriamente!", {
-								icon: "success",
-							});*/
 
-							$.ajax({
-					           	url: _this.closest("form").attr('action'),
-					            dataType: "html",
-					            type: 'GET',
-					            success: function (response) {
-					            	console.log(response.success);
-					            	/*if(s.status == 'success'){
-					            		swal("Hecho!", "El registro fue eliminado exitosamente!", "success");
-					            	}else{
-					            		swal("Ocurrió un error!", "No se pudo eliminar el registro", "error");
-					            	}*/
-					                
-					            },
-					            error: function (xhr, ajaxOptions, thrownError) {
-					                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
-					            }
+						$.ajax({
+				           	url: 'usuarios/eliminar/'+_this.attr("data-id"),
+				            dataType: "JSON",
+				            type: 'GET',
+				            success: function (response) {
+				            	console.log(response);
+				            	if(response.status == 'success'){
+				            		swal("Hecho!", response.msg, "success");
+				        			datatable_usuarios.ajax.reload();
+				            	}else{
+				            		swal("Ocurrió un error!", response.msg, "error");
+				            	}
+				                
+				            },
+				            error: function (xhr, ajaxOptions, thrownError) {
+				                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+				            }
 
-					        });
+				        });
 		            }
 		        });
-		    });
-			var table = $('.data-tables').DataTable({
-				"columnDefs": [{
-				"targets": 'no-sort',
-				"orderable": false,
-				}],
-			});	
+		    });	
     	}
       
     })(jQuery);

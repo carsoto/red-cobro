@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Datatables;
 use Response;
 
 class UserController extends Controller
@@ -19,6 +20,25 @@ class UserController extends Controller
         return view('adminlte::usuarios.index', compact('usuarios'));
     }
 
+    public function list(){
+        //return DataTables::of(User::query())->make(true);
+        
+        $usuarios = User::all();
+        
+        return Datatables::of($usuarios)
+            ->addColumn('role', function ($usuario) {
+                foreach ($usuario->roles as $role) {
+                    return ucfirst($role->name);
+                }
+            })
+            ->addColumn('action', function ($usuario) {
+                return '<a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                        <a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_usuario"><i class="fa fa-trash"></i></a>';
+            })
+            ->editColumn('id', '{{ encrypt($id) }}')
+            ->make(true);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -26,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('adminlte::usuarios.create');
     }
 
     /**
@@ -82,10 +102,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //User::destroy(decrypt($id));
-        $status = 'success';
-        
-        return Response::json(array(
-                    'success' => true));
+        if(User::destroy(decrypt($id))){
+            $status = 'success';
+            $msg = 'El registro fue eliminado exitosamente!';
+   
+        } else {
+            $status = 'failed';
+            $msg = 'Disculpe, el registro no pudo ser eliminado!';
+        }
+                
+        return Response::json(array('status' => $status, 'msg' => $msg));
     }
 }

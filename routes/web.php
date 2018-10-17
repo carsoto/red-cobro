@@ -22,6 +22,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_routes
+
+    Route::resource('usuarios', 'UserController');
+
+	Route::group(['prefix' => 'usuarios'], function () {
+		Route::get('eliminar/{usuario}', 'UserController@destroy')->name('usuarios.borrar');
+		Route::get('table/listado', 'UserController@list')->name('usuarios.listado');
+	});
     
 });
 /*
@@ -30,5 +37,8 @@ Route::group(['middleware' => 'auth'], function () {
 	})->middleware('auth', 'role:admin');
 */
 
-	Route::resource('usuarios', 'UserController')->middleware('auth', 'role:admin');
-	Route::get('usuarios/{usuario}', 'UserController@destroy')->name('usuarios.borrar');
+
+
+
+	
+	
