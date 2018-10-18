@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use Datatables;
 use Response;
 
@@ -32,7 +33,7 @@ class UserController extends Controller
                 }
             })
             ->addColumn('action', function ($usuario) {
-                return '<a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                return '<a href="'.route('usuarios.edit', encrypt($usuario->id)).'" data-id="'.encrypt($usuario->id).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                         <a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_usuario"><i class="fa fa-trash"></i></a>';
             })
             ->editColumn('id', '{{ encrypt($id) }}')
@@ -46,7 +47,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('adminlte::usuarios.create');
+        $usuario = new User();
+        $roles = Role::all()->pluck('name', 'id');
+        $status = array('Activo' => 'Activo', 'Inactivo' => 'Inactivo');
+        return view('adminlte::usuarios.create', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status));
     }
 
     /**
@@ -79,7 +83,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $usuario = User::findOrFail(decrypt($id));
+        $roles = Role::all()->pluck('name', 'id');
+        $status = array('Activo' => 'Activo', 'Inactivo' => 'Inactivo');
+        return view('adminlte::usuarios.edit', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status));
     }
 
     /**

@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role', 'active', 'avatar'
     ];
 
     /**
@@ -27,6 +27,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+
+    /*
+    |------------------------------------------------------------------------------------
+    | Validations
+    |------------------------------------------------------------------------------------
+    */
+    public static function rules($update = false, $id = null)
+    {
+        $commun = [
+            'name' => 'required|min:2',
+            'email'    => "required|email|unique:users,email,$id",
+            'password' => 'nullable|confirmed',
+        ];
+
+        if ($update) {
+            return $commun;
+        }
+
+        return array_merge($commun, [
+            'email'    => 'required|email|max:255|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+    }
 
     public function roles() {
         return $this->belongsToMany('App\Role')->withTimestamps();
