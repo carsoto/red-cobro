@@ -2,8 +2,8 @@
 
 namespace Acacha\AdminLTETemplateLaravel\Console\Routes;
 
-use Acacha\AdminLTETemplateLaravel\Compiler\StubFileCompiler;
-use Acacha\AdminLTETemplateLaravel\Filesystem\Filesystem;
+use Acacha\Filesystem\Compiler\StubFileCompiler;
+use Acacha\Filesystem\Filesystem;
 
 /**
  * Class ControllerResourceRoute.
@@ -15,7 +15,7 @@ class ControllerResourceRoute extends Route
     use Controller;
 
     /**
-     * Route constructor.
+     * ControllerResourceRoute constructor.
      *
      * @param StubFileCompiler $compiler
      * @param Filesystem $filesystem

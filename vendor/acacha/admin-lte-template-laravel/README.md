@@ -1,4 +1,4 @@
-#AdminLTE template Laravel 5 package
+# AdminLTE template Laravel 5 package
 A Laravel 5 package that switch default Laravel scaffolding / boilerplate to AdminLTE template with Bootstrap 3.0 and Pratt Landing Page
 
 See demo here:
@@ -50,7 +50,7 @@ IMPORTANT NOTE: on MAC OS you will have to replace BSD sed with GNU sed for exam
 brew install gnu-sed --with-default-names
 ```
 
-#Requirements
+# Requirements
 
 This packages use (no need to install):
 
@@ -298,13 +298,13 @@ php artisan make:menu /contact
 This commands adds a route to routes file using:
 
 ```bash
-php artisan adminlte:route linkname
+php artisan make:route linkname
 ```
 
 For example you can add a route  **routes/web.php** file with URI **/about** using:
 
 ```bash
-php artisan adminlte:route about
+php artisan make:route about
 ```
 
 This commands add this entry to routes/web.php
@@ -318,7 +318,7 @@ You can create 3 types of routes with option **type**:
 Examples:
 
 ```bash
-php artisan adminlte:route about --type=controller
+php artisan make:route about --type=controller
 ```
 
 this adds the following:
@@ -330,13 +330,13 @@ this adds the following:
 to file **routes/web.php**. You can choose the controller name and method with:
 
 ```bash
-php artisan adminlte:route about MyController@method --type=controller
+php artisan make:route about MyController@method --type=controller
 ```
 
 If you want to create a resource controller:
 
 ```bash
-php artisan adminlte:route about --type=resource
+php artisan make:route about --type=resource
 ```
 
 this adds the following:
@@ -350,13 +350,13 @@ to file **routes/web.php**.
 You can also create routes with other HTTP methods using option **method**:
 
 ```bash
-php artisan adminlte:route save --method=post
+php artisan make:route save --method=post
 ```
 
 You can also add routes to api using option **api**:
 
 ```bash
-php artisan adminlte:route save --api
+php artisan make:route save --api
 ```
 
 Then the routes will be added to **routes/api.php**.
@@ -364,13 +364,13 @@ Then the routes will be added to **routes/api.php**.
 Finally use option **-a** to add actions after route creation:
 
 ```bash
-php artisan adminlte:route about -a
+php artisan make:route about -a
 ```
 
 Last command also create a view with name **about.blade.php**. Using:
 
 ```bash
-php artisan adminlte:route about -a --type=controller
+php artisan make:route about -a --type=controller
 ```
 
 Will create a Controller file with name **AboutController** and method index.
@@ -378,7 +378,7 @@ Will create a Controller file with name **AboutController** and method index.
 You can consult all options with:
 
 ```bash
-php artisan adminlte:route --help
+php artisan make:route --help
 ```
 
 ## adminlte:publish | adminlte-laravel:publish
@@ -434,11 +434,30 @@ Create a new seed to add admin user to database. Use:
 php artisan make:adminUserSeeder
 File /home/sergi/Code/AdminLTE/acacha/adminlte-laravel_test/database/seeds/AdminUserSeeder.php created
 ```
+# Social Login/Register with acacha/laravel-social
 
+It's a cinch to add (optional) Social Login/Register support to Laravel Adminlte using [acacha/laravel-social](https://github.com/acacha/laravel-social) package. Execute in your project root folder:
+
+```bash
+adminlte-laravel social
+```
+
+Follow the wixard to configure your social providers Oauth data and enjoy!
+
+More info at https://github.com/acacha/laravel-social.
+
+## How to remove social Login?
+
+Remove line
+
+```php
+@include('auth.partials.social_login')
+```
+
+in files `resources/views/auth/login.blade.php` and `register.blade.php`
 
 # Roadmap
 
-- Implement Facebook, Google and maybe twitter and github Login with Socialite
 - Add email html templates
 - Add breadcrumps with: https://github.com/davejamesmiller/laravel-breadcrumbs
 
@@ -464,18 +483,6 @@ phpunit
 ```
 
 In new created laravel project with acacha-admintle.laravel installed to test package is installed correctly.
-
-## Social Login
-
-FAQ:
-
-How can I remove social login links in register and login pages?
-
-Remove line @include('auth.partials.social_login') in files resources/views/auth/login.blade.php and register.blade.php
-
-Social login links in login/register pages returns 404 not found
-
-TODO: See package https://github.com/acacha/acacha-socialite
 
 ## Localization
 
@@ -520,6 +527,117 @@ Instead of default path of BSD sed (installed by default on MAC OS):
 
 More info at https://github.com/acacha/adminlte-laravel/issues/58
 
+## How to use username at login instead of email
+
+Execute command: 
+
+```
+php artisan adminlte:username
+```
+
+And then you can use username instead of email for login.
+
+NOTE: when we are using login by username if login by usernames fails then 
+system try to use the introduced username as an email for login. So users
+can also login using email. 
+
+To come back to email login remove **field** option from **config/auth.php** file:
+
+```bash
+'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+            'field' => 'username' // Adminlte laravel. Valid values: 'email' or 'username'
+        ],
+```
+
+NOTE: Migration required to add username field to users table requires:
+ 
+```bash
+composer require doctrine/dbal
+```
+
+### Default domain for username registration
+
+Optionally you can define a default domain name for username login. Add domain option:
+
+```php
+'defaults' => [
+        'guard' => 'web',
+        'passwords' => 'users',
+        'domain' => 'defaultdomain.com',
+    ],
+```
+
+to file **config/auth.php**. Then if an user tries to login with no domain the default domain will be appended whe logging. 
+
+So with previous example you can type at login:
+
+```
+sergiturbadenas
+```
+
+and system/javascript will replace that with:
+
+```
+sergiturbadenas@defaultdomain.com
+```
+
+# Vue
+
+Laravel adminlte package by default publish Laravel translations into Javascript/Vue.js adding to HTML header the following script:
+ 
+```javascript
+<script>
+    //See https://laracasts.com/discuss/channels/vue/use-trans-in-vuejs
+    window.trans = @php
+        // copy all translations from /resources/lang/CURRENT_LOCALE/* to global JS variable
+        $lang_files = File::files(resource_path() . '/lang/' . App::getLocale());
+        $trans = [];
+        foreach ($lang_files as $f) {
+            $filename = pathinfo($f)['filename'];
+            $trans[$filename] = trans($filename);
+        }
+        $trans['adminlte_lang_message'] = trans('adminlte_lang::message');
+        echo json_encode($trans);
+    @endphp
+</script>
+```
+
+This script is located in partial blade file (vendor/acacha/admin-lte-template-laravel/resources/views/layouts/partials/htmlheader.blade.php)
+
+So global variable window.trans contains all Laravel translations at can be used in any Javascript file.
+
+Also in file **resources/assets/js/bootstrap.js** code section:
+
+```
+Vue.prototype.trans = (key) => {
+    return _.get(window.trans, key, key);
+};
+```
+
+Allows using directly the trans function in vue templates:
+
+```
+{{ trans('auth.failed') }}
+```
+
+Also you can use inside Vue components code:
+
+```
+this.trans('auth.failed')
+```
+
+Laravel Adminlte messages ara available using prefix **adminlte_lang_message**:
+
+```
+{{ trans('adminlte_lang_message.username') }}
+```
+
+
+Feel free to remove/adapt this file to your needs.
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
@@ -536,11 +654,11 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details
 
 ## Security
 
-If you discover any security related issues, please email :author_email instead of using the issue tracker.
+If you discover any security related issues, please email sergiturbadenas@gmail.com instead of using the issue tracker.
 
 ## Credits
 
-- [:author_name][link-author]
+- [Sergi Tur Badenas][link-author]
 - [All Contributors][link-contributors]
 
 ## License
@@ -551,17 +669,17 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 
 https://github.com/acacha/adminlte-laravel-installer
 
-[ico-version]: https://img.shields.io/packagist/v/:vendor/:package_name.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/acacha/adminlte-laravel.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/:vendor/:package_name/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/:vendor/:package_name.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/:vendor/:package_name.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/:vendor/:package_name.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/acacha/adminlte-laravel/master.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/acacha/adminlte-laravel.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/acacha/adminlte-laravel.svg?style=flat-square
+[ico-downloads]: https://img.shields.io/packagist/dt/acacha/adminlte-laravel.svg?style=flat-square
 
-[link-packagist]: https://packagist.org/packages/:vendor/:package_name
-[link-travis]: https://travis-ci.org/:vendor/:package_name
-[link-scrutinizer]: https://scrutinizer-ci.com/g/:vendor/:package_name/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/:vendor/:package_name
-[link-downloads]: https://packagist.org/packages/:vendor/:package_name
-[link-author]: https://github.com/:author_username
+[link-packagist]: https://packagist.org/packages/acacha/admin-lte-template-laravel
+[link-travis]: https://travis-ci.org/acacha/adminlte-laravel
+[link-scrutinizer]: https://scrutinizer-ci.com/g/acacha/adminlte-laravel/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/acacha/adminlte-laravel
+[link-downloads]: https://packagist.org/packages/acacha/adminlte-laravel
+[link-author]: https://github.com/acacha
 [link-contributors]: ../../contributors

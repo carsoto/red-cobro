@@ -79,11 +79,12 @@ class AdminLTE
     public function publicAssets()
     {
         return [
-            ADMINLTETEMPLATE_PATH.'/public/img'     => public_path('img'),
-            ADMINLTETEMPLATE_PATH.'/public/css'     => public_path('css'),
-            ADMINLTETEMPLATE_PATH.'/public/js'      => public_path('js'),
-            ADMINLTETEMPLATE_PATH.'/public/plugins' => public_path('plugins'),
-            ADMINLTETEMPLATE_PATH.'/public/fonts'   => public_path('fonts'),
+            ADMINLTETEMPLATE_PATH.'/public/img'                 => public_path('img'),
+            ADMINLTETEMPLATE_PATH.'/public/css'                 => public_path('css'),
+            ADMINLTETEMPLATE_PATH.'/public/js'                  => public_path('js'),
+            ADMINLTETEMPLATE_PATH.'/public/plugins'             => public_path('plugins'),
+            ADMINLTETEMPLATE_PATH.'/public/fonts'               => public_path('fonts'),
+            ADMINLTETEMPLATE_PATH.'/public/mix-manifest.json'   => public_path('mix-manifest.json'),
         ];
     }
 
@@ -162,10 +163,11 @@ class AdminLTE
     {
         return [
             ADMINLTETEMPLATE_PATH.'/resources/assets/css' => resource_path('assets/css'),
+            ADMINLTETEMPLATE_PATH.'/resources/assets/img' => resource_path('assets/img'),
             ADMINLTETEMPLATE_PATH.'/resources/assets/less' => resource_path('assets/less'),
             ADMINLTETEMPLATE_PATH.'/resources/assets/sass' => resource_path('assets/sass'),
             ADMINLTETEMPLATE_PATH.'/resources/assets/js'   => resource_path('assets/js'),
-            ADMINLTETEMPLATE_PATH.'/gulpfile.js'           => base_path('gulpfile.js'),
+            ADMINLTETEMPLATE_PATH.'/webpack.mix.js'        => base_path('webpack.mix.js'),
             ADMINLTETEMPLATE_PATH.'/package.json'          => base_path('package.json'),
         ];
     }
@@ -255,6 +257,30 @@ class AdminLTE
         return [
             ADMINLTETEMPLATE_PATH.'/routes/api.php' =>
                 base_path('routes/api.php')
+        ];
+    }
+
+    /**
+     * Auth config file copy path.
+     *
+     * @return array
+     */
+    public function authConfig()
+    {
+        return [
+            ADMINLTETEMPLATE_PATH.'/src/stubs/auth.php.stub' => config_path('auth.php'),
+        ];
+    }
+
+    /**
+     * User class copy path.
+     *
+     * @return array
+     */
+    public function userClass()
+    {
+        return [
+            ADMINLTETEMPLATE_PATH.'/src/stubs/User.php.stub' => app_path('User.php'),
         ];
     }
 }

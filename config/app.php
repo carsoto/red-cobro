@@ -175,6 +175,7 @@ return [
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Reliese\Coders\CodersServiceProvider::class,
 
     ],
 
