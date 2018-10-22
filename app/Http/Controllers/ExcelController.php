@@ -39,14 +39,38 @@ class ExcelController extends Controller
 
     public function importar()
     {
+
+        Excel::load('public/asignaciones.xlsx', function($reader) {
+            $tiempo_inicial = microtime(true);
+            
+            foreach ($reader->all() as $key => $row) {
+                foreach ($row as $index => $columna) {
+                    $this->registrarDeudor($columna["rut"], $columna["razon_social_nombre"]);
+                }
+            }
+
+            $tiempo_final = microtime(true);
+            $tiempo = $tiempo_final - $tiempo_inicial;
+            echo "El tiempo de ejecución del archivo ha sido de " . $tiempo . " segundos";
+        });
+    }   
+
+    public function importar21515151()
+    {
         /*$id_deudor = $this->registrarDeudor('0962597001', 'Carmen');
         dd($id_deudor);*/
         /** El método load permite cargar el archivo definido como primer parámetro */
-        $tiempo_inicial = microtime(true);
+        
         Excel::load('public/asignaciones.xlsx', function ($reader) {
-            foreach ($reader->get() as $key => $row) {    
-                $this->registrarDeudor($row["rut"], $row["razon_social_nombre"]);
-            }
+            $tiempo_inicial = microtime(true);
+            /*foreach ($reader->get() as $key => $row) {    
+                dd($row);
+                //$this->registrarDeudor($row["rut"], $row["razon_social_nombre"]);
+                
+            }*/
+            $reader->each(function($row) {
+                echo "<br>".$row->rut;
+            });
             /**
              * $reader->get() nos permite obtener todas las filas de nuestro archivo
              *

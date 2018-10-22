@@ -4,27 +4,33 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSupervisoresTable extends Migration
+class CreateEmpleadosTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
+   public function up()
     {
-        Schema::create('supervisores', function(Blueprint $table) {
+        Schema::create('empleados', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->increments('idsupervisores')->unsigned();
+            $table->increments('idempleados')->unsigned();
             $table->integer('idproveedores')->unsigned();
+            $table->integer('idperfiles')->unsigned();
             $table->string('rut', 45);
             $table->string('nombre', 45);
+            $table->integer('idpadre')->unsigned();
         
             $table->index('idproveedores','fk_supervisores_proveedores1_idx');
+            $table->index('idperfiles','fk_empleados_perfiles1_idx');
         
             $table->foreign('idproveedores')
                 ->references('idproveedores')->on('proveedores');
+        
+            $table->foreign('idperfiles')
+                ->references('idperfiles')->on('perfiles');
         
             $table->timestamps();
         
@@ -40,7 +46,7 @@ class CreateSupervisoresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('supervisores');
+        Schema::drop('empleados');
 
     }
 }
