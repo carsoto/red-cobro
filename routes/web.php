@@ -29,6 +29,13 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('eliminar/{usuario}', 'UserController@destroy')->name('usuarios.borrar');
 		Route::get('table/listado', 'UserController@list')->name('usuarios.listado');
 	});
+
+	Route::group(['prefix' => 'asignaciones'], function () {
+		Route::get('exportar', 'ExcelController@exportar');
+		Route::get('importar', 'ExcelController@importar');
+		Route::get('bladeToExcel', 'ExcelController@bladeToExcel');
+	});
+
     
 });
 /*

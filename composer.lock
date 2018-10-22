@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d954eaa69a4f7c68e2477d64e79c807",
+    "content-hash": "aacf2eae9bbdbdd12932e5375dcaf119",
     "packages": [
         {
             "name": "acacha/admin-lte-template-laravel",
