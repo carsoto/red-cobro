@@ -37,16 +37,8 @@ class Proveedor extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function proveedoresDocumentos()
+    public function documentos()
     {
-        return $this->hasMany('App\ProveedoresDocumento', 'idproveedores', 'idproveedores');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function supervisores()
-    {
-        return $this->hasMany('App\Supervisore', 'idproveedores', 'idproveedores');
+        return $this->belongsToMany('App\Documento', 'proveedores_documentos', 'idproveedores', 'iddocumentos')->withTimestamps();
     }
 }

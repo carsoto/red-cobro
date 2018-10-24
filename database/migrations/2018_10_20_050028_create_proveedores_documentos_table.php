@@ -19,7 +19,7 @@ class CreateProveedoresDocumentosTable extends Migration
             $table->increments('id')->unsigned();
             $table->integer('idproveedores')->unsigned();
             $table->integer('iddocumentos')->unsigned();
-            $table->integer('idestado_documentos')->unsigned();
+            $table->integer('idestado_documentos')->unsigned()->nullable();
         
             $table->index('iddocumentos','fk_proveedores_has_documentos_documentos1_idx');
             $table->index('idproveedores','fk_proveedores_has_documentos_proveedores1_idx');

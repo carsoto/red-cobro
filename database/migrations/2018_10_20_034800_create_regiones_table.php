@@ -18,7 +18,6 @@ class CreateRegionesTable extends Migration
         
             $table->increments('idregion')->unsigned();
             $table->string('region', 100);
-            $table->string('cod_postal', 10)->nullable()->default(null);
         
             $table->timestamps();
         

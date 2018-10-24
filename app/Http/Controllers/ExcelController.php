@@ -21,7 +21,27 @@ use App\Telefono;
 
 class ExcelController extends Controller
 {
+    public function formatearRut($unformattedRut) {
+
+        if (strpos($unformattedRut, '-') !== false ) {
+
+            $splittedRut = explode('-', $unformattedRut);
+
+            $number = number_format($splittedRut[0], 0, ',', '.');
+
+            $verifier = strtoupper($splittedRut[1]);
+
+            return $number . '-' . $verifier;
+
+        }
+
+        return number_format($unformattedRut, 0, ',', '.');
+
+    }
+
+
     public function registrarDeudor($rut, $nombre){
+        $rut = $this->formatearRut($rut);
         $deudor = Deudor::where('rut', '=', $rut)->get();
         
         if(count($deudor) < 1){
@@ -37,90 +57,98 @@ class ExcelController extends Controller
         return $id;
     }
 
+    public function obtenerdeudores(){
+        $deudores = Deudor::all();
+    }
+
     public function importar()
     {
 
-        Excel::load('public/asignaciones.xlsx', function($reader) {
+        Excel::load(public_path("asignaciones.xlsx"), function($reader) {
             $tiempo_inicial = microtime(true);
-            
+          
             foreach ($reader->all() as $key => $row) {
                 foreach ($row as $index => $columna) {
-                    $this->registrarDeudor($columna["rut"], $columna["razon_social_nombre"]);
+                    $deudor = Deudor::firstOrCreate([
+                        'rut' => $this->formatearRut($columna['rut']),
+                        'razon_social' => $columna['razon_social_nombre']
+                    ]);
+
+                    $direccion = Direccion::firstOrCreate([
+                        'idcomunas' => $this->getComuna($columna["region"], $columna["ciudad"], $columna["comuna"]), 
+                        'direccion' => $columna["direccion"],
+                        'complemento' => $columna["complemento"]
+                    ]);
+
+                    $deudor->direcciones()->sync($direccion->iddirecciones, false);
+
+                    if($columna['fono_1'] != ''){
+                        $correo = Correo::firstOrCreate([
+                            'correo' => $columna['email']
+                        ]);
+                        $deudor->correos()->sync($correo->idcorreos_electronicos, false); 
+                    }
+
+                    if($columna['fono_1'] != ''){
+                        $telefono1 = Telefono::firstOrCreate([
+                            'telefono' => $columna['fono_1']
+                        ]);
+                        $deudor->telefonos()->sync($telefono1->idtelefonos, false);
+                    }
+
+                    if($columna['fono_2'] != ''){
+                        $telefono2 = Telefono::firstOrCreate([
+                            'telefono' => $columna['fono_2']
+                        ]);
+                        $deudor->telefonos()->sync($telefono2->idtelefonos, false);
+                    }
+
+                    $documento = Documento::firstOrCreate([
+                        'numero' => $columna['num_documento'], 
+                        'folio' => $columna['folio'], 
+                        'deuda' => $columna['deuda'], 
+                        'fecha_emision' => $columna['fecha_emision'], 
+                        'fecha_vencimiento' => $columna['fecha_vencimiento'],
+                        'dias_mora' => $columna['dias_mora']
+                    ]);
+
+                    $deudor->documentos()->sync($documento->iddocumentos, false);
+
+                    $proveedor = Proveedor::firstOrCreate([
+                        'razon_social' => $columna['proveedor']
+                    ]);               
+
+                    $proveedor->documentos()->sync($documento->iddocumentos, false);
                 }
             }
-
+            
             $tiempo_final = microtime(true);
             $tiempo = $tiempo_final - $tiempo_inicial;
             echo "El tiempo de ejecución del archivo ha sido de " . $tiempo . " segundos";
+         
         });
     }   
 
-    public function importar21515151()
-    {
-        /*$id_deudor = $this->registrarDeudor('0962597001', 'Carmen');
-        dd($id_deudor);*/
-        /** El método load permite cargar el archivo definido como primer parámetro */
-        
-        Excel::load('public/asignaciones.xlsx', function ($reader) {
-            $tiempo_inicial = microtime(true);
-            /*foreach ($reader->get() as $key => $row) {    
-                dd($row);
-                //$this->registrarDeudor($row["rut"], $row["razon_social_nombre"]);
-                
-            }*/
-            $reader->each(function($row) {
-                echo "<br>".$row->rut;
-            });
-            /**
-             * $reader->get() nos permite obtener todas las filas de nuestro archivo
-             *
-            
-            $comuna = new Comuna();
-            $correo = new Correo();
-            $deudor = new Deudor();
-            $direccion = new Direccion();
-            $documento = new Documento();
-            $proveedor = new Proveedor();
-            $provincia = new Provincia();
-            $region = new Region();
-            $supervisor = new Supervisor();
-            $telefono = new Telefono();
-            
-            $row["num_documento"];
-            $row["folio"];
-            $row["deuda"];
-            $row["fecha_vencimiento"];
-            $row["fecha_emision"];
-            $row["direccion"];
-            $row["complemento"];
-            $row["comuna"];
-            $row["ciudad"];
-            $row["region"];
-            $row["fono_1"];
-            $row["fono_2"];
-            $row["email"];
-            $row["dias_mora"];
-            $row["proveedor"];
-            foreach ($reader->get() as $key => $row) {
-                //dd($row);
-                /*$producto = [
-                    'articulo' => $row['articulo'],
-                    'cantidad' => $row['cantidad'],
-                    'precio_unitario' => $row['precio_unitario'],
-                    'fecha_registro' => $row['fecha_registro'],
-                    'status' => $row['status'],
-                ];
-                /** Una vez obtenido los datos de la fila procedemos a registrarlos *
-                if (!empty($producto)) {
-                    DB::table('productos')->insert($producto);
-                }*
-            }
-            echo 'Los productos han sido importados exitosamente';*/
-            $tiempo_final = microtime(true);
-            $tiempo = $tiempo_final - $tiempo_inicial;
-            echo "El tiempo de ejecución del archivo ha sido de " . $tiempo . " segundos";
-        });
-        
+    public function getComuna($region, $provincia, $comuna){
+
+        $comuna = Comuna::firstOrCreate([
+            'idprovincias' => $this->getProvincia($region, $provincia),
+            'comuna' => $comuna
+        ]);
+        return $comuna->idcomunas;
+    }
+
+    public function getProvincia($region, $provincia){
+        $region = Region::firstOrCreate([
+            'region' => $region
+        ]);
+
+        $provincia = Provincia::firstOrCreate([
+            'idregion' => $region->idregion,
+            'provincia' => $provincia
+        ]);
+
+        return $provincia->idprovincias;
     }
 
     public function exportar()

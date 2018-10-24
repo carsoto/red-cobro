@@ -19,8 +19,7 @@ class CreateDeudoresDocumentosTable extends Migration
             $table->increments('id');
             $table->integer('iddeudores')->unsigned();
             $table->integer('iddocumentos')->unsigned();
-            $table->integer('dias_mora')->nullable();
-            $table->integer('idestado_documentos')->unsigned();
+            $table->integer('idestado_documentos')->unsigned()->nullable();
         
             $table->index('iddocumentos','fk_deudores_has_documentos_documentos1_idx');
             $table->index('iddeudores','fk_deudores_has_documentos_deudores1_idx');

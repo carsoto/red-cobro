@@ -19,7 +19,7 @@ class CreateDireccionesTable extends Migration
             $table->increments('iddirecciones')->unsigned();
             $table->integer('idcomunas')->unsigned();
             $table->string('direccion', 255);
-            $table->string('complemento', 45)->nullable()->default(null);
+            $table->string('complemento', 255)->nullable()->default(null);
         
             $table->index('idcomunas','fk_direcciones_comunas1_idx');
         

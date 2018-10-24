@@ -40,7 +40,7 @@ class Direccion extends Model
      */
     public function comuna()
     {
-        return $this->belongsTo('App\Comuna', 'idcomunas', 'idcomunas');
+        return $this->belongsTo('App\Comuna', 'idcomunas', 'idcomunas')->withTimestamps();
     }
 
     /**

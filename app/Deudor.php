@@ -39,32 +39,23 @@ class Deudor extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function deudoresCorreos()
+    public function correos()
     {
-        return $this->hasMany('App\DeudoresCorreo', 'iddeudores', 'iddeudores');
+        return $this->belongsToMany('App\Correo', 'deudores_correos', 'iddeudores', 'idcorreos_electronicos')->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deudoresDirecciones()
+    public function direcciones()
     {
-        return $this->hasMany('App\DeudoresDireccione', 'iddeudores', 'iddeudores');
+        return $this->belongsToMany('App\Direccion', 'deudores_direcciones', 'iddeudores', 'iddirecciones')->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deudoresDocumentos()
+    public function documentos()
     {
-        return $this->hasMany('App\DeudoresDocumento', 'iddeudores', 'iddeudores');
+        return $this->belongsToMany('App\Documento', 'deudores_documentos', 'iddeudores', 'iddocumentos')->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deudoresTelefonos()
+    public function telefonos()
     {
-        return $this->hasMany('App\DeudoresTelefono', 'deudores_iddeudores', 'iddeudores');
+        return $this->belongsToMany('App\Telefono', 'deudores_telefonos', 'iddeudores', 'idtelefonos')->withTimestamps();
     }
 }

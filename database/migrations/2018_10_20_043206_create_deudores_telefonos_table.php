@@ -17,17 +17,17 @@ class CreateDeudoresTelefonosTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('deudores_iddeudores')->unsigned();
-            $table->integer('telefonos_idtelefonos')->unsigned();
+            $table->integer('iddeudores')->unsigned();
+            $table->integer('idtelefonos')->unsigned();
             $table->integer('activo')->default(1);
         
-            $table->index('telefonos_idtelefonos','fk_deudores_has_telefonos_telefonos1_idx');
-            $table->index('deudores_iddeudores','fk_deudores_has_telefonos_deudores1_idx');
+            $table->index('idtelefonos','fk_deudores_has_telefonos_telefonos1_idx');
+            $table->index('iddeudores','fk_deudores_has_telefonos_deudores1_idx');
         
-            $table->foreign('deudores_iddeudores')
+            $table->foreign('iddeudores')
                 ->references('iddeudores')->on('deudores');
         
-            $table->foreign('telefonos_idtelefonos')
+            $table->foreign('idtelefonos')
                 ->references('idtelefonos')->on('telefonos');
         
             $table->timestamps();

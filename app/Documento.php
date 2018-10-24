@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $deuda
  * @property string $fecha_emision
  * @property string $fecha_vencimiento
+ * @property int $dias_mora
  * @property string $created_at
  * @property string $updated_at
  * @property DeudoresDocumento[] $deudoresDocumentos
@@ -28,7 +29,7 @@ class Documento extends Model
     /**
      * @var array
      */
-    protected $fillable = ['numero', 'folio', 'deuda', 'fecha_emision', 'fecha_vencimiento', 'created_at', 'updated_at'];
+    protected $fillable = ['numero', 'folio', 'deuda', 'fecha_emision', 'fecha_vencimiento', 'dias_mora', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

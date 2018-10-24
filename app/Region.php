@@ -31,7 +31,7 @@ class Region extends Model
     /**
      * @var array
      */
-    protected $fillable = ['region', 'cod_postal', 'created_at', 'updated_at'];
+    protected $fillable = ['region', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
