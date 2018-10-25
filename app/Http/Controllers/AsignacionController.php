@@ -18,9 +18,15 @@ use App\Region;
 use App\Supervisor;
 use App\Telefono;
 
+use Redirect;
+use Session;
 
-class ExcelController extends Controller
+class AsignacionController extends Controller
 {
+    public function cargar(){
+        return view('adminlte::asignaciones.index');
+    }
+
     public function formatearRut($rut_sin_formato) {
 
         if (strpos($rut_sin_formato, '-') !== false ) {
@@ -34,9 +40,9 @@ class ExcelController extends Controller
         return number_format($rut_sin_formato, 0, ',', '.');
     }
 
-    public function importar()
+    public function importar(Request $request)
     {
-        Excel::load(public_path("test_asignaciones.xlsx"), function($hoja) {
+        Excel::load($request->file('file'), function($hoja) {
             $tiempo_inicial = microtime(true);
           
             foreach ($hoja->all() as $key => $registro) {
@@ -96,9 +102,9 @@ class ExcelController extends Controller
             
             $tiempo_final = microtime(true);
             $tiempo = $tiempo_final - $tiempo_inicial;
-            echo "El tiempo de ejecución del archivo ha sido de " . $tiempo . " segundos";
-         
+            Session::flash('message', "Su archivo fue importado con éxito. Tiempo estimado de carga: ".$tiempo);
         });
+        return Redirect::back();
     }   
 
     public function getComuna($region, $provincia, $comuna){

@@ -44,7 +44,14 @@
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
             @if(Auth::user()->hasRole('admin'))
-                <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-users'></i> <span>Usuarios</span></a></li>
+                <li><a href="{{ route('usuarios.index') }}"><span>Usuarios</span></a></li>
+                <li><a href="{{ route('asignaciones.cargar') }}"><span>Asignaciones</span></a></li>
+                <li><a href="{{ route('deudores.index') }}"><span>Deudores</span></a></li>
+                <li><a href="{{ route('proveedores.index') }}"><span>Proveedores</span></a></li>
+                <li><a href="{{ route('documentos.index') }}"><span>Documentos</span></a></li>
+                <li><a href="{{ route('regiones.index') }}"><span>Regiones</span></a></li>
+                <li><a href="{{ route('provincias.index') }}"><span>Provincias</span></a></li>
+                <li><a href="{{ route('comunas.index') }}"><span>Comunas</span></a></li>
             @endif
             <!--<li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
             <li class="treeview">

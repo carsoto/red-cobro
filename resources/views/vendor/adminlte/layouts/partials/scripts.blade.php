@@ -72,6 +72,91 @@
 		        });
 		    });	
     	}
-      
+
+    	var table_deudor = document.getElementById('tabla_deudores');
+    	if(table_deudor != undefined){
+    		var datatable_deudores = $('#tabla_deudores').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'deudores/table/listado',
+		        columns: [		
+		            {data: 'rut', name: 'rut'},
+		            {data: 'razon_social', name: 'razon_social'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+      	
+      	var table_proveedor = document.getElementById('tabla_proveedores');
+    	if(table_proveedor != undefined){
+    		var datatable_proveedores = $('#tabla_proveedores').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'proveedores/table/listado',
+		        columns: [		
+		            {data: 'rut', name: 'rut'},
+		            {data: 'razon_social', name: 'razon_social'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+
+    	var table_documento = document.getElementById('tabla_documentos');
+    	if(table_documento != undefined){
+    		var datatable_documentos = $('#tabla_documentos').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'documentos/table/listado',
+		        columns: [		
+		            {data: 'numero', name: 'numero'},
+		            {data: 'folio', name: 'folio'},
+		            {data: 'deuda', name: 'deuda'},
+		            {data: 'fecha_emision', name: 'fecha_emision'},
+		            {data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
+		            {data: 'dias_mora', name: 'dias_mora'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+
+    	var table_region = document.getElementById('tabla_regiones');
+    	if(table_region != undefined){
+    		var datatable_regiones = $('#tabla_regiones').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'regiones/table/listado',
+		        columns: [		
+		            {data: 'region', name: 'region'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+
+    	var table_provincia = document.getElementById('tabla_provincias');
+    	if(table_provincia != undefined){
+    		var datatable_provincias = $('#tabla_provincias').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'provincias/table/listado',
+		        columns: [		
+		            {data: 'provincia', name: 'provincia'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+
+    	var table_comuna = document.getElementById('tabla_comunas');
+    	console.log(table_comuna);
+    	if(table_comuna != undefined){
+    		var datatable_comunas = $('#tabla_comunas').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'comunas/table/listado',
+		        columns: [		
+		            {data: 'comuna', name: 'comuna'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
     })(jQuery);
 </script>

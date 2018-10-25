@@ -31,12 +31,40 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	Route::group(['prefix' => 'asignaciones'], function () {
-		Route::get('exportar', 'ExcelController@exportar');
-		Route::get('importar', 'ExcelController@importar');
-		Route::get('bladeToExcel', 'ExcelController@bladeToExcel');
+		Route::get('cargar-archivos', 'AsignacionController@cargar')->name('asignaciones.cargar'); 
+		Route::get('exportar', 'AsignacionController@exportar');
+		Route::post('importar', 'AsignacionController@importar')->name('asignaciones.importar'); 
 	});
 
-    
+	Route::resource('deudores', 'DeudorController');
+	Route::group(['prefix' => 'deudores'], function () {
+		Route::get('table/listado', 'DeudorController@list')->name('deudores.listado');  
+	});
+
+	Route::resource('proveedores', 'ProveedorController');
+	Route::group(['prefix' => 'proveedores'], function () {
+		Route::get('table/listado', 'ProveedorController@list')->name('proveedores.listado');  
+	});
+
+	Route::resource('documentos', 'DocumentoController');
+	Route::group(['prefix' => 'documentos'], function () {
+		Route::get('table/listado', 'DocumentoController@list')->name('documentos.listado');  
+	}); 
+
+	Route::resource('regiones', 'RegionController');
+	Route::group(['prefix' => 'regiones'], function () {
+		Route::get('table/listado', 'RegionController@list')->name('regiones.listado');  
+	});
+
+	Route::resource('provincias', 'ProvinciaController');
+	Route::group(['prefix' => 'provincias'], function () {
+		Route::get('table/listado', 'ProvinciaController@list')->name('provincias.listado');  
+	}); 
+
+	Route::resource('comunas', 'ComunaController');
+	Route::group(['prefix' => 'comunas'], function () {
+		Route::get('table/listado', 'ComunaController@list')->name('comunas.listado');  
+	});  
 });
 /*
 	Route::put('post/{id}', function ($id) {
