@@ -28,8 +28,8 @@ class Correo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function deudoresCorreos()
+    public function deudores()
     {
-        return $this->hasMany('App\DeudoresCorreo', 'idcorreos_electronicos', 'idcorreos_electronicos');
+        return $this->hasMany('App\Deudor', 'deudores_correos', 'idcorreos_electronicos', 'iddeudores')->withTimestamps();
     }
 }

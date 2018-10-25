@@ -28,8 +28,8 @@ class Telefono extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function deudoresTelefonos()
+    public function deudores()
     {
-        return $this->hasMany('App\DeudoresTelefono', 'telefonos_idtelefonos', 'idtelefonos');
+        return $this->hasMany('App\Deudor', 'deudores_telefonos', 'idtelefonos', 'iddeudores')->withTimestamps();
     }
 }

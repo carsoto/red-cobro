@@ -30,9 +30,9 @@ class Provincia extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function regione()
+    public function regiones()
     {
-        return $this->belongsTo('App\Regione', 'idregion', 'idregion');
+        return $this->belongsTo('App\Region', 'idregion', 'idregion');
     }
 
     /**

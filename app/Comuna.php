@@ -40,6 +40,6 @@ class Comuna extends Model
      */
     public function direcciones()
     {
-        return $this->hasMany('App\Direccione', 'idcomunas', 'idcomunas');
+        return $this->hasMany('App\Direccion', 'idcomunas', 'idcomunas');
     }
 }

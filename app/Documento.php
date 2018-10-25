@@ -34,16 +34,16 @@ class Documento extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function deudoresDocumentos()
+    public function deudores()
     {
-        return $this->hasMany('App\DeudoresDocumento', 'iddocumentos', 'iddocumentos');
+        return $this->hasMany('App\Deudor', 'deudores_documentos', 'iddocumentos', 'iddeudores')->withTimestamps();
     }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function proveedoresDocumentos()
+    public function proveedores()
     {
-        return $this->hasMany('App\ProveedoresDocumento', 'iddocumentos', 'iddocumentos');
+        return $this->hasMany('App\Proveedor', 'proveedores_documentos', 'iddocumentos', 'idproveedores')->withTimestamps();
     }
 }

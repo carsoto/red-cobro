@@ -46,8 +46,8 @@ class Direccion extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function deudoresDirecciones()
+    public function deudores()
     {
-        return $this->hasMany('App\DeudoresDireccione', 'iddirecciones', 'iddirecciones');
+        return $this->hasMany('App\Deudor', 'deudores_direcciones', 'iddirecciones','iddeudores')->withTimestamps();
     }
 }

@@ -21,101 +21,73 @@ use App\Telefono;
 
 class ExcelController extends Controller
 {
-    public function formatearRut($unformattedRut) {
+    public function formatearRut($rut_sin_formato) {
 
-        if (strpos($unformattedRut, '-') !== false ) {
+        if (strpos($rut_sin_formato, '-') !== false ) {
+            $procesar_rut = explode('-', $rut_sin_formato);
+            $numero = number_format($procesar_rut[0], 0, ',', '.');
+            $dverificador = strtoupper($procesar_rut[1]);
 
-            $splittedRut = explode('-', $unformattedRut);
-
-            $number = number_format($splittedRut[0], 0, ',', '.');
-
-            $verifier = strtoupper($splittedRut[1]);
-
-            return $number . '-' . $verifier;
-
+            return $numero . '-' . $dverificador;
         }
 
-        return number_format($unformattedRut, 0, ',', '.');
-
-    }
-
-
-    public function registrarDeudor($rut, $nombre){
-        $rut = $this->formatearRut($rut);
-        $deudor = Deudor::where('rut', '=', $rut)->get();
-        
-        if(count($deudor) < 1){
-            $new_deudor = new Deudor();
-            $new_deudor->rut = $rut;
-            $new_deudor->razon_social = $nombre;
-            if($new_deudor->save()){
-                $id = $new_deudor->iddeudores;
-            }
-        }else{
-            $id = $deudor[0]->iddeudores;
-        }
-        return $id;
-    }
-
-    public function obtenerdeudores(){
-        $deudores = Deudor::all();
+        return number_format($rut_sin_formato, 0, ',', '.');
     }
 
     public function importar()
     {
-
-        Excel::load(public_path("asignaciones.xlsx"), function($reader) {
+        Excel::load(public_path("test_asignaciones.xlsx"), function($hoja) {
             $tiempo_inicial = microtime(true);
           
-            foreach ($reader->all() as $key => $row) {
-                foreach ($row as $index => $columna) {
+            foreach ($hoja->all() as $key => $registro) {
+                foreach ($registro as $index => $asignacion) {
                     $deudor = Deudor::firstOrCreate([
-                        'rut' => $this->formatearRut($columna['rut']),
-                        'razon_social' => $columna['razon_social_nombre']
+                        'rut' => $this->formatearRut($asignacion['rut']),
+                        'razon_social' => $asignacion['razon_social_nombre']
                     ]);
 
                     $direccion = Direccion::firstOrCreate([
-                        'idcomunas' => $this->getComuna($columna["region"], $columna["ciudad"], $columna["comuna"]), 
-                        'direccion' => $columna["direccion"],
-                        'complemento' => $columna["complemento"]
+                        'idcomunas' => $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]), 
+                        'direccion' => $asignacion["direccion"],
+                        'complemento' => $asignacion["complemento"]
                     ]);
 
                     $deudor->direcciones()->sync($direccion->iddirecciones, false);
 
-                    if($columna['fono_1'] != ''){
+                    if($asignacion['fono_1'] != ''){
                         $correo = Correo::firstOrCreate([
-                            'correo' => $columna['email']
+                            'correo' => $asignacion['email']
                         ]);
                         $deudor->correos()->sync($correo->idcorreos_electronicos, false); 
                     }
 
-                    if($columna['fono_1'] != ''){
+                    if($asignacion['fono_1'] != ''){
                         $telefono1 = Telefono::firstOrCreate([
-                            'telefono' => $columna['fono_1']
+                            'telefono' => $asignacion['fono_1']
                         ]);
                         $deudor->telefonos()->sync($telefono1->idtelefonos, false);
                     }
 
-                    if($columna['fono_2'] != ''){
+                    if($asignacion['fono_2'] != ''){
                         $telefono2 = Telefono::firstOrCreate([
-                            'telefono' => $columna['fono_2']
+                            'telefono' => $asignacion['fono_2']
                         ]);
                         $deudor->telefonos()->sync($telefono2->idtelefonos, false);
                     }
 
                     $documento = Documento::firstOrCreate([
-                        'numero' => $columna['num_documento'], 
-                        'folio' => $columna['folio'], 
-                        'deuda' => $columna['deuda'], 
-                        'fecha_emision' => $columna['fecha_emision'], 
-                        'fecha_vencimiento' => $columna['fecha_vencimiento'],
-                        'dias_mora' => $columna['dias_mora']
+                        'numero' => $asignacion['num_documento'], 
+                        'folio' => $asignacion['folio'], 
+                        'deuda' => $asignacion['deuda'], 
+                        'fecha_emision' => $asignacion['fecha_emision'], 
+                        'fecha_vencimiento' => $asignacion['fecha_vencimiento'],
+                        'dias_mora' => $asignacion['dias_mora']
                     ]);
 
                     $deudor->documentos()->sync($documento->iddocumentos, false);
 
                     $proveedor = Proveedor::firstOrCreate([
-                        'razon_social' => $columna['proveedor']
+                        'razon_social' => $asignacion['proveedor']
                     ]);               
 
                     $proveedor->documentos()->sync($documento->iddocumentos, false);
@@ -163,7 +135,7 @@ class ExcelController extends Controller
                  * Insertamos los datos en la hoja con el método with/fromArray
                  * Parametros: (
                  * Datos,
-                 * Valores del encabezado de la columna,
+                 * Valores del encabezado de la asignacion,
                  * Celda de Inicio,
                  * Comparación estricta de los valores del encabezado
                  * Impresión de los encabezados
