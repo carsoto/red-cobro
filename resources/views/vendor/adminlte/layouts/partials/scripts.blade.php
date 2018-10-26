@@ -82,7 +82,7 @@
 		        columns: [		
 		            {data: 'rut', name: 'rut'},
 		            {data: 'razon_social', name: 'razon_social'},
-		            {data: 'action', name: 'action', orderable: false}
+		            //{data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
     	}
@@ -114,7 +114,7 @@
 		            {data: 'fecha_emision', name: 'fecha_emision'},
 		            {data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
 		            {data: 'dias_mora', name: 'dias_mora'},
-		            {data: 'action', name: 'action', orderable: false}
+		            //{data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
     	}
@@ -127,7 +127,7 @@
 		        ajax: 'regiones/table/listado',
 		        columns: [		
 		            {data: 'region', name: 'region'},
-		            {data: 'action', name: 'action', orderable: false}
+		            //{data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
     	}
@@ -140,7 +140,7 @@
 		        ajax: 'provincias/table/listado',
 		        columns: [		
 		            {data: 'provincia', name: 'provincia'},
-		            {data: 'action', name: 'action', orderable: false}
+		            //{data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
     	}
@@ -154,7 +154,7 @@
 		        ajax: 'comunas/table/listado',
 		        columns: [		
 		            {data: 'comuna', name: 'comuna'},
-		            {data: 'action', name: 'action', orderable: false}
+		            //{data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
     	}

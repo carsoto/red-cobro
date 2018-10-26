@@ -42,6 +42,7 @@ class AsignacionController extends Controller
 
     public function importar(Request $request)
     {
+        $tipo_archivo = $request->file('file')->getClientMimeType();
         Excel::load($request->file('file'), function($hoja) {
             $tiempo_inicial = microtime(true);
           

@@ -18,11 +18,11 @@
 			<div class="col-lg-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<div class="text-right">
+						<!--<div class="text-right">
 							<a class="btn btn-info" href="{{ route('deudores.create') }}" title="Nuevo usuario">
 								<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nuevo </span>
 							</a>	
-						</div>
+						</div>-->
 					</div>
 
 					<div class="panel-body">
@@ -33,7 +33,7 @@
 		                            <tr>
 		                                <th>Rut</th>
 		                                <th>Razón social</th>
-		                                <th><i class="fa fa-gears"></i></th>
+		                                <!--<th><i class="fa fa-gears"></i></th>-->
 		                            </tr>
 		                        </thead>
 		                    </table>

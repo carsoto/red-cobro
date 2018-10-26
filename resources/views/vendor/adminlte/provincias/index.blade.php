@@ -18,11 +18,11 @@
 			<div class="col-lg-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<div class="text-right">
+						<!--<div class="text-right">
 							<a class="btn btn-info" href="{{ route('provincias.create') }}" title="Nueva provincia">
 								<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nuevo </span>
 							</a>	
-						</div>
+						</div>-->
 					</div>
 
 					<div class="panel-body">
@@ -32,7 +32,7 @@
 		                        <thead>
 		                            <tr>
 		                                <th>Provincia</th>
-		                                <th><i class="fa fa-gears"></i></th>
+		                                <!--<th><i class="fa fa-gears"></i></th>-->
 		                            </tr>
 		                        </thead>
 		                    </table>

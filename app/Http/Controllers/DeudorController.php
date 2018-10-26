@@ -29,11 +29,11 @@ class DeudorController extends Controller
                 foreach ($deudor->roles as $role) {
                     return ucfirst($role->name);
                 }
-            })*/
+            })
             ->addColumn('action', function ($deudor) {
                 return '<a href="'.route('deudores.edit', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
                         <a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_deudor"><i class="fa fa-trash"></i></a>';
-            })
+            })*/
             ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
             ->make(true);
     }

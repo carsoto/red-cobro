@@ -18,11 +18,11 @@
 			<div class="col-lg-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">
-						<div class="text-right">
+						<!--<div class="text-right">
 							<a class="btn btn-info" href="{{ route('documentos.create') }}" title="Nuevo documento">
 								<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nuevo </span>
 							</a>	
-						</div>
+						</div>-->
 					</div>
 
 					<div class="panel-body">
@@ -37,7 +37,7 @@
 		                                <th>F. de emisión</th>
 		                                <th>F. de vencimiento</th>
 		                                <th>Días de mora</th>
-		                                <th><i class="fa fa-gears"></i></th>
+		                                <!--<th><i class="fa fa-gears"></i></th>-->
 		                            </tr>
 		                        </thead>
 		                    </table>
