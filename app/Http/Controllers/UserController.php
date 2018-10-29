@@ -109,15 +109,24 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        if(User::destroy(decrypt($id))){
+        /*if(User::destroy(decrypt($id))){
             $status = 'success';
             $msg = 'El registro fue eliminado exitosamente!';
    
         } else {
             $status = 'failed';
             $msg = 'Disculpe, el registro no pudo ser eliminado!';
-        }
-                
+        }*/
+        $usuario = User::findOrFail(decrypt($id));
+        $usuario->status = 'Inactivo';
+        if($usuario->save()){
+            $status = 'success';
+            $msg = 'El usuario fue deshabilitado exitosamente!';
+   
+        } else {
+            $status = 'failed';
+            $msg = 'Disculpe, el usuario no pudo ser deshabilitado!';
+        }    
         return Response::json(array('status' => $status, 'msg' => $msg));
     }
 }
