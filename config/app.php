@@ -174,7 +174,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Acacha\AdminLTETemplateLaravel\Providers\AdminLTETemplateServiceProvider::class,
         'Collective\Html\HtmlServiceProvider',
-        Yajra\Datatables\DatatablesServiceProvider::class,
+        yajra\Datatables\DatatablesServiceProvider::class,
         Reliese\Coders\CodersServiceProvider::class,
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
@@ -231,7 +231,7 @@ return [
         'AdminLTE' => Acacha\AdminLTETemplateLaravel\Facades\AdminLTE::class,
         'Form' => 'Collective\Html\FormFacade',
         'Html' => 'Collective\Html\HtmlFacade',
-        'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Datatables' => yajra\Datatables\Datatables::class,
         'Excel' => Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
