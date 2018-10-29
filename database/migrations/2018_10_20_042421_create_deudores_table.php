@@ -17,7 +17,8 @@ class CreateDeudoresTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('iddeudores')->unsigned();
-            $table->string('rut', 45);
+            $table->integer('rut')->index();
+            $table->string('rut_dv', 45);
             $table->string('razon_social', 150);
         
             $table->timestamps();

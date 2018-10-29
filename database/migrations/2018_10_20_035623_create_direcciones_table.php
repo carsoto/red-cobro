@@ -17,7 +17,7 @@ class CreateDireccionesTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('iddirecciones')->unsigned();
-            $table->integer('idcomunas')->unsigned();
+            $table->integer('idcomunas')->unsigned()->index();
             $table->string('direccion', 255);
             $table->string('complemento', 255)->nullable()->default(null);
         

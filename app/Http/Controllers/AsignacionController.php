@@ -40,6 +40,16 @@ class AsignacionController extends Controller
         return number_format($rut_sin_formato, 0, ',', '.');
     }
 
+    public function rut_sin_dv($rut_sin_formato) {
+
+        if (strpos($rut_sin_formato, '-') !== false ) {
+            $procesar_rut = explode('-', $rut_sin_formato);
+            $numero = $procesar_rut[0];
+
+            return $numero;
+        }
+    }
+    
     public function importar(Request $request)
     {
         $tipo_archivo = $request->file('file')->getClientMimeType();
@@ -49,7 +59,8 @@ class AsignacionController extends Controller
             foreach ($hoja->all() as $key => $registro) {
                 foreach ($registro as $index => $asignacion) {
                     $deudor = Deudor::firstOrCreate([
-                        'rut' => $this->formatearRut($asignacion['rut']),
+                        'rut' => $this->rut_sin_dv($asignacion['rut']),
+                        'rut_dv' => strtoupper($asignacion['rut']),
                         'razon_social' => $asignacion['razon_social_nombre']
                     ]);
 
@@ -61,13 +72,17 @@ class AsignacionController extends Controller
 
                     $deudor->direcciones()->sync($direccion->iddirecciones, false);
 
-                    if($asignacion['fono_1'] != ''){
-                        $correo = Correo::firstOrCreate([
-                            'correo' => $asignacion['email']
-                        ]);
-                        $deudor->correos()->sync($correo->idcorreos_electronicos, false); 
+                    $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
+                    if($asignacion['email'] != ''){
+                        if (strpos($asignacion['email'], '@') !== false ) {
+                            $correo = Correo::firstOrCreate([
+                                'correo' => $asignacion['email']
+                            ]);
+                            $deudor->correos()->sync($correo->idcorreos_electronicos, false);
+                        } 
                     }
 
+                    $asignacion['fono_1'] = str_replace(' ', '', $asignacion['fono_1']);
                     if($asignacion['fono_1'] != ''){
                         $telefono1 = Telefono::firstOrCreate([
                             'telefono' => $asignacion['fono_1']
@@ -75,6 +90,7 @@ class AsignacionController extends Controller
                         $deudor->telefonos()->sync($telefono1->idtelefonos, false);
                     }
 
+                    $asignacion['fono_2'] = str_replace(' ', '', $asignacion['fono_2']);
                     if($asignacion['fono_2'] != ''){
                         $telefono2 = Telefono::firstOrCreate([
                             'telefono' => $asignacion['fono_2']

@@ -20,8 +20,8 @@ class CreateDocumentosTable extends Migration
             $table->string('numero', 100);
             $table->string('folio', 100);
             $table->string('deuda', 45);
-            $table->string('fecha_emision', 45);
-            $table->string('fecha_vencimiento', 45);
+            $table->date('fecha_emision');
+            $table->date('fecha_vencimiento');
             $table->integer('dias_mora')->nullable();
         
             $table->timestamps();

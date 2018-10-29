@@ -6,7 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @property int $iddeudores
- * @property string $rut
+ * @property int $rut
+ * @property string $rut_dv
  * @property string $razon_social
  * @property string $created_at
  * @property string $updated_at
@@ -34,7 +35,7 @@ class Deudor extends Model
     /**
      * @var array
      */
-    protected $fillable = ['rut', 'razon_social', 'created_at', 'updated_at'];
+    protected $fillable = ['rut', 'rut_dv', 'razon_social', 'created_at', 'updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

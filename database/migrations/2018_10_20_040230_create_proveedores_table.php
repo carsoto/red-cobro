@@ -17,7 +17,8 @@ class CreateProveedoresTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('idproveedores')->unsigned();
-            $table->string('rut', 45)->nullable();
+            $table->integer('rut')->nullable()->index();
+            $table->string('rut_dv', 45)->nullable();
             $table->string('razon_social', 150);
         
             $table->timestamps();
