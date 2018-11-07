@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
 use App\Deudor;
+use Response;
 
 class DeudorController extends Controller
 {
@@ -25,18 +26,44 @@ class DeudorController extends Controller
         $deudores = Deudor::all();
         
         return Datatables::of($deudores)
-            /*->addColumn('role', function ($deudor) {
-                foreach ($deudor->roles as $role) {
-                    return ucfirst($role->name);
-                }
-            })
             ->addColumn('action', function ($deudor) {
-                return '<a href="'.route('deudores.edit', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                        <a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_deudor"><i class="fa fa-trash"></i></a>';
-            })*/
+                /*return '<a href="'.route('deudores.edit', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
+                        <a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_deudor"><i class="fa fa-trash"></i></a>';*/
+                return '<a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs detalle_deuda"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>';
+            })
             ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
             ->make(true);
     }
+
+    public function detallesdeudor($id_deudor)
+    {
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];
+        $direcciones = $deudor->direcciones;
+        $telefonos = $deudor->telefonos;
+        $correos = $deudor->correos;
+        $documentos = $deudor->documentos;
+        $deuda = 0;
+
+        foreach ($deudor->documentos as $key => $doc) {
+            $deuda += $doc->deuda;
+        }
+
+        $deuda = number_format($deuda, 2, ",", ".");
+        
+        return Response::json(array('direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'deuda' => $deuda));
+    }
+
+    public function gestion($id_deudor)
+    {
+        return view('adminlte::deudores.gestion.index');
+    }
+
+    public function gestionhistorica($id_deudor)
+    {
+        return view('adminlte::deudores.gestion.historico');
+    }
+
     /**
      * Show the form for creating a new resource.
      *

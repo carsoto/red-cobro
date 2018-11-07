@@ -16,7 +16,7 @@ class CreateDeudoresDocumentosTable extends Migration
         Schema::create('deudores_documentos', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->increments('id');
+            $table->increments('id')->unsigned();
             $table->integer('iddeudores')->unsigned();
             $table->integer('iddocumentos')->unsigned();
             $table->integer('idestado_documentos')->unsigned()->nullable();

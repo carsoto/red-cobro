@@ -19,7 +19,7 @@ class CreateDocumentosTable extends Migration
             $table->increments('iddocumentos')->unsigned();
             $table->string('numero', 100);
             $table->string('folio', 100);
-            $table->string('deuda', 45);
+            $table->float('deuda', 8, 2);
             $table->date('fecha_emision');
             $table->date('fecha_vencimiento');
             $table->integer('dias_mora')->nullable();

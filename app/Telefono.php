@@ -1,35 +1,40 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Tue, 06 Nov 2018 21:39:08 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class Telefono
+ * 
  * @property int $idtelefonos
  * @property string $telefono
- * @property string $created_at
- * @property string $updated_at
- * @property DeudoresTelefono[] $deudoresTelefonos
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
+ *
+ * @package App
  */
-class Telefono extends Model
+class Telefono extends Eloquent
 {
-    /**
-     * The primary key for the model.
-     * 
-     * @var string
-     */
-    protected $primaryKey = 'idtelefonos';
+	protected $table = 'telefonos';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['telefono', 'created_at', 'updated_at'];
+	protected $primaryKey = 'idtelefonos';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deudores()
-    {
-        return $this->hasMany('App\Deudor', 'deudores_telefonos', 'idtelefonos', 'iddeudores')->withTimestamps();
-    }
+	protected $fillable = [
+		'telefono'
+	];
+
+	public function deudores()
+	{
+		return $this->belongsToMany(\App\Deudor::class, 'deudores_telefonos', 'idtelefonos', 'iddeudores')
+					->withPivot('id', 'activo')
+					->withTimestamps();
+	}
 }

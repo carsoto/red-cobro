@@ -1,43 +1,38 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Tue, 06 Nov 2018 21:39:08 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class Regione
+ * 
  * @property int $idregion
  * @property string $region
- * @property string $cod_postal
- * @property string $created_at
- * @property string $updated_at
- * @property Provincia[] $provincias
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \Illuminate\Database\Eloquent\Collection $provincias
+ *
+ * @package App
  */
-class Region extends Model
+class Region extends Eloquent
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
-    protected $table = 'regiones';
+	protected $table = 'regiones';
 
-    /**
-     * The primary key for the model.
-     * 
-     * @var string
-     */
-    protected $primaryKey = 'idregion';
+	protected $primaryKey = 'idregion';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['region', 'created_at', 'updated_at'];
+	protected $fillable = [
+		'region'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function provincias()
-    {
-        return $this->hasMany('App\Provincia', 'idregion', 'idregion');
-    }
+	public function provincias()
+	{
+		return $this->hasMany(\App\Provincia::class, 'idregion');
+	}
 }

@@ -39,7 +39,7 @@
 		        e.preventDefault();
 		        swal({
 		            title: "¿Está seguro?",
-					text: "Una vez eliminado, no podrás recuperar los datos de este usuario!",
+					text: "Una vez deshabilitado, el usuario no podrá acceder nuevamente al sistema!",
 					icon: "warning",
 		            showCancelButton: true,
 		            confirmButtonColor: '#DD4B39',
@@ -82,11 +82,87 @@
 		        columns: [		
 		            {data: 'rut', name: 'rut'},
 		            {data: 'razon_social', name: 'razon_social'},
-		            //{data: 'action', name: 'action', orderable: false}
+		            {data: 'action', name: 'action', orderable: false}
 		        ]
+		    });
+
+		    $(document).on('click', ".detalle_deuda", function(e) {
+		        var _this = $(this);
+		        e.preventDefault();
+
+
+		        $.ajax({
+		           	url: 'deudores/detalles-resumen/'+_this.attr("data-id"),
+		            dataType: "JSON",
+		            type: 'GET',
+		            success: function (response) {
+
+		            	var direcciones = response.direcciones;
+		            	
+		            	var direcciones_format = '<ul>';
+		            	for (var i = 0; i < direcciones.length; i++) {
+		            		direcciones_format += '<li><strong>Dirección '+(i+1)+': </strong>'+direcciones[i].direccion+'<br><strong>Complemento: </strong>'+direcciones[i].complemento+'<br><strong>Comuna: </strong>'+direcciones[i].comuna+'<br><strong>Provincia: </strong><br><strong>Ciudad: </strong></li><br>';
+		            	}
+		            	direcciones_format += '</ul>';
+						
+						$('#deudores-direcciones-body').html(direcciones_format);
+						
+						var telefonos = response.telefonos;
+						var correos =  response.correos;
+						
+						var telefonos_format = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">Teléfonos<br><ul>';
+						for (var i = 0; i < telefonos.length; i++) {
+							telefonos_format += '<li>'+telefonos[i].telefono+'</li>';
+						}
+						telefonos_format += '</ul></div>';
+
+						var correos_format = '<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">Correos<br><ul>';
+						for (var i = 0; i < correos.length; i++) {
+							correos_format += '<li>'+correos[i].correo+'</li>';
+						}
+						correos_format += '</ul></div>';
+
+						$('#deudores-contacto-body').html(telefonos_format + correos_format);
+
+						var documentos = response.documentos;
+						
+						var documentos_format = '<table class="table table-hover"><tbody><tr><th>Número</th><th>Folio</th><th>Deuda</th><th>D. Mora</th><th>F. de Venc.</th><tr>';
+						
+						for (var i = 0; i < documentos.length; i++) {
+							documentos_format += '<tr><td>' + documentos[i].numero + '</td><td>' + documentos[i].folio + '</td><td>' + documentos[i].deuda + '</td><td>' + documentos[i].dias_mora + '</td><td>' + documentos[i].fecha_vencimiento + '</td><tr>';
+							documentos[i]
+						}
+						documentos_format += '</tbody></table>';
+
+						$('#deudores-documentos-body').html(documentos_format);
+						$('#deudor-deuda-total').html('<i class="fa fa-dollar"></i> ' + response.deuda);
+						
+						$('#detalles-deudor').modal('show');
+		            },
+		            error: function (xhr, ajaxOptions, thrownError) {
+		                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+		            }
+
+		        });
 		    });
     	}
       	
+      	var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+    	if(table_hist_gestiones != undefined){
+	    	/*var datatable_usuarios = $('#tabla_hist_gestiones').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'usuarios/table/listado',
+		        columns: [		
+		            {data: 'name', name: 'name'},
+		            {data: 'email', name: 'email'},
+		            {data: 'role', name: 'role'},
+		            {data: 'status', name: 'status'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });	*/
+    	}
+
       	var table_proveedor = document.getElementById('tabla_proveedores');
     	if(table_proveedor != undefined){
     		var datatable_proveedores = $('#tabla_proveedores').DataTable({
@@ -146,7 +222,6 @@
     	}
 
     	var table_comuna = document.getElementById('tabla_comunas');
-    	console.log(table_comuna);
     	if(table_comuna != undefined){
     		var datatable_comunas = $('#tabla_comunas').DataTable({
 		        processing: true,

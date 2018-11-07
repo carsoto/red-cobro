@@ -1,62 +1,72 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Tue, 06 Nov 2018 21:31:54 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class Deudore
+ * 
  * @property int $iddeudores
  * @property int $rut
  * @property string $rut_dv
  * @property string $razon_social
- * @property string $created_at
- * @property string $updated_at
- * @property DeudoresCorreo[] $deudoresCorreos
- * @property DeudoresDireccione[] $deudoresDirecciones
- * @property DeudoresDocumento[] $deudoresDocumentos
- * @property DeudoresTelefono[] $deudoresTelefonos
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \Illuminate\Database\Eloquent\Collection $correos
+ * @property \Illuminate\Database\Eloquent\Collection $direcciones
+ * @property \Illuminate\Database\Eloquent\Collection $documentos
+ * @property \Illuminate\Database\Eloquent\Collection $telefonos
+ *
+ * @package App
  */
-class Deudor extends Model
+class Deudor extends Eloquent
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
-    protected $table = 'deudores';
+	protected $table = 'deudores';
 
-    /**
-     * The primary key for the model.
-     * 
-     * @var string
-     */
-    protected $primaryKey = 'iddeudores';
+	protected $primaryKey = 'iddeudores';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['rut', 'rut_dv', 'razon_social', 'created_at', 'updated_at'];
+	protected $casts = [
+		'rut' => 'int'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function correos()
-    {
-        return $this->belongsToMany('App\Correo', 'deudores_correos', 'iddeudores', 'idcorreos_electronicos')->withTimestamps();
-    }
+	protected $fillable = [
+		'rut',
+		'rut_dv',
+		'razon_social'
+	];
 
-    public function direcciones()
-    {
-        return $this->belongsToMany('App\Direccion', 'deudores_direcciones', 'iddeudores', 'iddirecciones')->withTimestamps();
-    }
+	public function correos()
+	{
+		return $this->belongsToMany(\App\Correo::class, 'deudores_correos', 'iddeudores', 'idcorreos_electronicos')
+					->withPivot('id', 'activo')
+					->withTimestamps();
+	}
 
-    public function documentos()
-    {
-        return $this->belongsToMany('App\Documento', 'deudores_documentos', 'iddeudores', 'iddocumentos')->withTimestamps();
-    }
+	public function direcciones()
+	{
+		return $this->belongsToMany(\App\Direccion::class, 'deudores_direcciones', 'iddeudores', 'iddirecciones')
+					->withPivot('id', 'activo')
+					->withTimestamps();
+	}
 
-    public function telefonos()
-    {
-        return $this->belongsToMany('App\Telefono', 'deudores_telefonos', 'iddeudores', 'idtelefonos')->withTimestamps();
-    }
+	public function documentos()
+	{
+		return $this->belongsToMany(\App\Documento::class, 'deudores_documentos', 'iddeudores', 'iddocumentos')
+					->withPivot('id', 'idestado_documentos')
+					->withTimestamps();
+	}
+
+	public function telefonos()
+	{
+		return $this->belongsToMany(\App\Telefono::class, 'deudores_telefonos', 'iddeudores', 'idtelefonos')
+					->withPivot('id', 'activo')
+					->withTimestamps();
+	}
 }

@@ -21830,3 +21830,6 @@ button.toast-close-button {
 /*# sourceMappingURL=toastr.css.map */
 
 /*# sourceMappingURL=all.css.map */
+.swal-wide{
+    width:1050px !important;
+}

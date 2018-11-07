@@ -1,53 +1,54 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Tue, 06 Nov 2018 21:31:54 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class Direccione
+ * 
  * @property int $iddirecciones
  * @property int $idcomunas
  * @property string $direccion
  * @property string $complemento
- * @property string $created_at
- * @property string $updated_at
- * @property Comuna $comuna
- * @property DeudoresDireccione[] $deudoresDirecciones
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \App\Comuna $comuna
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
+ *
+ * @package App
  */
-class Direccion extends Model
+class Direccion extends Eloquent
 {
-    /**
-     * The table associated with the model.
-     * 
-     * @var string
-     */
-    protected $table = 'direcciones';
+	protected $table = 'direcciones';
 
-    /**
-     * The primary key for the model.
-     * 
-     * @var string
-     */
-    protected $primaryKey = 'iddirecciones';
+	protected $primaryKey = 'iddirecciones';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['idcomunas', 'direccion', 'complemento', 'created_at', 'updated_at'];
+	protected $casts = [
+		'idcomunas' => 'int'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function comuna()
-    {
-        return $this->belongsTo('App\Comuna', 'idcomunas', 'idcomunas')->withTimestamps();
-    }
+	protected $fillable = [
+		'idcomunas',
+		'direccion',
+		'complemento'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function deudores()
-    {
-        return $this->hasMany('App\Deudor', 'deudores_direcciones', 'iddirecciones','iddeudores')->withTimestamps();
-    }
+	public function comuna()
+	{
+		return $this->belongsTo(\App\Comuna::class, 'idcomunas');
+	}
+
+	public function deudores()
+	{
+		return $this->belongsToMany(\App\Deudor::class, 'deudores_direcciones', 'iddirecciones', 'iddeudores')
+					->withPivot('id', 'activo')
+					->withTimestamps();
+	}
 }

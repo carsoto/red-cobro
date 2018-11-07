@@ -38,7 +38,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('deudores', 'DeudorController');
 	Route::group(['prefix' => 'deudores'], function () {
-		Route::get('table/listado', 'DeudorController@list')->name('deudores.listado');  
+		Route::get('table/listado', 'DeudorController@list')->name('deudores.listado');
+		Route::get('gestion/nueva/{iddeudor}', 'DeudorController@gestion')->name('deudores.gestion');
+		Route::get('gestion/historico/{iddeudor}', 'DeudorController@gestionhistorica')->name('deudores.gestion.historico'); 
+		Route::get('detalles-resumen/{iddeudor}', 'DeudorController@detallesdeudor')->name('deudor.resumen');  
 	});
 
 	Route::resource('proveedores', 'ProveedorController');

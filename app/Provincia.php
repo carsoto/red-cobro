@@ -1,45 +1,50 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Tue, 06 Nov 2018 21:39:08 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
 /**
+ * Class Provincia
+ * 
  * @property int $idprovincias
  * @property int $idregion
  * @property string $provincia
- * @property string $created_at
- * @property string $updated_at
- * @property Regione $regione
- * @property Comuna[] $comunas
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \App\Regione $regione
+ * @property \Illuminate\Database\Eloquent\Collection $comunas
+ *
+ * @package App
  */
-class Provincia extends Model
+class Provincia extends Eloquent
 {
-    /**
-     * The primary key for the model.
-     * 
-     * @var string
-     */
-    protected $primaryKey = 'idprovincias';
+	protected $table = 'provincias';
 
-    /**
-     * @var array
-     */
-    protected $fillable = ['idregion', 'provincia', 'created_at', 'updated_at'];
+	protected $primaryKey = 'idprovincias';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function regiones()
-    {
-        return $this->belongsTo('App\Region', 'idregion', 'idregion');
-    }
+	protected $casts = [
+		'idregion' => 'int'
+	];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function comunas()
-    {
-        return $this->hasMany('App\Comuna', 'idprovincias', 'idprovincias');
-    }
+	protected $fillable = [
+		'idregion',
+		'provincia'
+	];
+
+	public function regiones()
+	{
+		return $this->belongsTo(\App\Region::class, 'idregion');
+	}
+
+	public function comunas()
+	{
+		return $this->hasMany(\App\Comuna::class, 'idprovincias');
+	}
 }
