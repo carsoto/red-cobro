@@ -149,18 +149,18 @@
       	
       	var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
     	if(table_hist_gestiones != undefined){
-	    	/*var datatable_usuarios = $('#tabla_hist_gestiones').DataTable({
+	    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
 		        processing: true,
 		        serverSide: true,
-		        ajax: 'usuarios/table/listado',
+		        /*ajax: 'usuarios/table/listado',
 		        columns: [		
 		            {data: 'name', name: 'name'},
 		            {data: 'email', name: 'email'},
 		            {data: 'role', name: 'role'},
 		            {data: 'status', name: 'status'},
 		            {data: 'action', name: 'action', orderable: false}
-		        ]
-		    });	*/
+		        ]*/
+		    });	
     	}
 
       	var table_proveedor = document.getElementById('tabla_proveedores');

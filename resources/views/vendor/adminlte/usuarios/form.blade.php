@@ -11,13 +11,8 @@
 {{ Form::label('password_confirmation', 'Confirmar contraseña') }} 
 {!! Form::password('password_confirmation', array('class' => 'form-control')) !!} 
 <br>
-{{ dd($usuario) }}
 {{ Form::label('role', 'Perfil') }}
-{!! Form::select('role', $roles, $usuario->roles->pivot, array('class' => 'form-control')) !!}
+{!! Form::select('role', $roles, null, array('class' => 'form-control')) !!}
 <br>
 {{ Form::label('status', 'Estado') }}
-{!! Form::select('status', $status, null, array('class' => 'form-control')) !!}
-<br>
-{{ Form::label('avatar', 'Imagen') }}
-{!! Form::file('avatar'); !!}
-
+{!! Form::select('status', $status, $usuario->status, array('class' => 'form-control')) !!}
