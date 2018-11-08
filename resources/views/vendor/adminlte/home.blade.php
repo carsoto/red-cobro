@@ -4,17 +4,22 @@
 	{{ trans('adminlte_lang::message.home') }}
 @endsection
 
+@section('contentheader_title')
+	Dashboard
+@endsection
+
+@section('contentheader_description')
+@endsection
 
 @section('main-content')
 	<div class="container-fluid spark-screen">
 		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<div class="panel panel-default">
-					<div class="panel-heading">Home</div>
-
-					<div class="panel-body">
+			<div class="col-lg-12">
+				<div class="box box-primary">
+					<!-- /.box-header -->
+					<div class="box-body">
 						@if(Auth::user()->hasRole('admin'))
-						    <div>Acceso como administrador</div>
+						    <div>Acceso administrador</div>
 
 						@elseif(Auth::user()->hasRole('supervisor'))
 						    <div>Acceso supervisor</div>
