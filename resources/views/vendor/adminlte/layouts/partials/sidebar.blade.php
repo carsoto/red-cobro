@@ -15,11 +15,11 @@
                     <!-- Status -->
                     <!-- <a href="#"><i class="fa fa-circle text-success"></i> {{ trans('adminlte_lang::message.online') }}</a> -->
                     <i class="fa fa-sign-out"></i><a href="{{ url('/logout') }}" onclick="event.preventDefault();
-                                                                document.getElementById('logout-form').submit();">
+                                                                document.getElementById('logout-form-2').submit();">
                                                                 {{ trans('adminlte_lang::message.signout') }}
                     </a>
 
-                    <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                    <form id="logout-form-2" action="{{ url('/logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                         <input type="submit" value="logout" style="display: none;">
                     </form>

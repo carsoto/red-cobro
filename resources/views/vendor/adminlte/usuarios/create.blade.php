@@ -17,14 +17,14 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="box box-primary">
-					<div class="box-header with-border">
-						<!--<h3 class="box-title">Nueva gestión</h3>-->
-					</div>
-					<!-- /.box-header -->
-					<div class="box-body">
-						@include('adminlte::usuarios.form')
-					</div>
-				</div>
+		            <div class="box-body">
+	                    {!! Form::open(['route' => 'usuarios.store']) !!}
+
+	                        @include('adminlte::usuarios.form')
+
+	                    {!! Form::close() !!}
+		            </div>
+		        </div>
 			</div>
 		</div>
 	</div>

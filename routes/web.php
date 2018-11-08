@@ -16,12 +16,6 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    //    Route::get('/link1', function ()    {
-//        // Uses Auth Middleware
-//    });
-
-    //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
-    #adminlte_routes
 
     Route::resource('usuarios', 'UserController');
 
@@ -69,14 +63,3 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('table/listado', 'ComunaController@list')->name('comunas.listado');  
 	});  
 });
-/*
-	Route::put('post/{id}', function ($id) {
-	    //
-	})->middleware('auth', 'role:admin');
-*/
-
-
-
-
-	
-	

@@ -7,6 +7,9 @@ use App\User;
 use App\Role;
 use Datatables;
 use Response;
+use Validator;
+use Redirect;
+use Session;
 
 class UserController extends Controller
 {
@@ -61,7 +64,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        /*$validator = Validator::make($request->all(), User::rules());
+
+        if($validator->fails()){
+            Redirect::back()->with('message', 'Su formulario presenta errores')->withErrors($validator);
+        }*/
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'status' => $request->status
+        ]);
+
+        $user->roles()->attach(Role::where('name', $request->role)->first());
+        Session::flash('message', "Usuario creado exitosamente");
+        return Redirect::back();
     }
 
     /**
