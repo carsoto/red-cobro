@@ -11,8 +11,12 @@
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
+});*/
+
+Route::get('/', function () {
+    return view('adminlte::auth.login');
 });
 
 Route::group(['middleware' => 'auth'], function () {
