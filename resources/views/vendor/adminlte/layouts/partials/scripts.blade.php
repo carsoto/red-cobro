@@ -241,7 +241,7 @@
 
     function buscar_por_rut(){
     	// tu elemento que quieres activar.
-		var cargando = $("#cargando");
+		var cargando = $(".cargando");
 
 		// evento ajax start
 		$(document).ajaxStart(function() {
@@ -252,7 +252,7 @@
 		$(document).ajaxStop(function() {
 			cargando.hide();
 		});
-		
+
         $.ajax({
            	url: 'gestiones/buscar-rut',
             dataType: "JSON",
@@ -262,6 +262,26 @@
             	console.log(response);
             	if(response.mensaje != ''){
             		swal("Rut no encontrado!", response.mensaje, "error");
+            	}else{
+            		$('#deudor-rut').html(response.deudor.rut_dv);
+					$('#deudor-razon-social').html(response.deudor.razon_social);
+					$('#deudor-en-gestion').html('-');
+					$('#deudor-fecha-asignacion').html(response.deudor.created_at);
+					$('#deudor-dias-mora').html('-');
+					$('#deudor-marca-1').html('-');
+					$('#deudor-marca-2').html('-');
+					$('#deudor-marca-3').html('-');
+					$('#deudor-marca-4').html('-');
+					$('#deudor-marca-5').html('-');
+					$('#deudor-marca-6').html('-');
+					$('#deudor-deuda-asignada').html(response.deuda);
+					$('#deudor-deuda-recuperada').html('-');
+					$('#deudor-saldo-hoy').html('-');
+					$('#deudor-fecha-ult-gest').html('-');
+					$('#deudor-ult-gest').html('-');
+					$('#deudor-ult-resp').html('-');
+					$('#deudor-ult-det-resp').html('-');
+					$('#deudor-ult-obs-gest').html('-');
             	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
