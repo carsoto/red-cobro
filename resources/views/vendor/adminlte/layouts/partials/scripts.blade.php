@@ -95,8 +95,6 @@
 		    $(document).on('click', ".detalle_deuda", function(e) {
 		        var _this = $(this);
 		        e.preventDefault();
-
-
 		        $.ajax({
 		           	url: 'deudores/detalles-resumen/'+_this.attr("data-id"),
 		            dataType: "JSON",
@@ -240,4 +238,37 @@
 		    });
     	}
     })(jQuery);
+
+    function buscar_por_rut(){
+    	// tu elemento que quieres activar.
+		var cargando = $("#cargando");
+
+		// evento ajax start
+		$(document).ajaxStart(function() {
+			cargando.show();
+		});
+
+		// evento ajax stop
+		$(document).ajaxStop(function() {
+			cargando.hide();
+		});
+		
+        $.ajax({
+           	url: 'gestiones/buscar-rut',
+            dataType: "JSON",
+            type: 'POST',
+            data: $('#form-gestion-rut').serialize(),
+            success: function (response) {
+            	console.log(response);
+            	if(response.mensaje != ''){
+            		swal("Rut no encontrado!", response.mensaje, "error");
+            	}
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+            }
+
+        });
+    	
+    }
 </script>

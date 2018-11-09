@@ -65,5 +65,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('comunas', 'ComunaController');
 	Route::group(['prefix' => 'comunas'], function () {
 		Route::get('table/listado', 'ComunaController@list')->name('comunas.listado');  
-	});  
+	});
+
+	Route::resource('gestiones', 'GestionController');
+	Route::group(['prefix' => 'gestiones'], function () {
+		Route::post('buscar-rut', 'GestionController@search')->name('gestiones.buscar');  
+	});
 });
