@@ -15,35 +15,31 @@
 	<div class="container-fluid spark-screen">
 		<div class="row">
 			<div class="col-lg-12">
-
 				<div class="box box-primary">
 					<div class="box-header with-border text-center">
-						<h3 class="box-title">Búsqueda por RUT</h3>
+						<div class="col-lg-offset-8 col-md-offset-8 col-sm-offset-8 col-xs-offset-8 col-lg-4 col-md-4 col-sm-4 col-xs-4">
+							{!! Form::open(['route' => 'gestiones.buscar', 'id' => 'form-gestion-rut']) !!}
+								<div class="input-group input-group-sm">
+									{{ csrf_field() }}
+				                	{!! Form::text('consultar_rut', null, array('class' => 'form-control', 'placeholder' => 'Buscar RUT')) !!}
+				                    <span class="input-group-btn">
+				                      {{ Form::button('<i class="fa fa-search"></i>', ['type' => 'button', 'class' => 'btn btn-primary btn-flat', 'onclick' => 'buscar_por_rut()'] )  }}
+				                    </span>
+				              	</div>
+							{!! Form::close() !!}	
+						</div>
 					<!-- /.box-tools -->
 					</div>
 					<!-- /.box-header -->
 					<div class="box-body">
-						<div class="col-lg-4 col-lg-offset-4 col-md-6 col-md-offset-3 col-sm-4 col-sm-offset-4 col-xs-4 col-xs-offset-4">
-							<div class="form-inline">
-								{!! Form::open(['route' => 'gestiones.buscar', 'id' => 'form-gestion-rut']) !!}
-									{{ csrf_field() }}
-									{{ Form::label('consultar_rut', 'Buscar:') }}
-									{!! Form::text('consultar_rut', null, array('class' => 'form-control input-sm')) !!}
-									{{ Form::button('<i class="fa fa-search"></i>', ['type' => 'button', 'class' => 'btn btn-primary btn-sm btn-flat', 'onclick' => 'buscar_por_rut()'] )  }}
-									
-								{!! Form::close() !!}
-								
-							</div>	
-						</div>
-						
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-top: 20px;">
+						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 			                <div class="box box-solid">
 			                    <div class="box-body">
 			                        <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0;">
 			                            <strong>INFORMACIÓN GENERAL</strong>
 			                        </h4>
 									
-			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-primary">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -60,7 +56,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-primary">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -77,7 +74,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+
+			                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-primary">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -94,7 +92,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-primary">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -111,7 +110,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -128,7 +128,8 @@
 											</div>
 									    </div>
 			                        </div>
-				                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+				                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -145,7 +146,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -162,7 +164,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -179,7 +182,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -196,7 +200,8 @@
 											</div>
 									    </div>
 			                        </div>
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-warning">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -213,7 +218,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-danger">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -230,7 +236,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-danger">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -247,7 +254,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-danger">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -264,7 +272,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-danger">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -281,7 +290,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -298,7 +308,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -315,7 +326,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -332,7 +344,8 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+
+		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -349,8 +362,9 @@
 											</div>
 									    </div>
 		                        	</div>
-		                        	<div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-			                        	<div class="box box-default">
+
+		                        	<div class="col-lg-8 col-md-8 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
 						                            <strong>OBSERVACIÓN ÚLTIMA GESTIÓN</strong>
@@ -366,45 +380,50 @@
 											</div>
 									    </div>
 		                        	</div>
+
+		                        	
+		                        	<table id='' class="table table-bordered" style="width:100%">
+				                    	<tr>
+			                                <th colspan="6">
+			                                <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0; margin-bottom: 0;">
+					                            <strong>CONTACTO</strong>
+					                        </h4></th>
+			                            </tr>
+				                    	<tr>
+			                                <td class='text-center'><span style="font-size: 12px; text-align: center;"><strong>FONOS/MAIL</strong></span></td>
+			                                <td class='text-center' colspan="2"><span style="font-size: 12px; text-align: center;"><strong>RESULTADO ÚLTIMA GESTIÓN</strong></span></td>
+			                                <td class='text-center'><span style="font-size: 12px; text-align: center;"><strong>ORIGEN</strong></span></td>
+			                                <td class='text-center'><span style="font-size: 12px; text-align: center;"><strong>MARCA 1</strong></span></td>
+			                                <td class='text-center'><span style="font-size: 12px; text-align: center;"><strong>MARCA 2</strong></span></td>
+			                            </tr>
+			                            <tr>
+			                                <td></td>
+			                                <td colspan="2"></td>
+			                                <td></td>
+			                                <td></td>
+			                                <td></td>
+			                            </tr>
+				                    </table>
+				                    <div style="margin-top: 20px;">
+				                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+										{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat', 'onclick' => ''] )  }}
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+										{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat', 'onclick' => ''] )  }}
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+										{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat', 'onclick' => ''] )  }}
+									</div>
+									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+										{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat', 'onclick' => ''] )  }}
+									</div>
+									</div>
 			                	</div>
 			                </div>
-		                    <table id='' class="table table-bordered" style="width:100%">
-		                    	<tr>
-	                                <th class='text-center' colspan="6">CONTACTO</th>
-	                            </tr>
-		                    	<tr>
-	                                <td class='text-center'>FONOS/MAIL</td>
-	                                <td class='text-center' colspan="2">RESULTADO ÚLTIMA GESTIÓN</td>
-	                                <td class='text-center'>ORIGEN</td>
-	                                <td class='text-center'>MARCA 1</td>
-	                                <td class='text-center'>MARCA 2</td>
-	                            </tr>
-	                            <tr>
-	                                <td></td>
-	                                <td colspan="2"></td>
-	                                <td></td>
-	                                <td></td>
-	                                <td></td>
-	                            </tr>
-		                    </table>
-							</div>
-
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-								{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat', 'onclick' => ''] )  }}
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-								{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat', 'onclick' => ''] )  }}
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-								{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat', 'onclick' => ''] )  }}
-							</div>
-							<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-								{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat', 'onclick' => ''] )  }}
-							</div>
-						</div>
-					</div>
-				</div>
+			            </div>
+			        </div>
+			    </div>
 			</div>
 		</div>
-	</div>
+	</div>                   
 @endsection
