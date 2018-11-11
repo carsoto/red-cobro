@@ -14,20 +14,20 @@ class GestionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('adminlte::gestiones.index');
+        if(isset($request->rut)){
+            $datos_deudor = $this->search_rut(decrypt($request->rut));
+            return view('adminlte::gestiones.rut', array('datos_deudor' => $datos_deudor));    
+        }
+        return view('adminlte::gestiones.index');        
     }
 
-    public function search(Request $request){
-        $rut = $request->consultar_rut;
+    private function search_rut($rut){
         $deudor = Deudor::where('rut', '=', $rut)->get();
         $mensaje = '';
         $deuda = 0;
-        $direcciones = array();
-        $telefonos = array();
-        $correos = array();
-        $documentos = array();
+        $direcciones = $telefonos = $correos = $documentos = array();
         
         if(count($deudor) > 0){
             $deudor = $deudor[0];
@@ -44,7 +44,13 @@ class GestionController extends Controller
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
-        return Response::json(array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos));
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos);
+    }
+
+    public function search(Request $request){
+        $rut = $request->consultar_rut;
+        $resultado = $this->search_rut($rut);
+        return Response::json($resultado);
     }
     /**
      * Show the form for creating a new resource.
