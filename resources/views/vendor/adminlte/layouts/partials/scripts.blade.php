@@ -328,9 +328,23 @@
     	//$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
 
     	var dir_url = title = "";
+		if(modulo == "agregar_gestion"){
+			title = '<i class="fa fa-plus"></i> AGREGAR GESTIÓN';
+    		dir_url = "deudores/gestion/nueva/"+iddeudor;
+		}
+
+		if(modulo == "historial_gestiones"){
+			title = '<i class="fa fa-history"></i> HISTORIAL DE GESTIONES';
+    		dir_url = "deudores/gestion/historial/"+iddeudor;
+		}
+
+		if(modulo == "documentos"){
+			title = '<i class="fa fa-file-o"></i> DOCUMENTOS';
+    		dir_url = "deudores/gestion/documentos/"+iddeudor;
+		}
 
     	if(modulo == "direcciones"){
-    		title = '<i class="fa fa-map-marker"></i> Direcciones</span>';
+    		title = '<i class="fa fa-map-marker"></i> DIRECCIONES';
     		dir_url = "deudores/gestion/direcciones/"+iddeudor;
     	}
 

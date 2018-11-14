@@ -36,13 +36,29 @@ class DeudorController extends Controller
 
     public function direcciones($id_deudor)
     {
-       //return view for specified action
-       //if action is delete, call this view, etc...
         $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        //$deudor = Deudor::where('iddeudores', $id_deudor)->get();
         $deudor = $deudor[0];
         $direcciones = $deudor->direcciones;
         return view('adminlte::deudores.direcciones', array('direcciones' => $direcciones))->render();
+    }
+
+    public function documentos($id_deudor){
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];
+        $documentos = $deudor->documentos;
+        return view('adminlte::deudores.documentos', array('documentos' => $documentos))->render();
+    }
+
+    public function gestioneshistorial($id_deudor){
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];
+        return view('adminlte::deudores.historial-gestiones', array())->render();
+    }
+
+    public function gestionnueva($id_deudor){
+        /*$deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];*/
+        return view('adminlte::deudores.gestion.create', array())->render();
     }
 
     public function detallesdeudor($id_deudor)

@@ -41,6 +41,9 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('gestion/historico/{iddeudor}', 'DeudorController@gestionhistorica')->name('deudores.gestion.historico'); 
 		Route::get('detalles-resumen/{iddeudor}', 'DeudorController@detallesdeudor')->name('deudores.resumen');  
 		Route::get('gestion/direcciones/{iddeudor}','DeudorController@direcciones')->name('deudores.direcciones');
+		Route::get('gestion/documentos/{iddeudor}','DeudorController@documentos')->name('deudores.documentos');
+		Route::get('gestion/historial/{iddeudor}','DeudorController@gestioneshistorial')->name('deudores.gestion.historial');
+		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion.nueva');
 	});
 
 	Route::resource('proveedores', 'ProveedorController');
