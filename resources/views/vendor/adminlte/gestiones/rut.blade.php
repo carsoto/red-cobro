@@ -363,7 +363,7 @@
 									    </div>
 		                        	</div>
 
-		                        	<div class="col-lg-8 col-md-8 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+		                        	<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-info">
 											<div class="box-header text-center" style="padding: 0px;">
 												<h4 style="font-size: 12px; text-align: center;">
@@ -431,7 +431,8 @@
 										{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat', 'onclick' => ''] )  }}
 									</div>
 									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
-										{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat', 'onclick' => ''] )  }}
+										{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+										
 									</div>
 									</div>
 			                	</div>
@@ -439,6 +440,19 @@
 			            </div>
 			        </div>
 			    </div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="rut-modal-detalles" tabindex="-1" role="dialog" aria-labelledby="rut-modal-detalles-label">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="detalles-deudor-label"></h4>
+				</div>
+				<div class="modal-body">
+				</div>
 			</div>
 		</div>
 	</div>                   

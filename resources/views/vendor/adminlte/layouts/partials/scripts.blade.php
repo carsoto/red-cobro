@@ -16,8 +16,6 @@
         'csrfToken' => csrf_token(),
     ]) !!};
 
-    
-
     (function($) {
     	$('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -323,7 +321,33 @@
                 swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
 
+        });	
+    }
+
+    function opciones_rut(modulo, iddeudor){
+    	//$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
+
+    	var dir_url = title = "";
+
+    	if(modulo == "direcciones"){
+    		title = '<i class="fa fa-map-marker"></i> Direcciones</span>';
+    		dir_url = "deudores/gestion/direcciones/"+iddeudor;
+    	}
+
+    	$.ajax({
+           	url: dir_url,
+            dataType: "HTML",
+            type: 'GET',
+            success: function (response) {
+            	$('#rut-modal-detalles .modal-title').html(title);
+            	$('#rut-modal-detalles .modal-body').html(response);
+    			$('#rut-modal-detalles').modal('show');
+            	
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+            }
+
         });
-    	
     }
 </script>
