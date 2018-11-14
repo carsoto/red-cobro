@@ -16,8 +16,6 @@
         'csrfToken' => csrf_token(),
     ]) !!};
 
-    
-
     (function($) {
     	$('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -92,7 +90,7 @@
 		        ]
 		    });
 
-		    $(document).on('click', ".detalle_deuda", function(e) {
+		    /*$(document).on('click', ".detalle_deuda", function(e) {
 		        var _this = $(this);
 		        e.preventDefault();
 		        $.ajax({
@@ -148,7 +146,7 @@
 		            }
 
 		        });
-		    });
+		    });*/
     	}
       	
       	var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
@@ -259,14 +257,14 @@
             type: 'POST',
             data: $('#form-gestion-rut').serialize(),
             success: function (response) {
-            	console.log(response);
+            	//console.log(response);
             	if(response.mensaje != ''){
             		swal("Rut no encontrado!", response.mensaje, "error");
             	}else{
             		$('#deudor-rut').html(response.deudor.rut_dv);
 					$('#deudor-razon-social').html(response.deudor.razon_social);
 					$('#deudor-en-gestion').html('-');
-					$('#deudor-fecha-asignacion').html(response.deudor.created_at);
+					//$('#deudor-fecha-asignacion').html(response.deudor.created_at);
 					$('#deudor-dias-mora').html('-');
 					$('#deudor-marca-1').html('-');
 					$('#deudor-marca-2').html('-');
@@ -282,13 +280,74 @@
 					$('#deudor-ult-resp').html('-');
 					$('#deudor-ult-det-resp').html('-');
 					$('#deudor-ult-obs-gest').html('-');
+
+					var tabla_contactos = $("#tabla-contactos");
+					var cantd_filas = $('#tabla-contactos >tbody >tr').length;
+					var n = 1;
+
+					$('#tabla-contactos tr').each(function() {
+						if (n > 2 && n <= cantd_filas)
+							$(this).remove();
+							n++;
+					});
+					if((response.telefonos.length > 0) || (response.correos.length > 0)){
+						for (var i = 0; i < response.telefonos.length; i++) {
+							var row = $("<tr style='font-size: 11px;'>");
+							
+						  row.append($("<td>"+response.telefonos[i].telefono+"</td>"))
+						     .append($("<td colspan='2'>-</td>"))
+						     .append($("<td>-</td>"))
+						     .append($("<td>-</td>"))
+						     .append($("<td>-</td>"));
+						 
+						  $("#tabla-contactos tbody").append(row);
+							}
+							for (var i = 0; i < response.correos.length; i++) {
+							var row = $("<tr style='font-size: 11px;'>");
+							
+						  row.append($("<td>"+response.correos[i].correo+"</td>"))
+						     .append($("<td colspan='2'>-</td>"))
+						     .append($("<td>-</td>"))
+						     .append($("<td>-</td>"))
+						     .append($("<td>-</td>"));
+						 
+						  $("#tabla-contactos tbody").append(row);
+							}
+					}
+					
             	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
 
+        });	
+    }
+
+    function opciones_rut(modulo, iddeudor){
+    	//$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
+
+    	var dir_url = title = "";
+
+    	if(modulo == "direcciones"){
+    		title = '<i class="fa fa-map-marker"></i> Direcciones</span>';
+    		dir_url = "deudores/gestion/direcciones/"+iddeudor;
+    	}
+
+    	$.ajax({
+           	url: dir_url,
+            dataType: "HTML",
+            type: 'GET',
+            success: function (response) {
+            	$('#rut-modal-detalles .modal-title').html(title);
+            	$('#rut-modal-detalles .modal-body').html(response);
+    			$('#rut-modal-detalles').modal('show');
+            	
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+            }
+
         });
-    	
     }
 </script>

@@ -27,12 +27,22 @@ class DeudorController extends Controller
         
         return Datatables::of($deudores)
             ->addColumn('action', function ($deudor) {
-                /*return '<a href="'.route('deudores.edit', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                        <a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_deudor"><i class="fa fa-trash"></i></a>';*/
-                return '<a href="#" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs detalle_deuda"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>';
+                /*return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>';*/
+                return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
             })
             ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
             ->make(true);
+    }
+
+    public function direcciones($id_deudor)
+    {
+       //return view for specified action
+       //if action is delete, call this view, etc...
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        //$deudor = Deudor::where('iddeudores', $id_deudor)->get();
+        $deudor = $deudor[0];
+        $direcciones = $deudor->direcciones;
+        return view('adminlte::deudores.direcciones', array('direcciones' => $direcciones))->render();
     }
 
     public function detallesdeudor($id_deudor)
