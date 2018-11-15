@@ -1,6 +1,6 @@
 <div class="modal-body">
 	{{ Form::label('contacto', 'Contacto') }}
-	{!! Form::select('gestion', array(0 => '0993517326', 1 => 'carsoto8691@gmail.com'), null, array('class' => 'form-control')) !!}
+	{!! Form::select('contacto', $contactos, null, array('class' => 'form-control')) !!}
 	<br>
 	{{ Form::label('gestion', 'Gestión') }}
 	{!! Form::select('gestion', array(0 => 'A15 - LLAMADO COBRADOR PREDICTIVO'), null, array('class' => 'form-control')) !!}

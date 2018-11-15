@@ -56,9 +56,25 @@ class DeudorController extends Controller
     }
 
     public function gestionnueva($id_deudor){
-        /*$deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];*/
-        return view('adminlte::deudores.gestion.create', array())->render();
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];
+        $telefonos = $deudor->telefonos;
+        $correos = $deudor->correos;
+        $contactos = array();
+
+        if(count($telefonos) > 0){
+            foreach ($telefonos as $key => $t) {
+                array_push($contactos, $t->telefono);
+            }    
+        }
+
+        if(count($correos) > 0){
+            foreach ($correos as $key => $c) {
+                array_push($contactos, $c->correo);
+            }    
+        }
+        
+        return view('adminlte::deudores.gestion.create', array('contactos' => $contactos))->render();
     }
 
     public function detallesdeudor($id_deudor)

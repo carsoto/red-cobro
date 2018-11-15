@@ -67,6 +67,7 @@ return array(
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\DeudorController' => $baseDir . '/app/Http/Controllers/DeudorController.php',
     'App\\Http\\Controllers\\DocumentoController' => $baseDir . '/app/Http/Controllers/DocumentoController.php',
+    'App\\Http\\Controllers\\GestionController' => $baseDir . '/app/Http/Controllers/GestionController.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
     'App\\Http\\Controllers\\ProveedorController' => $baseDir . '/app/Http/Controllers/ProveedorController.php',
     'App\\Http\\Controllers\\ProvinciaController' => $baseDir . '/app/Http/Controllers/ProvinciaController.php',

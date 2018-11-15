@@ -560,6 +560,7 @@ class ComposerStaticInite353ea60f6fa427d8bdce028dcd78739
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\DeudorController' => __DIR__ . '/../..' . '/app/Http/Controllers/DeudorController.php',
         'App\\Http\\Controllers\\DocumentoController' => __DIR__ . '/../..' . '/app/Http/Controllers/DocumentoController.php',
+        'App\\Http\\Controllers\\GestionController' => __DIR__ . '/../..' . '/app/Http/Controllers/GestionController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\ProveedorController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProveedorController.php',
         'App\\Http\\Controllers\\ProvinciaController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProvinciaController.php',
