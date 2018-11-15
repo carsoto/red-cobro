@@ -17,17 +17,17 @@ class CreateGestionesRespuestasTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('idgestiones_respuestas')->unsigned();
-            $table->integer('idgestiones')->unsigned();
-            $table->integer('idrespuesta')->unsigned();
+            $table->string('codigo_gestion');
+            $table->string('codigo_respuesta');
         
-            $table->index('idrespuesta','fk_gestiones_respuestas_respuestas_idx');
-            $table->index('idgestiones','fk_gestiones_respuestas_gestiones_idx');
+            $table->index('codigo_respuesta','fk_gestiones_respuestas_respuestas_idx');
+            $table->index('codigo_gestiones','fk_gestiones_respuestas_gestiones_idx');
         
-            $table->foreign('idgestiones')
-                ->references('idgestiones')->on('gestiones');
+            $table->foreign('codigo_gestiones')
+                ->references('codigo')->on('gestiones');
         
-            $table->foreign('idrespuesta')
-                ->references('idrespuesta')->on('respuestas');
+            $table->foreign('codigo_respuesta')
+                ->references('codigo')->on('respuestas');
         
             $table->timestamps();
         
