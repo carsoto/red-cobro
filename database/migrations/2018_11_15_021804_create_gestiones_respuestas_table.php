@@ -13,25 +13,25 @@ class CreateGestionesRespuestasTable extends Migration
      */
     public function up()
     {
-        Schema::create('gestiones_respuestas', function(Blueprint $table) {
-            $table->engine = 'InnoDB';
-        
-            $table->increments('idgestiones_respuestas')->unsigned();
-            $table->string('codigo_gestion');
-            $table->string('codigo_respuesta');
-        
-            $table->index('codigo_respuesta','fk_gestiones_respuestas_respuestas_idx');
-            $table->index('codigo_gestiones','fk_gestiones_respuestas_gestiones_idx');
-        
-            $table->foreign('codigo_gestiones')
-                ->references('codigo')->on('gestiones');
-        
-            $table->foreign('codigo_respuesta')
-                ->references('codigo')->on('respuestas');
-        
-            $table->timestamps();
-        
-        });
+		Schema::create('gestiones_respuestas', function(Blueprint $table) {
+		    $table->engine = 'InnoDB';
+		
+		    $table->increments('idgestiones_respuestas')->unsigned();
+		    $table->integer('gestiones_idgestiones')->unsigned();
+		    $table->integer('respuestas_idrespuesta')->unsigned();
+		
+		    $table->index('respuestas_idrespuesta','fk_gestiones_has_respuestas_respuestas1_idx');
+		    $table->index('gestiones_idgestiones','fk_gestiones_has_respuestas_gestiones1_idx');
+		
+		    $table->foreign('gestiones_idgestiones')
+		        ->references('idgestiones')->on('gestiones');
+		
+		    $table->foreign('respuestas_idrespuesta')
+		        ->references('idrespuesta')->on('respuestas');
+		
+		    $table->timestamps();
+		
+		});
     }
 
     /**

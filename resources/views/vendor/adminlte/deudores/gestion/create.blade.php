@@ -20,7 +20,7 @@
 	{{ Form::label('estado', 'C - NO HA RECIBIDO BOLETA O FACTURA') }}
 	<br><br>
 	{{ Form::label('observacion', 'Observación') }}
-	{!! Form::text('observacion', null, array('class' => 'form-control')) !!}
+	{!! Form::textarea('observacion', null, array('class' => 'form-control', 'rows' => 5, 'cols' => 12, 'style' => 'resize: none')) !!}
 </div>
 <div class="modal-footer text-right">
 	<a class="btn btn-danger" href="" style="width:100px;"><i class="fa fa-angle-double-left"></i> Cancelar</a>
