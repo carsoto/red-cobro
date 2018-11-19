@@ -3,22 +3,10 @@
 	{!! Form::select('contacto', $contactos, null, array('class' => 'form-control')) !!}
 	<br>
 	{{ Form::label('gestion', 'Gestión') }}
-	{!! Form::select('gestion', array(0 => 'A15 - LLAMADO COBRADOR PREDICTIVO'), null, array('class' => 'form-control')) !!}
+	{!! Form::select('gestion', $gestiones, null, array('class' => 'form-control', 'onchange' => 'cargar_respuestas(this);')) !!}
 	<br>
-	{{ Form::label('respuesta', 'Respuesta') }}
-	{!! Form::select('respuesta', array(0 => 'B026 DICE QUE NO PAGARÁ'), null, array('class' => 'form-control')) !!}
+	<div id='respuestas-por-gestion'></div>
 	<br>
-	{{ Form::label('estado', 'Detalle') }}
-	<br>
-	{{ Form::radio('literal', 'A - BLA BLA', false) }}
-	{{ Form::label('estado', 'A - BLA BLA') }}
-	<br>
-	{{ Form::radio('literal', 'B - BLA BLA', false) }}
-	{{ Form::label('estado', 'B - BLA BLA') }}
-	<br>
-	{{ Form::radio('literal', 'C - NO HA RECIBIDO BOLETA O FACTURA', true) }}
-	{{ Form::label('estado', 'C - NO HA RECIBIDO BOLETA O FACTURA') }}
-	<br><br>
 	{{ Form::label('observacion', 'Observación') }}
 	{!! Form::textarea('observacion', null, array('class' => 'form-control', 'rows' => 5, 'cols' => 12, 'style' => 'resize: none')) !!}
 </div>

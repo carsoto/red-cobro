@@ -74,6 +74,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('gestiones', 'GestionController');
 	Route::group(['prefix' => 'gestiones'], function () {
 		Route::post('buscar-rut', 'GestionController@search')->name('gestiones.buscar');
-		Route::post('cargar-rut', 'GestionController@index')->name('gestiones.rut');  
+		Route::post('cargar-rut', 'GestionController@index')->name('gestiones.rut');
+		Route::get('nueva/consultar-respuestas/{idgestion}','GestionController@consultarrespuesta')->name('gestiones.consultar-respuesta');
 	});
 });
