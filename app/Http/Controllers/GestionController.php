@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Response;
 use App\Deudor;
+use App\Gestion;
 
 class GestionController extends Controller
 {
@@ -21,6 +22,13 @@ class GestionController extends Controller
             return view('adminlte::gestiones.rut', array('datos_deudor' => $datos_deudor));    
         }
         return view('adminlte::gestiones.index');        
+    }
+
+    public function consultarrespuesta($idgestion){
+        $gestion = Gestion::where('idgestiones', '=', $idgestion)->get();
+        $gestion = $gestion[0];
+        $respuestas = $gestion->respuestas;
+        return Response::json(array('respuestas' => $respuestas));
     }
 
     private function search_rut($rut){

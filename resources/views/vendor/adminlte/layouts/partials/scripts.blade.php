@@ -324,6 +324,44 @@
         });	
     }
 
+    function cargar_respuestas(gestion){
+    	var id_gestion = gestion.options[gestion.selectedIndex].value;
+    	/*var cargando = $(".cargando");
+
+		// evento ajax start
+		$(document).ajaxStart(function() {
+			cargando.show();
+		});
+
+		// evento ajax stop
+		$(document).ajaxStop(function() {
+			cargando.hide();
+		});*/
+
+        $.ajax({
+           	url: 'gestiones/nueva/consultar-respuestas/'+id_gestion,
+            dataType: "JSON",
+            type: 'GET',
+            success: function (response) {
+            	console.log(response);
+            	$('#respuestas-por-gestion').html('');
+            	$('#respuestas-por-gestion').append('<label for="respuesta">Respuesta</label>');
+            	if((response.respuestas).length > 0){
+            		for (var i = 0; i < (response.respuestas).length; i++) {
+	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].descripcion+'</label></div>');
+	            	}
+            	}else{
+            		$('#respuestas-por-gestion').append('<br>**SIN RESPUESTA ASOCIADA**');
+            	}
+            	
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+            	swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+            }
+
+        });
+    }
+
     function opciones_rut(modulo, iddeudor){
     	//$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
 

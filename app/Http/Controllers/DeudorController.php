@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
 use App\Deudor;
+use App\Gestion;
 use Response;
 
 class DeudorController extends Controller
@@ -56,9 +57,31 @@ class DeudorController extends Controller
     }
 
     public function gestionnueva($id_deudor){
-        /*$deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];*/
-        return view('adminlte::deudores.gestion.create', array())->render();
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+        $deudor = $deudor[0];
+        $telefonos = $deudor->telefonos;
+        $correos = $deudor->correos;
+        $contactos = array();
+        $gestiones_reg = Gestion::all();
+        $gestiones = array();
+
+        foreach ($gestiones_reg as $key => $g) {
+            $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;
+        }
+
+        if(count($telefonos) > 0){
+            foreach ($telefonos as $key => $t) {
+                array_push($contactos, $t->telefono);
+            }    
+        }
+
+        if(count($correos) > 0){
+            foreach ($correos as $key => $c) {
+                array_push($contactos, $c->correo);
+            }    
+        }
+        
+        return view('adminlte::deudores.gestion.create', array('contactos' => $contactos, 'gestiones' => $gestiones))->render();
     }
 
     public function detallesdeudor($id_deudor)
