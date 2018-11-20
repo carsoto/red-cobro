@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 17 Nov 2018 06:07:55 +0000.
+ * Date: Tue, 20 Nov 2018 04:24:40 +0000.
  */
 
 namespace App;
@@ -18,13 +18,13 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
  * @property \Illuminate\Database\Eloquent\Collection $respuestas
  *
  * @package App
  */
-class Gestion extends Eloquent
+class Gestione extends Eloquent
 {
-	protected $table = 'gestiones';
 	protected $primaryKey = 'idgestiones';
 
 	protected $fillable = [
@@ -34,7 +34,7 @@ class Gestion extends Eloquent
 
 	public function deudores()
 	{
-		return $this->belongsToMany(\App\Deudor::class, 'deudores_gestiones', 'gestiones_idgestiones', 'deudores_iddeudores')
+		return $this->belongsToMany(\App\Deudore::class, 'deudores_gestiones', 'gestiones_idgestiones', 'deudores_iddeudores')
 					->withPivot('iddeudores_gestiones', 'contacto', 'respuesta', 'observacion', 'fecha_gestion')
 					->withTimestamps();
 	}

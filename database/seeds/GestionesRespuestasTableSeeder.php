@@ -264,7 +264,7 @@ class GestionesRespuestasTableSeeder extends Seeder
             array('gestiones_idgestiones' => 16, 'respuestas_idrespuesta' => 92),
             array('gestiones_idgestiones' => 16, 'respuestas_idrespuesta' => 93),
             array('gestiones_idgestiones' => 16, 'respuestas_idrespuesta' => 94),
-            array('gestiones_idgestiones' => 1, 'respuestas_idrespuesta' => 13),
+            array('gestiones_idgestiones' => 16, 'respuestas_idrespuesta' => 13),
             array('gestiones_idgestiones' => 17, 'respuestas_idrespuesta' => 14),
             array('gestiones_idgestiones' => 17, 'respuestas_idrespuesta' => 15),
             array('gestiones_idgestiones' => 17, 'respuestas_idrespuesta' => 16),

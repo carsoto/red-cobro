@@ -63,6 +63,13 @@ class Deudor extends Eloquent
 					->withTimestamps();
 	}
 
+	public function gestiones()
+	{
+		return $this->belongsToMany(\App\Gestion::class, 'deudores_gestiones', 'deudores_iddeudores', 'gestiones_idgestiones')
+					->withPivot('iddeudores_gestiones', 'contacto', 'respuesta', 'observacion', 'fecha_gestion')
+					->withTimestamps();
+	}
+
 	public function telefonos()
 	{
 		return $this->belongsToMany(\App\Telefono::class, 'deudores_telefonos', 'iddeudores', 'idtelefonos')
