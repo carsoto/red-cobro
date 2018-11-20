@@ -10,6 +10,7 @@ use App\Gestion;
 use App\DeudoresGestiones;
 use Session;
 use Redirect;
+
 class GestionController extends Controller
 {
     /**

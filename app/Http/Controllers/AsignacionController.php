@@ -18,6 +18,7 @@ use App\Region;
 use App\Supervisor;
 use App\Telefono;
 
+use Funciones;
 use Redirect;
 use Session;
 
@@ -25,29 +26,6 @@ class AsignacionController extends Controller
 {
     public function cargar(){
         return view('adminlte::asignaciones.index');
-    }
-
-    public function formatearRut($rut_sin_formato) {
-
-        if (strpos($rut_sin_formato, '-') !== false ) {
-            $procesar_rut = explode('-', $rut_sin_formato);
-            $numero = number_format($procesar_rut[0], 0, ',', '.');
-            $dverificador = strtoupper($procesar_rut[1]);
-
-            return $numero . '-' . $dverificador;
-        }
-
-        return number_format($rut_sin_formato, 0, ',', '.');
-    }
-
-    public function rut_sin_dv($rut_sin_formato) {
-
-        if (strpos($rut_sin_formato, '-') !== false ) {
-            $procesar_rut = explode('-', $rut_sin_formato);
-            $numero = $procesar_rut[0];
-
-            return $numero;
-        }
     }
     
     public function importar(Request $request)
@@ -59,7 +37,7 @@ class AsignacionController extends Controller
             foreach ($hoja->all() as $key => $registro) {
                 foreach ($registro as $index => $asignacion) {
                     $deudor = Deudor::firstOrCreate([
-                        'rut' => $this->rut_sin_dv($asignacion['rut']),
+                        'rut' => Funciones::rut_sin_dv($asignacion['rut']),
                         'rut_dv' => strtoupper($asignacion['rut']),
                         'razon_social' => $asignacion['razon_social_nombre']
                     ]);
@@ -98,22 +76,12 @@ class AsignacionController extends Controller
                         $deudor->telefonos()->sync($telefono2->idtelefonos, false);
                     }
 
-                    $anyo = substr($asignacion['fecha_emision'], 0, 4);
-                    $mes = substr($asignacion['fecha_emision'], 4, 2);
-                    $dia = substr($asignacion['fecha_emision'], 6, 2);
-                    $fecha_emision = $anyo.'-'.$mes.'-'.$dia;
-
-                    $anyo = substr($asignacion['fecha_vencimiento'], 0, 4);
-                    $mes = substr($asignacion['fecha_vencimiento'], 4, 2);
-                    $dia = substr($asignacion['fecha_vencimiento'], 6, 2);
-                    $fecha_vencimiento = $anyo.'-'.$mes.'-'.$dia;
-
                     $documento = Documento::firstOrCreate([
                         'numero' => $asignacion['num_documento'], 
                         'folio' => $asignacion['folio'], 
                         'deuda' => $asignacion['deuda'], 
-                        'fecha_emision' => $fecha_emision, 
-                        'fecha_vencimiento' => $fecha_vencimiento,
+                        'fecha_emision' => Funciones::cadena_a_fecha($asignacion['fecha_emision']), 
+                        'fecha_vencimiento' => Funciones::cadena_a_fecha($asignacion['fecha_vencimiento']),
                         'dias_mora' => $asignacion['dias_mora']
                     ]);
 
