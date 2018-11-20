@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\Deudor;
 use App\Gestion;
+use App\DeudoresGestiones;
 
 class GestionController extends Controller
 {
@@ -78,7 +79,14 @@ class GestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nueva_gestion = new DeudoresGestiones();
+        $nueva_gestion->deudores_iddeudores = $request->id_deudor;
+        $nueva_gestion->contacto = $request->contacto;
+        $nueva_gestion->gestiones_idgestiones = $request->gestion;
+        $nueva_gestion->respuesta = $request->respuesta;
+        $nueva_gestion->observacion = $request->observacion;
+        $nueva_gestion->fecha_gestion = date('Y-m-d');
+        $nueva_gestion->save();
     }
 
     /**

@@ -326,7 +326,7 @@
 
     function cargar_respuestas(gestion){
     	var id_gestion = gestion.options[gestion.selectedIndex].value;
-    	/*var cargando = $(".cargando");
+    	var cargando = $(".cargando_modal");
 
 		// evento ajax start
 		$(document).ajaxStart(function() {
@@ -336,7 +336,7 @@
 		// evento ajax stop
 		$(document).ajaxStop(function() {
 			cargando.hide();
-		});*/
+		});
 
         $.ajax({
            	url: 'gestiones/nueva/consultar-respuestas/'+id_gestion,
@@ -345,12 +345,15 @@
             success: function (response) {
             	console.log(response);
             	$('#respuestas-por-gestion').html('');
-            	$('#respuestas-por-gestion').append('<label for="respuesta">Respuesta</label>');
+            	$('#respuestas-por-gestion').append('<label for="respuesta">SELECCIONE UNA RESPUESTA</label>');
+            	$('#respuestas-por-gestion').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
             	if((response.respuestas).length > 0){
+            		$('#respuestas-por-gestion').css({"height": "175px", "overflow-y":"scroll"});
             		for (var i = 0; i < (response.respuestas).length; i++) {
-	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].descripcion+'</label></div>');
+	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta" value="'+(response.respuestas)[i].respuesta+'"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].descripcion+'</label></div>');
 	            	}
             	}else{
+            		$('#respuestas-por-gestion').css({"height": "", "overflow-y":""});
             		$('#respuestas-por-gestion').append('<br>**SIN RESPUESTA ASOCIADA**');
             	}
             	
