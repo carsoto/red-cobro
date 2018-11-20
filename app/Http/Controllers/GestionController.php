@@ -8,7 +8,8 @@ use Response;
 use App\Deudor;
 use App\Gestion;
 use App\DeudoresGestiones;
-
+use Session;
+use Redirect;
 class GestionController extends Controller
 {
     /**
@@ -86,7 +87,10 @@ class GestionController extends Controller
         $nueva_gestion->respuesta = $request->respuesta;
         $nueva_gestion->observacion = $request->observacion;
         $nueva_gestion->fecha_gestion = date('Y-m-d');
-        $nueva_gestion->save();
+        if($nueva_gestion->save()){
+            Session::flash('message', "Gestión registrada");
+            return Redirect::back();
+        }
     }
 
     /**

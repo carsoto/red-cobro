@@ -1,5 +1,10 @@
 {!! Form::open(['route' => 'gestiones.store']) !!}
 	<div class="modal-body">
+		@if (Session::has('message'))
+			<div class="box-header with-border">
+				<span class="box-title" style="font-size: 12px;"><div class="alert alert-success">{{ Session::get('message') }}</div></span>
+			</div>
+		@endif
 		{!! Form::hidden('id_deudor', $deudor->iddeudores, null, array('class' => 'form-control')) !!}
 		<!--{{ Form::label('contacto', 'Contacto') }}-->
 		{!! Form::select('contacto', $contactos, null, array('class' => 'form-control')) !!}
