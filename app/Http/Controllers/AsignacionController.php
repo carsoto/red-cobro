@@ -98,12 +98,22 @@ class AsignacionController extends Controller
                         $deudor->telefonos()->sync($telefono2->idtelefonos, false);
                     }
 
+                    $anyo = substr($asignacion['fecha_emision'], 0, 4);
+                    $mes = substr($asignacion['fecha_emision'], 4, 2);
+                    $dia = substr($asignacion['fecha_emision'], 6, 2);
+                    $fecha_emision = $anyo.'-'.$mes.'-'.$dia;
+
+                    $anyo = substr($asignacion['fecha_vencimiento'], 0, 4);
+                    $mes = substr($asignacion['fecha_vencimiento'], 4, 2);
+                    $dia = substr($asignacion['fecha_vencimiento'], 6, 2);
+                    $fecha_vencimiento = $anyo.'-'.$mes.'-'.$dia;
+
                     $documento = Documento::firstOrCreate([
                         'numero' => $asignacion['num_documento'], 
                         'folio' => $asignacion['folio'], 
                         'deuda' => $asignacion['deuda'], 
-                        'fecha_emision' => $asignacion['fecha_emision'], 
-                        'fecha_vencimiento' => $asignacion['fecha_vencimiento'],
+                        'fecha_emision' => $fecha_emision, 
+                        'fecha_vencimiento' => $fecha_vencimiento,
                         'dias_mora' => $asignacion['dias_mora']
                     ]);
 

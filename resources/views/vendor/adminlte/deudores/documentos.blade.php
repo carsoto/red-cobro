@@ -15,7 +15,7 @@
 					<td>{{ $doc->folio }}</td>
 					<td>{{ number_format($doc->deuda, 2, ",", ".") }}</td>
 					<td>{{ $doc->dias_mora }}</td>
-					<td>{{ $doc->fecha_vencimiento }}</td>
+					<td>{{ $doc->fecha_vencimiento->toDateString() }}</td>
 				<tr>
 			@endforeach
 		</tbody>
