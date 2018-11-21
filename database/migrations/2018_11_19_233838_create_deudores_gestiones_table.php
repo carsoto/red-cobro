@@ -18,11 +18,14 @@ class CreateDeudoresGestionesTable extends Migration
         
             $table->increments('iddeudores_gestiones')->unsigned();
             $table->integer('deudores_iddeudores')->unsigned();
-            $table->string('contacto', 45);
+            $table->string('contacto', 45)->nullable();
             $table->integer('gestiones_idgestiones')->unsigned();
             $table->string('respuesta', 150)->nullable();
+            $table->string('detalle', 150)->nullable();
             $table->string('observacion', 350)->nullable();
-            $table->string('fecha_gestion', 45)->nullable();
+            $table->integer('anyo');
+            $table->integer('mes');
+            $table->date('fecha_gestion')->nullable();
         
             $table->index('deudores_iddeudores','fk_deudores_gestiones_deudores_idx');
             $table->index('gestiones_idgestiones','fk_deudores_gestiones_gestiones1_idx');

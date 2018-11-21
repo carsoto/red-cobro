@@ -87,10 +87,11 @@ class GestionController extends Controller
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
         $nueva_gestion->respuesta = $request->respuesta;
         $nueva_gestion->observacion = $request->observacion;
+        $nueva_gestion->anyo = date('Y');
+        $nueva_gestion->mes = date('m');
         $nueva_gestion->fecha_gestion = date('Y-m-d');
         if($nueva_gestion->save()){
-            Session::flash('message', "Gestión registrada");
-            return Redirect::back();
+            return Response::json(array('mensaje' => 'Gestión agregada con éxito'));
         }
     }
 
