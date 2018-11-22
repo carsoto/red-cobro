@@ -28,10 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('table/listado', 'UserController@list')->name('usuarios.listado');
 	});
 
-	Route::group(['prefix' => 'asignaciones'], function () {
-		Route::get('cargar-archivos', 'AsignacionController@cargar')->name('asignaciones.cargar'); 
-		Route::get('exportar', 'AsignacionController@exportar');
-		Route::post('importar', 'AsignacionController@importar')->name('asignaciones.importar'); 
+	Route::group(['prefix' => 'archivos'], function () {
+		Route::get('cargar', 'ArchivosController@cargar')->name('archivos.cargar'); 
+		Route::get('exportar', 'ArchivosController@exportar');
+		Route::post('importar', 'ArchivosController@importar')->name('archivos.importar'); 
 	});
 
 	Route::resource('deudores', 'DeudorController');
