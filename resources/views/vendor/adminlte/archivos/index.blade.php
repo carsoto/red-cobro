@@ -24,10 +24,10 @@
 					<div class="box-body">
 						<form action="{{ route('archivos.importar') }}" class="form-horizontal" method="POST" handling facade or enctype="multipart/form-data">
 							{{ csrf_field() }}
-							<div class="col-lg-4 col-md-6 hidden-xs">
-								<img src="http://www.lightpath.io/wp-content/uploads/2017/05/etl-bg.png" width="250px">
-							</div>
-							<div class="col-lg-8 col-md-8 col-sm-8">
+							<!--<div class="col-lg-4 col-md-6 hidden-xs" >
+								<img src="{{ asset('public/img/cobranza/etl-bg.png') }}" width="250px">
+							</div>-->
+							<div class="col-lg-12 col-md-12 col-sm-12">
 								<div class="form-inline">
 									<div class="iradio icheck">
 							        	<label>
@@ -45,11 +45,11 @@
 							        </div>
 								</div>
 							</div>
-							<div class="col-lg-6 col-lg-offset-4 col-md-offset-4 col-md-6 col-sm-4">
+							<div class="col-lg-10 col-md-8 col-sm-6">
 								<input type="file" class="form-control" name="file" accept="text/plain, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
 							</div>
 
-							<div class="col-md-2 col-sm-4">
+							<div class="col-md-2 col-md-2 col-sm-6">
 								<button class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
 							</div>
 						</form>

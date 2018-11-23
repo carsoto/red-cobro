@@ -5,7 +5,7 @@
 <script src="{{ asset('/public/js/app.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="{{ asset('/public/js/sweetalert.min.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -41,7 +41,7 @@
 			$(document).on('click', ".eliminar_usuario", function(e) {
 		        var _this = $(this);
 		        e.preventDefault();
-		        /*swal({
+		        swal({
 		            title: "¿Está seguro?",
 					text: "Una vez deshabilitado, el usuario no podrá acceder nuevamente al sistema!",
 					icon: "warning",
@@ -73,7 +73,7 @@
 
 				        });
 		            }
-		        });*/
+		        });
 		    });	
     	}
 
@@ -147,22 +147,6 @@
 
 		        });
 		    });*/
-    	}
-      	
-      	var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
-    	if(table_hist_gestiones != undefined){
-	    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
-		        processing: true,
-		        serverSide: true,
-		        /*ajax: 'usuarios/table/listado',
-		        columns: [		
-		            {data: 'name', name: 'name'},
-		            {data: 'email', name: 'email'},
-		            {data: 'role', name: 'role'},
-		            {data: 'status', name: 'status'},
-		            {data: 'action', name: 'action', orderable: false}
-		        ]*/
-		    });	
     	}
 
       	var table_proveedor = document.getElementById('tabla_proveedores');
@@ -259,7 +243,7 @@
             success: function (response) {
             	//console.log(response);
             	if(response.mensaje != ''){
-            		//swal("Rut no encontrado!", response.mensaje, "error");
+            		swal("Rut no encontrado!", response.mensaje, "error");
             	}else{
             		$('#deudor-rut').html(response.deudor.rut_dv);
 					$('#deudor-razon-social').html(response.deudor.razon_social);
@@ -318,7 +302,7 @@
             	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                //swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
 
         });	
@@ -351,7 +335,7 @@
             		$('#respuestas-por-gestion').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
             		$('#respuestas-por-gestion').css({"height": "175px", "overflow-y":"scroll"});
             		for (var i = 0; i < (response.respuestas).length; i++) {
-	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta" value="'+(response.respuestas)[i].respuesta+'"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].descripcion+'</label></div>');
+	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta" value="'+(response.respuestas)[i].respuesta+'"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].respuesta+'</label></div>');
 	            	}
             	}else{
             		$('#respuestas-por-gestion').css({"height": "", "overflow-y":""});
@@ -360,7 +344,7 @@
             	
             },
             error: function (xhr, ajaxOptions, thrownError) {
-            	////swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+            	swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
 
         });
@@ -376,11 +360,13 @@
 		}
 
 		if(modulo == "historial_gestiones"){
+			$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
 			title = '<i class="fa fa-history"></i> HISTORIAL DE GESTIONES';
     		dir_url = "deudores/gestion/historial/"+iddeudor;
 		}
 
 		if(modulo == "documentos"){
+			$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
 			title = '<i class="fa fa-file-o"></i> DOCUMENTOS';
     		dir_url = "deudores/gestion/documentos/"+iddeudor;
 		}
@@ -398,9 +384,40 @@
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
     			$('#rut-modal-detalles').modal('show');
+    			var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+		    	if(table_hist_gestiones != undefined){
+			    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
+				        processing: true,
+				        serverSide: true,
+				        /*ajax: 'usuarios/table/listado',
+				        columns: [		
+				            {data: 'name', name: 'name'},
+				            {data: 'email', name: 'email'},
+				            {data: 'role', name: 'role'},
+				            {data: 'status', name: 'status'},
+				            {data: 'action', name: 'action', orderable: false}
+				        ]**/
+				    });	
+		    	}
+
+		    	var table_documentos = document.getElementById('tabla_documentos');
+		    	if(table_documentos != undefined){
+			    	var datatable_documentos = $('#tabla_documentos').DataTable({
+				        processing: true,
+				        serverSide: true,
+				        /*ajax: 'usuarios/table/listado',
+				        columns: [		
+				            {data: 'name', name: 'name'},
+				            {data: 'email', name: 'email'},
+				            {data: 'role', name: 'role'},
+				            {data: 'status', name: 'status'},
+				            {data: 'action', name: 'action', orderable: false}
+				        ]*/
+				    });	
+		    	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                //swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
 
         });
@@ -439,7 +456,7 @@
 		    		$("#message").show();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
-				    //swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+				    swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
 				}
 			});
     	}
