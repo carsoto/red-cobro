@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
 use App\Documento;
+use App\Deudor;
 
 class DocumentoController extends Controller
 {
@@ -19,17 +20,22 @@ class DocumentoController extends Controller
         return view('adminlte::documentos.index');
     }
 
-    public function list(){
+    public function documentos($iddeudor){
         
-        $documentos = Documento::all();
+        $deudor = Deudor::where('iddeudores', '=', decrypt($iddeudor))->get();
+        $deudor = $deudor[0];
+        $documentos = $deudor->documentos;
         
         return Datatables::of($documentos)
-            ->addColumn('action', function ($documento) {
-                return '<a href="'.route('documentos.edit', encrypt($documento->iddocumentos)).'" data-id="'.encrypt($documento->iddocumentos).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                        <a href="#" data-id="'.encrypt($documento->iddocumentos).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_documento"><i class="fa fa-trash"></i></a>';
+            ->editColumn('deuda', function ($documento) {
+                return number_format($documento->deuda, 2, ",", ".");
             })
-            ->editColumn('iddocumentos', '{{ encrypt($iddocumentos) }}')
-            ->make(true);
+            ->editColumn('fecha_emision', function ($documento) {
+                return date('d-m-Y', strtotime($documento->fecha_emision));
+            })
+            ->editColumn('fecha_vencimiento', function ($documento) {
+                return date('d-m-Y', strtotime($documento->fecha_vencimiento));
+        })->make(true);
     }
 
     /**

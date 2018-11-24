@@ -44,10 +44,7 @@ class DeudorController extends Controller
     }
 
     public function documentos($id_deudor){
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
-        $documentos = $deudor->documentos;
-        return view('adminlte::deudores.documentos', array('documentos' => $documentos))->render();
+        return view('adminlte::deudores.documentos')->render();
     }
 
     public function gestioneshistorial($id_deudor){

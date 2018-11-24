@@ -163,24 +163,6 @@
 		    });
     	}
 
-    	var table_documento = document.getElementById('tabla_documentos');
-    	if(table_documento != undefined){
-    		var datatable_documentos = $('#tabla_documentos').DataTable({
-		        processing: true,
-		        serverSide: true,
-		        ajax: 'documentos/table/listado',
-		        columns: [		
-		            {data: 'numero', name: 'numero'},
-		            {data: 'folio', name: 'folio'},
-		            {data: 'deuda', name: 'deuda'},
-		            {data: 'fecha_emision', name: 'fecha_emision'},
-		            {data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
-		            {data: 'dias_mora', name: 'dias_mora'},
-		            //{data: 'action', name: 'action', orderable: false}
-		        ]
-		    });
-    	}
-
     	var table_region = document.getElementById('tabla_regiones');
     	if(table_region != undefined){
     		var datatable_regiones = $('#tabla_regiones').DataTable({
@@ -381,7 +363,6 @@
 		            	}
 	            	}else{
 	            		$('#detalles-por-respuesta').css({"height": "", "overflow-y":""});
-	            		//$('#detalles-por-respuesta').append('<br>**SIN RESPUESTA ASOCIADA**');
 	            	}
 	            },
 	            error: function (xhr, ajaxOptions, thrownError) {
@@ -425,35 +406,33 @@
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
     			$('#rut-modal-detalles').modal('show');
-    			var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+    			/*var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
 		    	if(table_hist_gestiones != undefined){
 			    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
 				        processing: true,
 				        serverSide: true,
-				        /*ajax: 'usuarios/table/listado',
+				        {iddeudor}
+				        ajax: 'documentos/table/listado/'+iddeudor,
 				        columns: [		
-				            {data: 'name', name: 'name'},
-				            {data: 'email', name: 'email'},
-				            {data: 'role', name: 'role'},
-				            {data: 'status', name: 'status'},
-				            {data: 'action', name: 'action', orderable: false}
-				        ]**/
+				            //{data: 'name', name: 'name'},
+				        ]
 				    });	
-		    	}
+		    	}*/
 
 		    	var table_documentos = document.getElementById('tabla_documentos');
 		    	if(table_documentos != undefined){
 			    	var datatable_documentos = $('#tabla_documentos').DataTable({
 				        processing: true,
 				        serverSide: true,
-				        /*ajax: 'usuarios/table/listado',
-				        columns: [		
-				            {data: 'name', name: 'name'},
-				            {data: 'email', name: 'email'},
-				            {data: 'role', name: 'role'},
-				            {data: 'status', name: 'status'},
-				            {data: 'action', name: 'action', orderable: false}
-				        ]*/
+				        ajax: 'documentos/table/listado/'+iddeudor,
+				        columns: [
+							{data: 'numero', name: 'numero'},
+							{data: 'folio', name: 'folio'},
+							{data: 'deuda', name: 'deuda'},
+							{data: 'dias_mora', name: 'dias_mora'},
+							{data: 'fecha_emision', name: 'fecha_emision'},
+							{data: 'fecha_vencimiento', name: 'fecha_vencimiento'},
+				        ]
 				    });	
 		    	}
             },

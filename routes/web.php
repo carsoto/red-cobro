@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('documentos', 'DocumentoController');
 	Route::group(['prefix' => 'documentos'], function () {
-		Route::get('table/listado', 'DocumentoController@list')->name('documentos.listado');  
+		Route::get('table/listado/{iddeudor}', 'DocumentoController@documentos')->name('documentos.listado');  
 	}); 
 
 	Route::resource('regiones', 'RegionController');
