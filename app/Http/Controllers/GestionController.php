@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Response;
 use App\Deudor;
 use App\Gestion;
+use App\Respuesta;
 use App\DeudoresGestiones;
 use Session;
 use Redirect;
@@ -32,6 +33,13 @@ class GestionController extends Controller
         $gestion = $gestion[0];
         $respuestas = $gestion->respuestas;
         return Response::json(array('respuestas' => $respuestas));
+    }
+
+    public function consultardetallesrespuesta($idrespuesta){
+        $respuesta = Respuesta::where('idrespuesta', '=', $idrespuesta)->get();
+        $respuesta = $respuesta[0];
+        $detalles = $respuesta->respuestas_detalles;
+        return Response::json(array('detalles' => $detalles));
     }
 
     private function search_rut($rut){
@@ -82,14 +90,21 @@ class GestionController extends Controller
     public function store(Request $request)
     {
         $nueva_gestion = new DeudoresGestiones();
+
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
         $nueva_gestion->contacto = $request->contacto;
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
-        $nueva_gestion->respuesta = $request->respuesta;
+        $nueva_gestion->respuestas_idrespuesta = $request->respuesta;
+        
+        if(isset($request->detalle)){
+            $nueva_gestion->detalle = $request->detalle;
+        }
+        
         $nueva_gestion->observacion = $request->observacion;
         $nueva_gestion->anyo = date('Y');
         $nueva_gestion->mes = date('m');
         $nueva_gestion->fecha_gestion = date('Y-m-d');
+        
         if($nueva_gestion->save()){
             return Response::json(array('mensaje' => 'Gestión agregada con éxito'));
         }

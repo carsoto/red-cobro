@@ -76,5 +76,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('buscar-rut', 'GestionController@search')->name('gestiones.buscar');
 		Route::post('cargar-rut', 'GestionController@index')->name('gestiones.rut');
 		Route::get('nueva/consultar-respuestas/{idgestion}','GestionController@consultarrespuesta')->name('gestiones.consultar-respuesta');
+		Route::get('nueva/consultar-detalles/{idrespuesta}','GestionController@consultardetallesrespuesta')->name('gestiones.consultar-detalles');
+		
 	});
 });

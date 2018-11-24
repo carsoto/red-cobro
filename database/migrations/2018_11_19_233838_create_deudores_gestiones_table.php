@@ -20,7 +20,7 @@ class CreateDeudoresGestionesTable extends Migration
             $table->integer('deudores_iddeudores')->unsigned();
             $table->string('contacto', 45)->nullable();
             $table->integer('gestiones_idgestiones')->unsigned();
-            $table->string('respuesta', 150)->nullable();
+            $table->integer('respuestas_idrespuesta')->nullable();
             $table->string('detalle', 150)->nullable();
             $table->string('observacion', 350)->nullable();
             $table->integer('anyo');

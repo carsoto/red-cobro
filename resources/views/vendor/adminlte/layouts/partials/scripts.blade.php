@@ -278,25 +278,26 @@
 						for (var i = 0; i < response.telefonos.length; i++) {
 							var row = $("<tr style='font-size: 11px;'>");
 							
-						  row.append($("<td>"+response.telefonos[i].telefono+"</td>"))
-						     .append($("<td colspan='2'>-</td>"))
-						     .append($("<td>-</td>"))
-						     .append($("<td>-</td>"))
-						     .append($("<td>-</td>"));
-						 
-						  $("#tabla-contactos tbody").append(row);
-							}
-							for (var i = 0; i < response.correos.length; i++) {
+							row.append($("<td>"+response.telefonos[i].telefono+"</td>"))
+							 .append($("<td colspan='2'>-</td>"))
+							 .append($("<td>-</td>"))
+							 .append($("<td>-</td>"))
+							 .append($("<td>-</td>"));
+
+							$("#tabla-contactos tbody").append(row);
+						}
+
+						for (var i = 0; i < response.correos.length; i++) {
 							var row = $("<tr style='font-size: 11px;'>");
-							
-						  row.append($("<td>"+response.correos[i].correo+"</td>"))
-						     .append($("<td colspan='2'>-</td>"))
-						     .append($("<td>-</td>"))
-						     .append($("<td>-</td>"))
-						     .append($("<td>-</td>"));
+
+							row.append($("<td>"+response.correos[i].correo+"</td>"))
+							 .append($("<td colspan='2'>-</td>"))
+							 .append($("<td>-</td>"))
+							 .append($("<td>-</td>"))
+							 .append($("<td>-</td>"));
 						 
-						  $("#tabla-contactos tbody").append(row);
-							}
+							$("#tabla-contactos tbody").append(row);
+						}
 					}
 					
             	}
@@ -327,27 +328,67 @@
             dataType: "JSON",
             type: 'GET',
             success: function (response) {
-            	//console.log(response);
-            	$('#respuestas-por-gestion').html('');
-            	
-            	if((response.respuestas).length > 0){
-            		$('#respuestas-por-gestion').append('<label for="respuesta">SELECCIONE UNA RESPUESTA</label>');
-            		$('#respuestas-por-gestion').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
-            		$('#respuestas-por-gestion').css({"height": "175px", "overflow-y":"scroll"});
-            		for (var i = 0; i < (response.respuestas).length; i++) {
-	            		$('#respuestas-por-gestion').append('<div class="radio icheck"><label><input type="radio" name="respuesta" value="'+(response.respuestas)[i].respuesta+'"> '+(response.respuestas)[i].codigo+' - '+(response.respuestas)[i].respuesta+'</label></div>');
+
+            	$('#select-respuestas').html('');
+            	$('#detalles-por-respuesta').html('');
+            	$('#detalles-por-respuesta').css({"height": "", "overflow-y":""});
+
+            	var respuestas = response.respuestas;
+            	if(respuestas.length > 0){
+            		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
+            		for (var i = 0; i < respuestas.length; i++) {
+	            		$('#select-respuestas').append('<option value="'+respuestas[i].idrespuesta+'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
 	            	}
             	}else{
-            		$('#respuestas-por-gestion').css({"height": "", "overflow-y":""});
-            		//$('#respuestas-por-gestion').append('<br>**SIN RESPUESTA ASOCIADA**');
+            		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
             	}
-            	
             },
             error: function (xhr, ajaxOptions, thrownError) {
             	swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
             }
-
         });
+    }
+
+    function cargar_detalles(respuesta){
+    	var id_respuesta = respuesta.options[respuesta.selectedIndex].value;
+    	var cargando = $(".cargando_modal");
+
+		// evento ajax start
+		$(document).ajaxStart(function() {
+			cargando.show();
+		});
+
+		// evento ajax stop
+		$(document).ajaxStop(function() {
+			cargando.hide();
+		});
+
+		if(id_respuesta > 0){
+			$.ajax({
+	           	url: 'gestiones/nueva/consultar-detalles/'+id_respuesta,
+	            dataType: "JSON",
+	            type: 'GET',
+	            success: function (response) {
+	            	var detalles = response.detalles;
+	            	$('#detalles-por-respuesta').html('');
+	
+	            	if(detalles.length > 0){
+	            		$('#detalles-por-respuesta').append('<label for="respuesta">SELECCIONE UNA RESPUESTA</label>');
+	            		$('#detalles-por-respuesta').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
+	            		$('#detalles-por-respuesta').css({"height": "170px", "overflow-y":"scroll"});
+	            		for (var i = 0; i < detalles.length; i++) {
+		            		$('#detalles-por-respuesta').append('<div class="radio icheck"><label><input type="radio" name="detalle" value="'+detalles[i].literal+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div>');
+		            	}
+	            	}else{
+	            		$('#detalles-por-respuesta').css({"height": "", "overflow-y":""});
+	            		//$('#detalles-por-respuesta').append('<br>**SIN RESPUESTA ASOCIADA**');
+	            	}
+	            },
+	            error: function (xhr, ajaxOptions, thrownError) {
+	            	swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+	            }
+	        });
+		}        
     }
 
     function opciones_rut(modulo, iddeudor){
@@ -452,7 +493,7 @@
 				data: $('#form-agregar-gestion').serialize(),
 				success: function (response) {
 					$("#message").addClass('alert-success');
-		    		$("#message").append(response.mensaje);
+		    		$("#message").html(response.mensaje);
 		    		$("#message").show();
 				},
 				error: function (xhr, ajaxOptions, thrownError) {

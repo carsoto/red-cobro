@@ -421,16 +421,16 @@
 			                                @endif
 				                    </table>
 				                    <div style="margin-top: 20px;">
-				                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+				                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
 										{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
 									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
 										{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat', 'onclick' => 'opciones_rut("historial_gestiones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
 									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
 										{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat', 'onclick' => 'opciones_rut("documentos", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
 									</div>
-									<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
+									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
 										{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
 										
 									</div>

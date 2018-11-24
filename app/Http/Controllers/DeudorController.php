@@ -66,6 +66,7 @@ class DeudorController extends Controller
         $gestiones = array();
         $contactos[0] = 'SELECCIONE UN CONTACTO';
         $gestiones[0] = 'SELECCIONE UNA GESTIÓN';
+        $respuestas[0] = 'SELECCIONE UNA RESPUESTA';
 
         foreach ($gestiones_reg as $key => $g) {
             $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;
@@ -85,7 +86,7 @@ class DeudorController extends Controller
             }    
         }
         
-        return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones))->render();
+        return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones, 'respuestas' => $respuestas))->render();
     }
 
     public function detallesdeudor($id_deudor)

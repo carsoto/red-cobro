@@ -41,6 +41,6 @@ class Respuesta extends Eloquent
 
 	public function respuestas_detalles()
 	{
-		return $this->hasMany(\App\RespuestasDetalle::class, 'respuestas_idrespuesta');
+		return $this->hasMany(\App\RespuestasDetalle::class, 'respuestas_idrespuesta')->orderby('literal', 'ASC');
 	}
 }

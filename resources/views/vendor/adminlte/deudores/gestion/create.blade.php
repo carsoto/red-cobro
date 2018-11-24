@@ -8,7 +8,9 @@
 		<!--{{ Form::label('gestion', 'Gestión') }}-->
 		{!! Form::select('gestion', $gestiones, null, array('class' => 'form-control', 'onchange' => 'cargar_respuestas(this);', 'id' => 'select-gestion')) !!}
 		<br>
-		<div id='respuestas-por-gestion'>
+		{!! Form::select('respuesta', $respuestas, null, array('class' => 'form-control', 'onchange' => 'cargar_detalles(this);', 'id' => 'select-respuestas')) !!}
+		<br>
+		<div id='detalles-por-respuesta'>
 			<div class="overlay cargando_modal" style="display: none;">
 				<i class="fa fa-spinner fa-spin"></i>
 			</div>
