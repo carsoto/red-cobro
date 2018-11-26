@@ -481,4 +481,33 @@
 			});
     	}
     }
+
+    function consultar_gestiones(iddeudor){
+    	$.ajax({
+			url: 'gestiones/historial/deudor',
+			dataType: "JSON",
+			type: 'POST',
+			data: $('#form-consultar-hist-gestion').serialize(),
+			success: function (response) {
+				if(response.mensaje_error != ""){
+					swal("Ocurrió un error!", response.mensaje_error, "error");
+				}else{
+					console.log(response);
+					var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+			    	if(table_hist_gestiones != undefined){
+				    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
+					        processing: true,
+					        serverSide: true,
+					        columns: [		
+					            //{data: 'name', name: 'name'},
+					        ]
+					    });	
+			    	}
+				}
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+			    swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+			}
+		});
+    }
 </script>

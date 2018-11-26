@@ -8,6 +8,7 @@ use Datatables;
 use App\Deudor;
 use App\Gestion;
 use Response;
+use DateTime;
 
 class DeudorController extends Controller
 {
@@ -48,9 +49,14 @@ class DeudorController extends Controller
     }
 
     public function gestioneshistorial($id_deudor){
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
-        return view('adminlte::deudores.historial-gestiones', array())->render();
+        $dias = array();
+        $meses = array(1 => 'ENERO', 2 => 'FEBRERO', 3 => 'MARZO', 4 => 'ABRIL', 5 => 'MAYO', 6 => 'JUNIO', 7 => 'JULIO', 8 => 'AGOSTO', 9 => 'SEPTIEMBRE', 10 => 'OCTUBRE', 11 => 'NOVIEMBRE', 12 => 'DICIEMBRE');
+
+        for ($i=1; $i <= 31; $i++) { 
+            $dias[$i] = $i;
+        }
+
+        return view('adminlte::deudores.historial-gestiones', array('iddeudor' => $id_deudor, 'dias' => $dias, 'meses' => $meses))->render();
     }
 
     public function gestionnueva($id_deudor){

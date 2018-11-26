@@ -10,6 +10,7 @@ use App\Gestion;
 use App\Respuesta;
 use App\DeudoresGestiones;
 use Session;
+use Datatables;
 use Redirect;
 
 class GestionController extends Controller
@@ -71,6 +72,31 @@ class GestionController extends Controller
         $resultado = $this->search_rut($rut);
         return Response::json($resultado);
     }
+
+    public function historial(Request $request){
+        $mensaje_error = "";
+        $deudor = Deudor::where('iddeudores', '=', decrypt($request->id_deudor))->get();
+        $deudor = $deudor[0];
+
+        if(($request->dia == null) && ($request->mes == null) && ($request->anyo == null)){
+            $mensaje_error = 'Por favor, seleccione una fecha válida a consultar. Escoja un mes o un año para sintetizar su consulta.';
+        }else if(($request->dia != null) && ($request->mes != null) && ($request->anyo != null)){
+            //BUSQUEDA FECHA ESPECIFICA
+           $gestiones = $deudor->gestiones;
+           return Datatables::of($gestiones)->make(true);
+
+        }else if(($request->mes != null) && ($request->anyo != null)){
+            //BUSQUEDA POR MES Y AÑO
+        }else if(($request->mes != null)){
+            //BUSQUEDA POR MES
+        }else if(($request->anyo != null)){
+            //BUSQUEDA POR AÑO
+        }
+
+        return Response::json(array('mensaje_error' => $mensaje_error));
+
+    }
+
     /**
      * Show the form for creating a new resource.
      *
