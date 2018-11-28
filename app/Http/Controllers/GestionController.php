@@ -8,6 +8,7 @@ use Response;
 use App\Deudor;
 use App\Gestion;
 use App\Respuesta;
+use App\RespuestasDetalle;
 use App\DeudoresGestiones;
 use Session;
 use Datatables;
@@ -83,7 +84,31 @@ class GestionController extends Controller
         }else if(($request->dia != null) && ($request->mes != null) && ($request->anyo != null)){
             //BUSQUEDA FECHA ESPECIFICA
            $gestiones = $deudor->gestiones;
-           return Datatables::of($gestiones)->make(true);
+
+           return Datatables::of($gestiones)->editColumn('anyo', function($gestiones) {
+                return $gestiones->pivot->anyo;
+
+            })->editColumn('contacto', function($gestiones) {
+                return $gestiones->pivot->contacto;
+
+            })->editColumn('respuesta', function($gestiones) {
+                $gestion_resp = Respuesta::where('idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->get();
+                return $gestion_resp[0]->codigo.' - '.$gestion_resp[0]->respuesta;
+
+            })->editColumn('detalle', function($gestiones) {
+                $detalle_resp = RespuestasDetalle::where('respuestas_idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->where('literal', '=', $gestiones->pivot->detalle)->get();
+                return $detalle_resp[0]->literal.' - '.$detalle_resp[0]->detalle;
+
+            })->editColumn('fecha_gestion', function($gestiones) {
+                return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
+
+            })->editColumn('mes', function($gestiones) {
+                return $gestiones->pivot->mes;
+
+            })->editColumn('observacion', function($gestiones) {
+                return $gestiones->pivot->observacion;
+                
+            })->make(true);
 
         }else if(($request->mes != null) && ($request->anyo != null)){
             //BUSQUEDA POR MES Y AÑO

@@ -489,20 +489,34 @@
 			type: 'POST',
 			data: $('#form-consultar-hist-gestion').serialize(),
 			success: function (response) {
-				if(response.mensaje_error != ""){
+			
+				if(response.mensaje_error != undefined){
 					swal("Ocurrió un error!", response.mensaje_error, "error");
 				}else{
-					console.log(response);
-					var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
-			    	if(table_hist_gestiones != undefined){
-				    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
-					        processing: true,
-					        serverSide: true,
-					        columns: [		
-					            //{data: 'name', name: 'name'},
-					        ]
-					    });	
-			    	}
+					if((response.data).length > 0){
+						//
+						$("#historial-de-gestiones").show();
+						var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+				    	if(table_hist_gestiones != undefined){
+					    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
+						        processing: true,
+						        destroy: true,
+						        data: response.data,
+						        columns: [
+			            			{data: 'contacto', name: 'contacto'},
+			            			{data: 'descripcion', name: 'descripcion'},
+			            			{data: 'respuesta', name: 'respuesta'},
+			            			{data: 'detalle', name: 'detalle'},
+			            			{data: 'observacion', name: 'observacion'},
+			            			//{data: 'anyo', name: 'anyo'},
+			            			//{data: 'mes', name: 'mes'},
+			            			{data: 'fecha_gestion', name: 'fecha_gestion'},
+						        ]
+						    });	
+				    	}
+					}else{
+						swal("Ocurrió un error!", "El RUT todavía no se le han realizado gestiones", "error");	
+					}
 				}
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
