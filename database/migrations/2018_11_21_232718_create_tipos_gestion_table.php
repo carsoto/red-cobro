@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRespuestasTable extends Migration
+class CreateTiposGestionTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,11 @@ class CreateRespuestasTable extends Migration
      */
     public function up()
     {
-        Schema::create('respuestas', function(Blueprint $table) {
-            $table->engine = 'InnoDB';
-        
-            $table->increments('idrespuesta')->unsigned();
-            $table->string('codigo', 10);
-            $table->string('respuesta', 255);
+        Schema::create('tipos_gestion', function (Blueprint $table) {
+            $table->increments('idtipogestion')->unsigned();
+            $table->string('descripcion', 100);
             $table->timestamps();
-        
         });
-
-
     }
 
     /**
@@ -33,7 +27,6 @@ class CreateRespuestasTable extends Migration
      */
     public function down()
     {
-        Schema::drop('respuestas');
-
+        Schema::dropIfExists('tipos_gestion');
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 20 Nov 2018 04:21:09 +0000.
+ * Date: Sat, 24 Nov 2018 16:29:53 +0000.
  */
 
 namespace App;
@@ -16,9 +16,12 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $deudores_iddeudores
  * @property string $contacto
  * @property int $gestiones_idgestiones
- * @property string $respuesta
+ * @property int $respuestas_idrespuesta
+ * @property string $detalle
  * @property string $observacion
- * @property string $fecha_gestion
+ * @property int $anyo
+ * @property int $mes
+ * @property \Carbon\Carbon $fecha_gestion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
@@ -33,15 +36,25 @@ class DeudoresGestiones extends Eloquent
 
 	protected $casts = [
 		'deudores_iddeudores' => 'int',
-		'gestiones_idgestiones' => 'int'
+		'gestiones_idgestiones' => 'int',
+		'respuestas_idrespuesta' => 'int',
+		'anyo' => 'int',
+		'mes' => 'int'
+	];
+
+	protected $dates = [
+		'fecha_gestion'
 	];
 
 	protected $fillable = [
 		'deudores_iddeudores',
 		'contacto',
 		'gestiones_idgestiones',
-		'respuesta',
+		'respuestas_idrespuesta',
+		'detalle',
 		'observacion',
+		'anyo',
+		'mes',
 		'fecha_gestion'
 	];
 

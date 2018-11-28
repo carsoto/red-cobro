@@ -178,7 +178,7 @@ return [
         Reliese\Coders\CodersServiceProvider::class,
         Krlove\EloquentModelGenerator\Provider\GeneratorServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-
+        App\Providers\FuncionesProvider::class,
     ],
 
     /*
@@ -233,6 +233,7 @@ return [
         'Html' => 'Collective\Html\HtmlFacade',
         'Datatables' => yajra\Datatables\Datatables::class,
         'Excel' => Maatwebsite\Excel\ExcelServiceProvider::class,
+        'Funciones' => App\Helpers\Funciones::class,
     ],
 
 ];

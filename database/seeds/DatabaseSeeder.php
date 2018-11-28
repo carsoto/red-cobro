@@ -22,5 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call(GestionesTableSeeder::class);
         $this->call(RespuestasTableSeeder::class);
         $this->call(GestionesRespuestasTableSeeder::class);
+        $this->call(TiposGestionTableSeeder::class);
+        $this->call(RespuestaDetallesTableSeeder::class);
     }
 }

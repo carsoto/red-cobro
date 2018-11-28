@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 17 Nov 2018 06:08:45 +0000.
+ * Date: Fri, 23 Nov 2018 00:20:42 +0000.
  */
 
 namespace App;
@@ -15,13 +15,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $idrespuesta
  * @property string $codigo
  * @property string $respuesta
- * @property string $detalle
- * @property string $descripcion
- * @property string $gestion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \Illuminate\Database\Eloquent\Collection $gestiones
+ * @property \Illuminate\Database\Eloquent\Collection $respuestas_detalles
  *
  * @package App
  */
@@ -31,10 +29,7 @@ class Respuesta extends Eloquent
 
 	protected $fillable = [
 		'codigo',
-		'respuesta',
-		'detalle',
-		'descripcion',
-		'gestion'
+		'respuesta'
 	];
 
 	public function gestiones()
@@ -42,5 +37,10 @@ class Respuesta extends Eloquent
 		return $this->belongsToMany(\App\Gestion::class, 'gestiones_respuestas', 'respuestas_idrespuesta', 'gestiones_idgestiones')
 					->withPivot('idgestiones_respuestas')
 					->withTimestamps();
+	}
+
+	public function respuestas_detalles()
+	{
+		return $this->hasMany(\App\RespuestasDetalle::class, 'respuestas_idrespuesta')->orderby('literal', 'ASC');
 	}
 }

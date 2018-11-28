@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 17 Nov 2018 06:07:55 +0000.
+ * Date: Fri, 23 Nov 2018 00:20:27 +0000.
  */
 
 namespace App;
@@ -18,6 +18,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
  * @property \Illuminate\Database\Eloquent\Collection $respuestas
  *
  * @package App
@@ -35,7 +36,7 @@ class Gestion extends Eloquent
 	public function deudores()
 	{
 		return $this->belongsToMany(\App\Deudor::class, 'deudores_gestiones', 'gestiones_idgestiones', 'deudores_iddeudores')
-					->withPivot('iddeudores_gestiones', 'contacto', 'respuesta', 'observacion', 'fecha_gestion')
+					->withPivot('iddeudores_gestiones', 'contacto', 'respuesta', 'detalle', 'observacion', 'anyo', 'mes', 'fecha_gestion')
 					->withTimestamps();
 	}
 
@@ -43,6 +44,7 @@ class Gestion extends Eloquent
 	{
 		return $this->belongsToMany(\App\Respuesta::class, 'gestiones_respuestas', 'gestiones_idgestiones', 'respuestas_idrespuesta')
 					->withPivot('idgestiones_respuestas')
+					->orderby('codigo', 'ASC')
 					->withTimestamps();
 	}
 }

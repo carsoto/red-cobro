@@ -8,6 +8,7 @@ use Datatables;
 use App\Deudor;
 use App\Gestion;
 use Response;
+use DateTime;
 
 class DeudorController extends Controller
 {
@@ -44,16 +45,18 @@ class DeudorController extends Controller
     }
 
     public function documentos($id_deudor){
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
-        $documentos = $deudor->documentos;
-        return view('adminlte::deudores.documentos', array('documentos' => $documentos))->render();
+        return view('adminlte::deudores.documentos')->render();
     }
 
     public function gestioneshistorial($id_deudor){
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
-        return view('adminlte::deudores.historial-gestiones', array())->render();
+        $dias = array();
+        $meses = array(1 => 'ENERO', 2 => 'FEBRERO', 3 => 'MARZO', 4 => 'ABRIL', 5 => 'MAYO', 6 => 'JUNIO', 7 => 'JULIO', 8 => 'AGOSTO', 9 => 'SEPTIEMBRE', 10 => 'OCTUBRE', 11 => 'NOVIEMBRE', 12 => 'DICIEMBRE');
+
+        for ($i=1; $i <= 31; $i++) { 
+            $dias[$i] = $i;
+        }
+
+        return view('adminlte::deudores.historial-gestiones', array('iddeudor' => $id_deudor, 'dias' => $dias, 'meses' => $meses))->render();
     }
 
     public function gestionnueva($id_deudor){
@@ -66,6 +69,7 @@ class DeudorController extends Controller
         $gestiones = array();
         $contactos[0] = 'SELECCIONE UN CONTACTO';
         $gestiones[0] = 'SELECCIONE UNA GESTIÓN';
+        $respuestas[0] = 'SELECCIONE UNA RESPUESTA';
 
         foreach ($gestiones_reg as $key => $g) {
             $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;
@@ -85,7 +89,7 @@ class DeudorController extends Controller
             }    
         }
         
-        return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones))->render();
+        return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones, 'respuestas' => $respuestas))->render();
     }
 
     public function detallesdeudor($id_deudor)

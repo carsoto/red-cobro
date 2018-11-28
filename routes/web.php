@@ -28,10 +28,10 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('table/listado', 'UserController@list')->name('usuarios.listado');
 	});
 
-	Route::group(['prefix' => 'asignaciones'], function () {
-		Route::get('cargar-archivos', 'AsignacionController@cargar')->name('asignaciones.cargar'); 
-		Route::get('exportar', 'AsignacionController@exportar');
-		Route::post('importar', 'AsignacionController@importar')->name('asignaciones.importar'); 
+	Route::group(['prefix' => 'archivos'], function () {
+		Route::get('cargar', 'ArchivosController@cargar')->name('archivos.cargar'); 
+		Route::get('exportar', 'ArchivosController@exportar');
+		Route::post('importar', 'ArchivosController@importar')->name('archivos.importar'); 
 	});
 
 	Route::resource('deudores', 'DeudorController');
@@ -53,7 +53,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('documentos', 'DocumentoController');
 	Route::group(['prefix' => 'documentos'], function () {
-		Route::get('table/listado', 'DocumentoController@list')->name('documentos.listado');  
+		Route::get('table/listado/{iddeudor}', 'DocumentoController@documentos')->name('documentos.listado');  
 	}); 
 
 	Route::resource('regiones', 'RegionController');
@@ -76,5 +76,8 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::post('buscar-rut', 'GestionController@search')->name('gestiones.buscar');
 		Route::post('cargar-rut', 'GestionController@index')->name('gestiones.rut');
 		Route::get('nueva/consultar-respuestas/{idgestion}','GestionController@consultarrespuesta')->name('gestiones.consultar-respuesta');
+		Route::get('nueva/consultar-detalles/{idrespuesta}','GestionController@consultardetallesrespuesta')->name('gestiones.consultar-detalles');
+		Route::post('historial/deudor','GestionController@historial')->name('gestion.historial');
+		
 	});
 });
