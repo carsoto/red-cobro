@@ -14,6 +14,8 @@ class CreateTiposGestionTable extends Migration
     public function up()
     {
         Schema::create('tipos_gestion', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+        
             $table->increments('idtipogestion')->unsigned();
             $table->string('descripcion', 100);
             $table->timestamps();
