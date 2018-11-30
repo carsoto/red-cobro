@@ -514,8 +514,6 @@
 						        ]
 						    });	
 				    	}
-					}else{
-						swal("Ocurrió un error!", "El RUT todavía no se le han realizado gestiones", "error");	
 					}
 				}
 			},

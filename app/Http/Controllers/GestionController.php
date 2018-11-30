@@ -83,9 +83,9 @@ class GestionController extends Controller
 
         if(($request->dia == null) && ($request->mes == null) && ($request->anyo == null)){
             $mensaje_error = 'Por favor, seleccione una fecha válida a consultar. Escoja un mes o un año para sintetizar su consulta.';
+            
         }else if(($request->dia != null) && ($request->mes != null) && ($request->anyo != null)){
             //BUSQUEDA FECHA ESPECIFICA
-            
             $fecha_gestion = $request->anyo.'-'.$request->mes.'-'.$request->dia;
             
             $gestiones->each(function ($item) use (&$fecha_gestion, &$filtered_gestiones_fecha) {
@@ -93,31 +93,6 @@ class GestionController extends Controller
                     $filtered_gestiones_fecha[] = $item;
                 }
             });
-
-            return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
-                return $gestiones->pivot->anyo;
-
-            })->editColumn('contacto', function($gestiones) {
-                return $gestiones->pivot->contacto;
-
-            })->editColumn('respuesta', function($gestiones) {
-                $gestion_resp = Respuesta::where('idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->get();
-                return $gestion_resp[0]->codigo.' - '.$gestion_resp[0]->respuesta;
-
-            })->editColumn('detalle', function($gestiones) {
-                $detalle_resp = RespuestasDetalle::where('respuestas_idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->where('literal', '=', $gestiones->pivot->detalle)->get();
-                return $detalle_resp[0]->literal.' - '.$detalle_resp[0]->detalle;
-
-            })->editColumn('fecha_gestion', function($gestiones) {
-                return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
-
-            })->editColumn('mes', function($gestiones) {
-                return $gestiones->pivot->mes;
-
-            })->editColumn('observacion', function($gestiones) {
-                return $gestiones->pivot->observacion;
-
-            })->make(true);
 
         }else if(($request->mes != null) && ($request->anyo != null)){
             //BUSQUEDA POR MES Y AÑO
@@ -130,31 +105,6 @@ class GestionController extends Controller
                 }
             });
 
-            return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
-                return $gestiones->pivot->anyo;
-
-            })->editColumn('contacto', function($gestiones) {
-                return $gestiones->pivot->contacto;
-
-            })->editColumn('respuesta', function($gestiones) {
-                $gestion_resp = Respuesta::where('idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->get();
-                return $gestion_resp[0]->codigo.' - '.$gestion_resp[0]->respuesta;
-
-            })->editColumn('detalle', function($gestiones) {
-                $detalle_resp = RespuestasDetalle::where('respuestas_idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->where('literal', '=', $gestiones->pivot->detalle)->get();
-                return $detalle_resp[0]->literal.' - '.$detalle_resp[0]->detalle;
-
-            })->editColumn('fecha_gestion', function($gestiones) {
-                return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
-
-            })->editColumn('mes', function($gestiones) {
-                return $gestiones->pivot->mes;
-
-            })->editColumn('observacion', function($gestiones) {
-                return $gestiones->pivot->observacion;
-
-            })->make(true);
-
         }else if(($request->mes != null)){
             //BSQUEDA POR MES
             $mes = $request->mes;
@@ -165,31 +115,6 @@ class GestionController extends Controller
                 }
             });
 
-            return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
-                return $gestiones->pivot->anyo;
-
-            })->editColumn('contacto', function($gestiones) {
-                return $gestiones->pivot->contacto;
-
-            })->editColumn('respuesta', function($gestiones) {
-                $gestion_resp = Respuesta::where('idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->get();
-                return $gestion_resp[0]->codigo.' - '.$gestion_resp[0]->respuesta;
-
-            })->editColumn('detalle', function($gestiones) {
-                $detalle_resp = RespuestasDetalle::where('respuestas_idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->where('literal', '=', $gestiones->pivot->detalle)->get();
-                return $detalle_resp[0]->literal.' - '.$detalle_resp[0]->detalle;
-
-            })->editColumn('fecha_gestion', function($gestiones) {
-                return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
-
-            })->editColumn('mes', function($gestiones) {
-                return $gestiones->pivot->mes;
-
-            })->editColumn('observacion', function($gestiones) {
-                return $gestiones->pivot->observacion;
-
-            })->make(true);
-
         }else if(($request->anyo != null)){
             $anyo = $request->anyo;
 
@@ -198,7 +123,9 @@ class GestionController extends Controller
                     $filtered_gestiones_fecha[] = $item;
                 }
             });
+        }
 
+        if(count($filtered_gestiones_fecha) > 0){
             return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
                 return $gestiones->pivot->anyo;
 
@@ -223,6 +150,9 @@ class GestionController extends Controller
                 return $gestiones->pivot->observacion;
 
             })->make(true);
+
+        }else{
+            $mensaje_error = 'No hay gestiones para este RUT en la fecha consultada.';
         }
 
         return Response::json(array('mensaje_error' => $mensaje_error));
