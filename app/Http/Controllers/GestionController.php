@@ -86,6 +86,9 @@ class GestionController extends Controller
             
         }else if(($request->dia != null) && ($request->mes != null) && ($request->anyo != null)){
             //BUSQUEDA FECHA ESPECIFICA
+            if($request->dia < 10){
+                $request->dia = '0'.$request->dia;
+            }
             $fecha_gestion = $request->anyo.'-'.$request->mes.'-'.$request->dia;
             
             $gestiones->each(function ($item) use (&$fecha_gestion, &$filtered_gestiones_fecha) {
