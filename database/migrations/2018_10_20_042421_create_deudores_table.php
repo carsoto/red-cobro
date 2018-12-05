@@ -20,7 +20,8 @@ class CreateDeudoresTable extends Migration
             $table->integer('rut')->index();
             $table->string('rut_dv', 45);
             $table->string('razon_social', 150);
-        
+            $table->integer('en_gestion');
+
             $table->timestamps();
         
         });

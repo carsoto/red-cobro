@@ -39,8 +39,14 @@ class Deudor extends Eloquent
 	protected $fillable = [
 		'rut',
 		'rut_dv',
-		'razon_social'
+		'razon_social',
+		'en_gestion'
 	];
+
+	public function asignaciones()
+	{
+		return $this->hasMany(\App\Asignacion::class, 'deudores_iddeudores');
+	}
 
 	public function correos()
 	{

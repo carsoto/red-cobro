@@ -7,9 +7,11 @@ use Illuminate\Http\Request;
 use Excel;
 use App\User;
 use App\Agente;
+use App\Asignacion;
 use App\Comuna;
 use App\Correo;
 use App\Deudor;
+use App\DeudoresDocumento;
 use App\Direccion;
 use App\Documento;
 use App\Proveedor;
@@ -21,6 +23,7 @@ use App\Telefono;
 use Funciones;
 use Redirect;
 use Session;
+use DB;
 
 class ArchivosController extends Controller
 {
@@ -37,13 +40,16 @@ class ArchivosController extends Controller
 
             Excel::load($request->file('file'), function($hoja) {
                 $tiempo_inicial = microtime(true);
-              
+
+                //Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
+                $deuda_total = 0;
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $asignacion) {
                         $deudor = Deudor::firstOrCreate([
                             'rut' => Funciones::rut_sin_dv($asignacion['rut']),
                             'rut_dv' => strtoupper($asignacion['rut']),
-                            'razon_social' => $asignacion['razon_social_nombre']
+                            'razon_social' => $asignacion['razon_social_nombre'],
+                            'en_gestion' => 1
                         ]);
 
                         $direccion = Direccion::firstOrCreate([
@@ -96,6 +102,30 @@ class ArchivosController extends Controller
                         ]);               
 
                         $proveedor->documentos()->sync($documento->iddocumentos, false);
+
+                        $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', date('Y-m-d'))->get();
+                        
+                        $documentos = $deudor->documentos;
+                        foreach ($documentos as $key => $doc) {
+                            $deuda_total += $doc->deuda; 
+                        }
+                        /*$deudor_documentos = DeudoresDocumento::select(DB::raw('GROUP_CONCAT(iddocumentos) AS documentos'))->where('iddeudores', '=', $deudor->iddeudores)->get();
+                        $deudor_documentos = explode(",", $deudor_documentos[0]->documentos);
+                        
+                        $total = Documento::select(DB::raw('SUM(deuda) AS deuda'))->whereIn('iddocumentos', $deudor_documentos)->get();
+                        $deuda_total = $total[0]->deuda;*/
+
+                        if(count($hist_asignacion) == 0){
+                            Asignacion::create([
+                                'deudores_iddeudores' => $deudor->iddeudores,
+                                'fecha_asignacion' => date('Y-m-d'),
+                                'deuda' => $deuda_total
+                            ]);
+                            $deuda_total = 0;
+                        }else{
+                            Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', date('Y-m-d'))->update(['deuda' => $deuda_total]);
+                            $deuda_total = 0;
+                        }
                     }
                 }
                 
