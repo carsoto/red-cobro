@@ -41,15 +41,17 @@ class ArchivosController extends Controller
             Excel::load($request->file('file'), function($hoja) {
                 $tiempo_inicial = microtime(true);
 
-                //Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
+                Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
                 $deuda_total = 0;
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $asignacion) {
-                        $deudor = Deudor::firstOrCreate([
-                            'rut' => Funciones::rut_sin_dv($asignacion['rut']),
-                            'rut_dv' => strtoupper($asignacion['rut']),
-                            'razon_social' => $asignacion['razon_social_nombre'],
-                            'en_gestion' => 1
+                        $rut = Funciones::rut_sin_dv($asignacion['rut']);
+
+                        $deudor = Deudor::updateOrCreate(['rut' => $rut], [ 
+                                    'rut' => Funciones::rut_sin_dv($asignacion['rut']),
+                                    'rut_dv' => strtoupper($asignacion['rut']),
+                                    'razon_social' => $asignacion['razon_social_nombre'],
+                                    'en_gestion' => 1
                         ]);
 
                         $direccion = Direccion::firstOrCreate([
@@ -63,7 +65,7 @@ class ArchivosController extends Controller
                         $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
                         if($asignacion['email'] != ''){
                             if (strpos($asignacion['email'], '@') !== false ) {
-                                $correo = Correo::firstOrCreate([
+                                $correo = Correo::updateOrCreate(['correo' => $asignacion['email']], [
                                     'correo' => $asignacion['email']
                                 ]);
                                 $deudor->correos()->sync($correo->idcorreos_electronicos, false);
@@ -72,7 +74,7 @@ class ArchivosController extends Controller
 
                         $asignacion['fono_1'] = str_replace(' ', '', $asignacion['fono_1']);
                         if($asignacion['fono_1'] != ''){
-                            $telefono1 = Telefono::firstOrCreate([
+                            $telefono1 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_1']], [
                                 'telefono' => $asignacion['fono_1']
                             ]);
                             $deudor->telefonos()->sync($telefono1->idtelefonos, false);
@@ -80,7 +82,7 @@ class ArchivosController extends Controller
 
                         $asignacion['fono_2'] = str_replace(' ', '', $asignacion['fono_2']);
                         if($asignacion['fono_2'] != ''){
-                            $telefono2 = Telefono::firstOrCreate([
+                            $telefono2 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_2']], [
                                 'telefono' => $asignacion['fono_2']
                             ]);
                             $deudor->telefonos()->sync($telefono2->idtelefonos, false);
