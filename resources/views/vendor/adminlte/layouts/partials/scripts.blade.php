@@ -229,8 +229,19 @@
             	}else{
             		$('#deudor-rut').html(response.deudor.rut_dv);
 					$('#deudor-razon-social').html(response.deudor.razon_social);
-					$('#deudor-en-gestion').html('-');
-					//$('#deudor-fecha-asignacion').html(response.deudor.created_at);
+					
+					var clase = document.getElementById('deudor-en-gestion').className;
+					$('#deudor-en-gestion').removeClass(clase);
+					
+					if(response.deudor.en_gestion){
+						$('#deudor-en-gestion').addClass('label label-success');
+						$('#deudor-en-gestion').html('SI');	
+					}else{
+						$('#deudor-en-gestion').addClass('label label-danger');
+						$('#deudor-en-gestion').html('NO');
+					}
+					
+					$('#deudor-fecha-asignacion').html(response.asignado);
 					$('#deudor-dias-mora').html('-');
 					$('#deudor-marca-1').html('-');
 					$('#deudor-marca-2').html('-');

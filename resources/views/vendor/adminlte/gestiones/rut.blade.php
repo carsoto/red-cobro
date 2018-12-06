@@ -85,7 +85,11 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-en-gestion'>-</span>
+												@if($datos_deudor['deudor']->en_gestion)
+													<span class="label label-success" id='deudor-en-gestion' style="font-size: 11px;">SI</span>
+												@else
+													<span class="label label-danger" id='deudor-en-gestion' style="font-size: 11px;">NO</span>
+												@endif
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -103,7 +107,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-fecha-asignacion'>-</span>
+												<span class='' id='deudor-fecha-asignacion'>{{ $datos_deudor['asignado'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>

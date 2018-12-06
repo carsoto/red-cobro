@@ -13,6 +13,7 @@ use App\DeudoresGestiones;
 use Session;
 use Datatables;
 use Redirect;
+use Carbon\Carbon;
 
 class GestionController extends Controller
 {
@@ -56,6 +57,7 @@ class GestionController extends Controller
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
             $documentos = $deudor->documentos;
+            $asignado = Carbon::parse($deudor->asignaciones->max('fecha_asignacion'))->format('d-m-Y');
 
             foreach ($deudor->documentos as $key => $doc) {
                 $deuda += $doc->deuda;
@@ -65,7 +67,7 @@ class GestionController extends Controller
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'asignado' => $asignado);
     }
 
     public function search(Request $request){
