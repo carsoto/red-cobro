@@ -57,13 +57,14 @@ class GestionController extends Controller
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
             $documentos = $deudor->documentos;
-            $asignado = Carbon::parse($deudor->asignaciones->max('fecha_asignacion'))->format('d-m-Y');
-            //dd($deudor->asignaciones()->orderBy('created_at', 'desc')->first());
-            foreach ($deudor->documentos as $key => $doc) {
-                $deuda += $doc->deuda;
-            }
+            $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+            
+            $ultima_asignacion = array();
+            $ultima_asignacion['fecha_asignacion'] = Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
+            $ultima_asignacion['deuda'] = number_format($asignacion->deuda, 2, ",", ".");;
+            $ultima_asignacion['dias_mora'] = $deudor->documentos->max('dias_mora');
+            $ultima_asignacion['saldo_hoy'] = "-";
 
-            $deuda = number_format($deuda, 2, ",", ".");
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
@@ -99,7 +100,7 @@ class GestionController extends Controller
             $ultima_gestion['ult_observacion'] = "-";
         }
 
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'asignado' => $asignado, 'ultima_gestion' => $ultima_gestion);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
     }
 
     public function search(Request $request){

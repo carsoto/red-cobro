@@ -241,17 +241,17 @@
 						$('#deudor-en-gestion').html('NO');
 					}
 					
-					$('#deudor-fecha-asignacion').html(response.asignado);
-					$('#deudor-dias-mora').html('-');
+					$('#deudor-fecha-asignacion').html(response.ultima_asignacion.fecha_asignacion);
+					$('#deudor-dias-mora').html(response.ultima_asignacion.dias_mora);
 					$('#deudor-marca-1').html('-');
 					$('#deudor-marca-2').html('-');
 					$('#deudor-marca-3').html('-');
 					$('#deudor-marca-4').html('-');
 					$('#deudor-marca-5').html('-');
 					$('#deudor-marca-6').html('-');
-					$('#deudor-deuda-asignada').html(response.deuda);
+					$('#deudor-deuda-asignada').html(response.ultima_asignacion.deuda);
 					$('#deudor-deuda-recuperada').html('-');
-					$('#deudor-saldo-hoy').html('-');
+					$('#deudor-saldo-hoy').html(response.ultima_asignacion.saldo_hoy);
 					$('#deudor-fecha-ult-gest').html(response.ultima_gestion.fecha_ult_gestion);
 					$('#deudor-ult-gest').html(response.ultima_gestion.ult_gestion);
 					$('#deudor-ult-resp').html(response.ultima_gestion.ult_respuesta);

@@ -107,7 +107,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-fecha-asignacion'>{{ $datos_deudor['asignado'] }}</span>
+												<span class='' id='deudor-fecha-asignacion'>{{ $datos_deudor['ultima_asignacion']['fecha_asignacion'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -233,7 +233,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-dias-mora'>-</span>
+												<span class='' id='deudor-dias-mora'>{{ $datos_deudor['ultima_asignacion']['dias_mora'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -251,7 +251,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-deuda-asignada'>-</span>
+												<span class='' id='deudor-deuda-asignada'>{{ $datos_deudor['ultima_asignacion']['deuda'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
