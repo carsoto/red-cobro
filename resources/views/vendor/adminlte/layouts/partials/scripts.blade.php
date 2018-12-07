@@ -227,6 +227,8 @@
             	if(response.mensaje != ''){
             		swal("Rut no encontrado!", response.mensaje, "error");
             	}else{
+            		var marcas = response.marcas;
+
             		$('#deudor-rut').html(response.deudor.rut_dv);
 					$('#deudor-razon-social').html(response.deudor.razon_social);
 					
@@ -243,6 +245,10 @@
 					
 					$('#deudor-fecha-asignacion').html(response.ultima_asignacion.fecha_asignacion);
 					$('#deudor-dias-mora').html(response.ultima_asignacion.dias_mora);
+
+					for (var i = 1; i <= marcas.length; i++) {
+						console.log(marcas[i]);
+					}
 					$('#deudor-marca-1').html('-');
 					$('#deudor-marca-2').html('-');
 					$('#deudor-marca-3').html('-');

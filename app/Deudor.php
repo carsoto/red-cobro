@@ -16,12 +16,16 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $rut
  * @property string $rut_dv
  * @property string $razon_social
+ * @property int $en_gestion
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
+ * @property \Illuminate\Database\Eloquent\Collection $asignaciones
  * @property \Illuminate\Database\Eloquent\Collection $correos
  * @property \Illuminate\Database\Eloquent\Collection $direcciones
  * @property \Illuminate\Database\Eloquent\Collection $documentos
+ * @property \Illuminate\Database\Eloquent\Collection $gestiones
+ * @property \Illuminate\Database\Eloquent\Collection $deudores_marcas
  * @property \Illuminate\Database\Eloquent\Collection $telefonos
  *
  * @package App
@@ -33,7 +37,8 @@ class Deudor extends Eloquent
 	protected $primaryKey = 'iddeudores';
 
 	protected $casts = [
-		'rut' => 'int'
+		'rut' => 'int',
+		'en_gestion' => 'int'
 	];
 
 	protected $fillable = [
@@ -76,6 +81,11 @@ class Deudor extends Eloquent
 					->withTimestamps();
 	}
 
+	public function marcas()
+	{
+		return $this->hasMany(\App\DeudoresMarca::class, 'deudores_iddeudores')->orderby('fecha_marca', 'asc')->limit(6);
+	}
+	
 	public function telefonos()
 	{
 		return $this->belongsToMany(\App\Telefono::class, 'deudores_telefonos', 'iddeudores', 'idtelefonos')

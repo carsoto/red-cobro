@@ -10,6 +10,7 @@ use App\Gestion;
 use App\Respuesta;
 use App\RespuestasDetalle;
 use App\DeudoresGestiones;
+use App\DeudoresMarca;
 use Session;
 use Datatables;
 use Redirect;
@@ -57,6 +58,19 @@ class GestionController extends Controller
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
             $documentos = $deudor->documentos;
+            $marcas = $deudor->marcas;
+            $cantd_marcas = count($marcas);
+
+            if($cantd_marcas < 6){
+                $marcas_vacias = 6 - $cantd_marcas;
+
+                for ($i=0; $i < $marcas_vacias; $i++) { 
+                    $new_marca = new DeudoresMarca;
+                    $new_marca->marca = "-";
+                    $marcas->push($new_marca);
+                }
+            }
+
             $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
             
             $ultima_asignacion = array();
@@ -65,42 +79,42 @@ class GestionController extends Controller
             $ultima_asignacion['dias_mora'] = $deudor->documentos->max('dias_mora');
             $ultima_asignacion['saldo_hoy'] = "-";
 
+            $ultima_gestion_reg = $deudor->gestiones()->orderBy('pivot_created_at', 'desc')->first();
+            $ultima_gestion = array();
+            if($ultima_gestion_reg != null){
+                $ultima_gestion['fecha_ult_gestion'] = Carbon::parse($ultima_gestion_reg->fecha_gestion)->format('d-m-Y');
+                $ultima_gestion['ult_gestion'] = $ultima_gestion_reg->codigo." - ".$ultima_gestion_reg->descripcion;
+                
+                if($ultima_gestion_reg->pivot->respuesta){
+                    $ultima_gestion['ult_respuesta'] = $ultima_gestion_reg->pivot->respuesta;
+                }else{
+                    $ultima_gestion['ult_respuesta'] = "-";
+                }
+                
+                if($ultima_gestion_reg->pivot->detalle){
+                    $ultima_gestion['ult_detalle'] = $ultima_gestion_reg->pivot->detalle;
+                }else{
+                    $ultima_gestion['ult_detalle'] = "-";
+                }
+                
+                if($ultima_gestion_reg->pivot->observacion){
+                    $ultima_gestion['ult_observacion'] = $ultima_gestion_reg->pivot->observacion;
+                }else{
+                    $ultima_gestion['ult_observacion'] = "-";
+                }
+            }else{
+                $ultima_gestion['fecha_ult_gestion'] = "-";
+                $ultima_gestion['ult_gestion'] = "-";
+                $ultima_gestion['ult_respuesta'] = "-";
+                $ultima_gestion['ult_detalle'] = "-";
+                $ultima_gestion['ult_observacion'] = "-";
+            }
+
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
 
-        $ultima_gestion_reg = $deudor->gestiones()->orderBy('pivot_created_at', 'desc')->first();
-        $ultima_gestion = array();
-        if($ultima_gestion_reg != null){
-            $ultima_gestion['fecha_ult_gestion'] = Carbon::parse($ultima_gestion_reg->fecha_gestion)->format('d-m-Y');
-            $ultima_gestion['ult_gestion'] = $ultima_gestion_reg->codigo." - ".$ultima_gestion_reg->descripcion;
-            
-            if($ultima_gestion_reg->pivot->respuesta){
-                $ultima_gestion['ult_respuesta'] = $ultima_gestion_reg->pivot->respuesta;
-            }else{
-                $ultima_gestion['ult_respuesta'] = "-";
-            }
-            
-            if($ultima_gestion_reg->pivot->detalle){
-                $ultima_gestion['ult_detalle'] = $ultima_gestion_reg->pivot->detalle;
-            }else{
-                $ultima_gestion['ult_detalle'] = "-";
-            }
-            
-            if($ultima_gestion_reg->pivot->observacion){
-                $ultima_gestion['ult_observacion'] = $ultima_gestion_reg->pivot->observacion;
-            }else{
-                $ultima_gestion['ult_observacion'] = "-";
-            }
-        }else{
-            $ultima_gestion['fecha_ult_gestion'] = "-";
-            $ultima_gestion['ult_gestion'] = "-";
-            $ultima_gestion['ult_respuesta'] = "-";
-            $ultima_gestion['ult_detalle'] = "-";
-            $ultima_gestion['ult_observacion'] = "-";
-        }
-
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'marcas' => $marcas, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
     }
 
     public function search(Request $request){

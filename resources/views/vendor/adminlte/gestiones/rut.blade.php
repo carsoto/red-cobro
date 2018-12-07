@@ -115,113 +115,25 @@
 									    </div>
 			                        </div>
 
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 1</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-1'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
+			                        @foreach($datos_deudor['marcas'] AS $clave => $info)
+			                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+				                        	<div class="box box-warning">
+												<div class="box-header text-center" style="padding: 0px;">
+													<h4 style="font-size: 12px; text-align: center;">
+							                            <strong>MARCA {{ ($clave + 1) }}</strong>
+							                        </h4>
+												<!-- /.box-tools -->
 												</div>
-											</div>
-									    </div>
-			                        </div>
-
-				                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 2</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-2'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
+												<!-- /.box-header -->
+												<div class="box-body text-center" style="font-size: 11px;">
+													<span class='' id='deudor-marca-{{ ($clave + 1) }}'>{{ $info->marca }}</span>
+													<div class="overlay cargando" style="display: none;">
+														<i class="fa fa-spinner fa-spin"></i>
+													</div>
 												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 3</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-3'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 4</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-4'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 5</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-5'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-warning">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>MARCA 6</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-marca-6'>-</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-		                        	</div>
+										    </div>
+				                        </div>
+			                        @endforeach
 
 		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
 			                        	<div class="box box-danger">

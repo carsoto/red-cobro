@@ -12,6 +12,7 @@ use App\Comuna;
 use App\Correo;
 use App\Deudor;
 use App\DeudoresDocumento;
+use App\DeudoresMarca;
 use App\Direccion;
 use App\Documento;
 use App\Proveedor;
@@ -137,11 +138,60 @@ class ArchivosController extends Controller
             });
 
         }else if($tipo_archivo == "Pagos"){
-            Session::flash('message', "Archivo de pagos fue importado con éxito.");
+
+            Excel::load($request->file('file'), function($hoja) {
+                $tiempo_inicial = microtime(true);
+
+                foreach ($hoja->all() as $key => $registro) {
+                    foreach ($registro as $index => $asignacion) {
+                    }
+                }
+                
+                $tiempo_final = microtime(true);
+                $tiempo = $tiempo_final - $tiempo_inicial;
+                Session::flash('message', "Archivo de pagos importado con éxito. Tiempo estimado de carga: ".$tiempo);
+            });
+
+            Session::flash('message', "Archivo de  fue importado con éxito.");
+
         }else if($tipo_archivo == "Marcar_deudores"){
-            Session::flash('message', "Archivo de marcas a deudores fue importado con éxito.");
+            
+            Excel::load($request->file('file'), function($hoja) {
+                $tiempo_inicial = microtime(true);
+                $fecha_actual = date('Y-m-d');
+
+                foreach ($hoja->all() as $key => $registro) {
+                    foreach ($registro as $index => $row) {
+                        $deudor = Deudor::where('rut', '=', Funciones::rut_sin_dv($row->rut))->get();
+                        $deudor = $deudor[0];
+                        
+                        DeudoresMarca::create([ 
+                            'deudores_iddeudores' => $deudor->iddeudores,
+                            'marca' => strtoupper($row->marca),
+                            'fecha_marca' => $fecha_actual,
+                        ]);
+                    }
+                }
+                
+                $tiempo_final = microtime(true);
+                $tiempo = $tiempo_final - $tiempo_inicial;
+                Session::flash('message', "Archivo de marcas a deudores importado con éxito. Tiempo estimado de carga: ".$tiempo);
+            });
+
         }else if($tipo_archivo == "Marcar_contactos"){
-            Session::flash('message', "Archivo de marcas a contactos fue importado con éxito.");
+
+            Excel::load($request->file('file'), function($hoja) {
+                $tiempo_inicial = microtime(true);
+
+                foreach ($hoja->all() as $key => $registro) {
+                    foreach ($registro as $index => $asignacion) {
+                    }
+                }
+                
+                $tiempo_final = microtime(true);
+                $tiempo = $tiempo_final - $tiempo_inicial;
+                Session::flash('message', "Archivo de marcas a contactos importado con éxito. Tiempo estimado de carga: ".$tiempo);
+            });
         }
         
         return Redirect::back();
