@@ -305,7 +305,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-fecha-ult-gest'>-</span>
+												<span class='' id='deudor-fecha-ult-gest'>{{ $datos_deudor['ultima_gestion']['fecha_ult_gestion'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -323,7 +323,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-gest'>-</span>
+												<span class='' id='deudor-ult-gest'>{{ $datos_deudor['ultima_gestion']['ult_gestion'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -341,7 +341,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-resp'>-</span>
+												<span class='' id='deudor-ult-resp'>{{ $datos_deudor['ultima_gestion']['ult_respuesta'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -359,7 +359,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-det-resp'>-</span>
+												<span class='' id='deudor-ult-det-resp'>{{ $datos_deudor['ultima_gestion']['ult_detalle'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -377,7 +377,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-obs-gest'>-</span>
+												<span class='' id='deudor-ult-obs-gest'>{{ $datos_deudor['ultima_gestion']['ult_observacion'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>

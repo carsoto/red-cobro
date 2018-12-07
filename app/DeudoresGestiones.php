@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Sat, 24 Nov 2018 16:29:53 +0000.
+ * Date: Fri, 07 Dec 2018 16:10:10 +0000.
  */
 
 namespace App;
@@ -16,7 +16,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $deudores_iddeudores
  * @property string $contacto
  * @property int $gestiones_idgestiones
- * @property int $respuestas_idrespuesta
+ * @property string $respuesta
  * @property string $detalle
  * @property string $observacion
  * @property int $anyo
@@ -37,7 +37,6 @@ class DeudoresGestiones extends Eloquent
 	protected $casts = [
 		'deudores_iddeudores' => 'int',
 		'gestiones_idgestiones' => 'int',
-		'respuestas_idrespuesta' => 'int',
 		'anyo' => 'int',
 		'mes' => 'int'
 	];
@@ -50,7 +49,7 @@ class DeudoresGestiones extends Eloquent
 		'deudores_iddeudores',
 		'contacto',
 		'gestiones_idgestiones',
-		'respuestas_idrespuesta',
+		'respuesta',
 		'detalle',
 		'observacion',
 		'anyo',

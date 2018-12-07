@@ -72,7 +72,7 @@ class Deudor extends Eloquent
 	public function gestiones()
 	{
 		return $this->belongsToMany(\App\Gestion::class, 'deudores_gestiones', 'deudores_iddeudores', 'gestiones_idgestiones')
-					->withPivot('iddeudores_gestiones', 'contacto', 'respuestas_idrespuesta', 'detalle', 'observacion', 'anyo', 'mes', 'fecha_gestion')
+					->withPivot('iddeudores_gestiones', 'contacto', 'respuesta', 'detalle', 'observacion', 'anyo', 'mes', 'fecha_gestion')
 					->withTimestamps();
 	}
 

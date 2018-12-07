@@ -58,7 +58,7 @@ class GestionController extends Controller
             $correos = $deudor->correos;
             $documentos = $deudor->documentos;
             $asignado = Carbon::parse($deudor->asignaciones->max('fecha_asignacion'))->format('d-m-Y');
-
+            //dd($deudor->asignaciones()->orderBy('created_at', 'desc')->first());
             foreach ($deudor->documentos as $key => $doc) {
                 $deuda += $doc->deuda;
             }
@@ -67,7 +67,39 @@ class GestionController extends Controller
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'asignado' => $asignado);
+
+        $ultima_gestion_reg = $deudor->gestiones()->orderBy('pivot_created_at', 'desc')->first();
+        $ultima_gestion = array();
+        if($ultima_gestion_reg != null){
+            $ultima_gestion['fecha_ult_gestion'] = Carbon::parse($ultima_gestion_reg->fecha_gestion)->format('d-m-Y');
+            $ultima_gestion['ult_gestion'] = $ultima_gestion_reg->codigo." - ".$ultima_gestion_reg->descripcion;
+            
+            if($ultima_gestion_reg->pivot->respuesta){
+                $ultima_gestion['ult_respuesta'] = $ultima_gestion_reg->pivot->respuesta;
+            }else{
+                $ultima_gestion['ult_respuesta'] = "-";
+            }
+            
+            if($ultima_gestion_reg->pivot->detalle){
+                $ultima_gestion['ult_detalle'] = $ultima_gestion_reg->pivot->detalle;
+            }else{
+                $ultima_gestion['ult_detalle'] = "-";
+            }
+            
+            if($ultima_gestion_reg->pivot->observacion){
+                $ultima_gestion['ult_observacion'] = $ultima_gestion_reg->pivot->observacion;
+            }else{
+                $ultima_gestion['ult_observacion'] = "-";
+            }
+        }else{
+            $ultima_gestion['fecha_ult_gestion'] = "-";
+            $ultima_gestion['ult_gestion'] = "-";
+            $ultima_gestion['ult_respuesta'] = "-";
+            $ultima_gestion['ult_detalle'] = "-";
+            $ultima_gestion['ult_observacion'] = "-";
+        }
+
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'deuda' => $deuda, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'asignado' => $asignado, 'ultima_gestion' => $ultima_gestion);
     }
 
     public function search(Request $request){
@@ -138,12 +170,10 @@ class GestionController extends Controller
                 return $gestiones->pivot->contacto;
 
             })->editColumn('respuesta', function($gestiones) {
-                $gestion_resp = Respuesta::where('idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->get();
-                return $gestion_resp[0]->codigo.' - '.$gestion_resp[0]->respuesta;
+                return $gestiones->pivot->respuesta;
 
             })->editColumn('detalle', function($gestiones) {
-                $detalle_resp = RespuestasDetalle::where('respuestas_idrespuesta', '=', $gestiones->pivot->respuestas_idrespuesta)->where('literal', '=', $gestiones->pivot->detalle)->get();
-                return $detalle_resp[0]->literal.' - '.$detalle_resp[0]->detalle;
+                return $gestiones->pivot->detalle;
 
             })->editColumn('fecha_gestion', function($gestiones) {
                 return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
@@ -187,8 +217,8 @@ class GestionController extends Controller
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
         $nueva_gestion->contacto = $request->contacto;
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
-        $nueva_gestion->respuestas_idrespuesta = $request->respuesta;
-        
+        $nueva_gestion->respuesta = $request->respuesta;
+
         if(isset($request->detalle)){
             $nueva_gestion->detalle = $request->detalle;
         }

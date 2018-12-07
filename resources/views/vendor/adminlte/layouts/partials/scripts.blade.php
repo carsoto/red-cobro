@@ -223,7 +223,7 @@
             type: 'POST',
             data: $('#form-gestion-rut').serialize(),
             success: function (response) {
-            	//console.log(response);
+            	console.log(response);
             	if(response.mensaje != ''){
             		swal("Rut no encontrado!", response.mensaje, "error");
             	}else{
@@ -252,11 +252,11 @@
 					$('#deudor-deuda-asignada').html(response.deuda);
 					$('#deudor-deuda-recuperada').html('-');
 					$('#deudor-saldo-hoy').html('-');
-					$('#deudor-fecha-ult-gest').html('-');
-					$('#deudor-ult-gest').html('-');
-					$('#deudor-ult-resp').html('-');
-					$('#deudor-ult-det-resp').html('-');
-					$('#deudor-ult-obs-gest').html('-');
+					$('#deudor-fecha-ult-gest').html(response.ultima_gestion.fecha_ult_gestion);
+					$('#deudor-ult-gest').html(response.ultima_gestion.ult_gestion);
+					$('#deudor-ult-resp').html(response.ultima_gestion.ult_respuesta);
+					$('#deudor-ult-det-resp').html(response.ultima_gestion.ult_detalle);
+					$('#deudor-ult-obs-gest').html(response.ultima_gestion.ult_observacion);
 
 					var tabla_contactos = $("#tabla-contactos");
 					var cantd_filas = $('#tabla-contactos >tbody >tr').length;
@@ -330,7 +330,7 @@
             	if(respuestas.length > 0){
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
             		for (var i = 0; i < respuestas.length; i++) {
-	            		$('#select-respuestas').append('<option value="'+respuestas[i].idrespuesta+'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
+	            		$('#select-respuestas').append('<option id="'+respuestas[i].idrespuesta+'" value="'+ respuestas[i].codigo + ' - ' + respuestas[i].respuesta +'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
 	            	}
             	}else{
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
@@ -343,7 +343,7 @@
     }
 
     function cargar_detalles(respuesta){
-    	var id_respuesta = respuesta.options[respuesta.selectedIndex].value;
+    	var id_respuesta = respuesta.options[respuesta.selectedIndex].getAttribute('id');
     	var cargando = $(".cargando_modal");
 
 		// evento ajax start
@@ -370,7 +370,7 @@
 	            		$('#detalles-por-respuesta').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
 	            		$('#detalles-por-respuesta').css({"height": "170px", "overflow-y":"scroll"});
 	            		for (var i = 0; i < detalles.length; i++) {
-		            		$('#detalles-por-respuesta').append('<div class="radio icheck"><label><input type="radio" name="detalle" value="'+detalles[i].literal+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div>');
+		            		$('#detalles-por-respuesta').append('<div class="radio icheck"><label><input type="radio" name="detalle" value="'+detalles[i].literal+' - '+detalles[i].detalle+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div>');
 		            	}
 	            	}else{
 	            		$('#detalles-por-respuesta').css({"height": "", "overflow-y":""});
