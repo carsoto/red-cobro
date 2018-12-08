@@ -246,15 +246,9 @@
 					$('#deudor-fecha-asignacion').html(response.ultima_asignacion.fecha_asignacion);
 					$('#deudor-dias-mora').html(response.ultima_asignacion.dias_mora);
 
-					for (var i = 1; i <= marcas.length; i++) {
-						console.log(marcas[i]);
+					for (var i = 0; i < marcas.length; i++) {
+						$('#deudor-marca-'+(i+1)).html(marcas[i].marca);
 					}
-					$('#deudor-marca-1').html('-');
-					$('#deudor-marca-2').html('-');
-					$('#deudor-marca-3').html('-');
-					$('#deudor-marca-4').html('-');
-					$('#deudor-marca-5').html('-');
-					$('#deudor-marca-6').html('-');
 					$('#deudor-deuda-asignada').html(response.ultima_asignacion.deuda);
 					$('#deudor-deuda-recuperada').html('-');
 					$('#deudor-saldo-hoy').html(response.ultima_asignacion.saldo_hoy);
