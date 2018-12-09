@@ -316,7 +316,7 @@
 			                            	@if(count($datos_deudor['telefonos']) > 0)
 				                            	@foreach($datos_deudor['telefonos'] AS $key => $value)
 					                            	<tr style="font-size: 11px;">
-						                                <td>{{ $value->telefono }}</td>
+						                                <td><a href="skype:{{ $value->telefono }}?call">{{ $value->telefono }}</a></td>
 						                                <td colspan="2"></td>
 						                                <td></td>
 						                                <td></td>
@@ -327,7 +327,7 @@
 			                                @if(count($datos_deudor['correos']) > 0)
 				                            	@foreach($datos_deudor['correos'] AS $key => $value)
 					                            	<tr style="font-size: 11px;">
-						                                <td>{{ $value->correo }}</td>
+						                                <td><a href="skype:{{ $value->correo }}?chat">{{ $value->correo }}</a></td>
 						                                <td colspan="2"></td>
 						                                <td></td>
 						                                <td></td>

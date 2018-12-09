@@ -271,7 +271,7 @@
 						for (var i = 0; i < response.telefonos.length; i++) {
 							var row = $("<tr style='font-size: 11px;'>");
 							
-							row.append($("<td>"+response.telefonos[i].telefono+"</td>"))
+							row.append($("<td><a href='skype:"+response.telefonos[i].telefono+"?call'>"+response.telefonos[i].telefono+"</a></td>"))
 							 .append($("<td colspan='2'>-</td>"))
 							 .append($("<td>-</td>"))
 							 .append($("<td>-</td>"))
@@ -283,7 +283,7 @@
 						for (var i = 0; i < response.correos.length; i++) {
 							var row = $("<tr style='font-size: 11px;'>");
 
-							row.append($("<td>"+response.correos[i].correo+"</td>"))
+							row.append($("<td><a href='skype:"+response.correos[i].correo+"?chat'>"+response.correos[i].correo+"</a></td>"))
 							 .append($("<td colspan='2'>-</td>"))
 							 .append($("<td>-</td>"))
 							 .append($("<td>-</td>"))
