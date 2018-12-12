@@ -51,7 +51,8 @@ class GestionController extends Controller
         $mensaje = '';
         $deuda = 0;
         $direcciones = $telefonos = $correos = $documentos = array();
-        
+        $deuda_recuperada = 0;
+
         if(count($deudor) > 0){
             $deudor = $deudor[0];
             $direcciones = $deudor->direcciones;
@@ -71,16 +72,26 @@ class GestionController extends Controller
                 }
             }
 
+            foreach ($documentos as $clave_doc => $doc) {
+                foreach ($doc->pagos as $clave_pago => $pago) {
+                    $deuda_recuperada += $pago->monto;
+                }
+            }
+        
             $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
             
             $ultima_asignacion = array();
             $ultima_asignacion['fecha_asignacion'] = Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
-            $ultima_asignacion['deuda'] = number_format($asignacion->deuda, 2, ",", ".");;
-            $ultima_asignacion['dias_mora'] = $deudor->documentos->max('dias_mora');
-            $ultima_asignacion['saldo_hoy'] = "-";
+            $ultima_asignacion['deuda'] = number_format($asignacion->deuda, 2, ",", ".");
+            $ultima_asignacion['dias_mora'] = $documentos->max('dias_mora');
+
+            $saldo_hoy = $asignacion->deuda - $deuda_recuperada;
+            $deuda_recuperada = number_format($deuda_recuperada, 2, ",", ".");
+            $saldo_hoy = number_format($saldo_hoy, 2, ",", ".");
 
             $ultima_gestion_reg = $deudor->gestiones()->orderBy('pivot_created_at', 'desc')->first();
             $ultima_gestion = array();
+
             if($ultima_gestion_reg != null){
                 $ultima_gestion['fecha_ult_gestion'] = Carbon::parse($ultima_gestion_reg->fecha_gestion)->format('d-m-Y');
                 $ultima_gestion['ult_gestion'] = $ultima_gestion_reg->codigo." - ".$ultima_gestion_reg->descripcion;
@@ -114,7 +125,7 @@ class GestionController extends Controller
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
 
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'marcas' => $marcas, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'marcas' => $marcas, 'deuda_recuperada' => $deuda_recuperada, 'saldo_hoy' => $saldo_hoy, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
     }
 
     public function search(Request $request){

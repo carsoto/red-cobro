@@ -23,6 +23,7 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \Illuminate\Database\Eloquent\Collection $deudores
+ * @property \Illuminate\Database\Eloquent\Collection $pagos
  * @property \Illuminate\Database\Eloquent\Collection $proveedores
  *
  * @package App
@@ -57,6 +58,11 @@ class Documento extends Eloquent
 		return $this->belongsToMany(\App\Deudor::class, 'deudores_documentos', 'iddocumentos', 'iddeudores')
 					->withPivot('id', 'idestado_documentos')
 					->withTimestamps();
+	}
+
+	public function pagos()
+	{
+		return $this->hasMany(\App\Pago::class, 'documentos_iddocumentos');
 	}
 
 	public function proveedores()

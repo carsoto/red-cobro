@@ -181,7 +181,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-deuda-recuperada'>-</span>
+												<span class='' id='deudor-deuda-recuperada'>{{ $datos_deudor['deuda_recuperada'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -199,7 +199,7 @@
 											</div>
 											<!-- /.box-header -->
 											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-saldo-hoy'>-</span>
+												<span class='' id='deudor-saldo-hoy'>{{ $datos_deudor['saldo_hoy'] }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
@@ -300,27 +300,27 @@
 		                        	
 		                        	<table id='tabla-contactos' class="table table-bordered" style="width:100%">
 				                    	<tr>
-			                                <th colspan="6">
+			                                <th colspan="2">
 			                                <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0; margin-bottom: 0;">
 					                            <strong>CONTACTO</strong>
 					                        </h4></th>
 			                            </tr>
 				                    	<tr style="font-size: 12px; text-align: center;">
 			                                <td class='text-center'><span><strong>FONOS/MAIL</strong></span></td>
-			                                <td class='text-center' colspan="2"><span><strong>RESULTADO ÚLTIMA GESTIÓN</strong></span></td>
-			                                <td class='text-center'><span><strong>ORIGEN</strong></span></td>
+			                                <td class='text-center'><span><strong>RESULTADO ÚLTIMA GESTIÓN</strong></span></td>
+			                                <!--<td class='text-center'><span><strong>ORIGEN</strong></span></td>
 			                                <td class='text-center'><span><strong>MARCA 1</strong></span></td>
-			                                <td class='text-center'><span><strong>MARCA 2</strong></span></td>
+			                                <td class='text-center'><span><strong>MARCA 2</strong></span></td>-->
 			                            </tr>
 			                            
 			                            	@if(count($datos_deudor['telefonos']) > 0)
 				                            	@foreach($datos_deudor['telefonos'] AS $key => $value)
 					                            	<tr style="font-size: 11px;">
 						                                <td><a href="skype:{{ $value->telefono }}?call">{{ $value->telefono }}</a></td>
-						                                <td colspan="2"></td>
 						                                <td></td>
+						                                <!--<td></td>
 						                                <td></td>
-						                                <td></td>
+						                                <td></td>-->
 						                            </tr>
 				                                @endforeach
 			                                @endif
@@ -328,10 +328,10 @@
 				                            	@foreach($datos_deudor['correos'] AS $key => $value)
 					                            	<tr style="font-size: 11px;">
 						                                <td><a href="skype:{{ $value->correo }}?chat">{{ $value->correo }}</a></td>
-						                                <td colspan="2"></td>
 						                                <td></td>
+						                                <!--<td></td>
 						                                <td></td>
-						                                <td></td>
+						                                <td></td>-->
 						                            </tr>
 				                                @endforeach
 			                                @endif

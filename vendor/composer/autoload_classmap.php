@@ -56,6 +56,7 @@ return array(
     'App\\Deudor' => $baseDir . '/app/Deudor.php',
     'App\\DeudoresDocumento' => $baseDir . '/app/DeudoresDocumento.php',
     'App\\DeudoresGestiones' => $baseDir . '/app/DeudoresGestiones.php',
+    'App\\DeudoresMarca' => $baseDir . '/app/DeudoresMarca.php',
     'App\\Direccion' => $baseDir . '/app/Direccion.php',
     'App\\Documento' => $baseDir . '/app/Documento.php',
     'App\\Empleado' => $baseDir . '/app/Empleado.php',

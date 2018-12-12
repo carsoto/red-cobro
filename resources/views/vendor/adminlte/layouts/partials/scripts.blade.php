@@ -250,8 +250,8 @@
 						$('#deudor-marca-'+(i+1)).html(marcas[i].marca);
 					}
 					$('#deudor-deuda-asignada').html(response.ultima_asignacion.deuda);
-					$('#deudor-deuda-recuperada').html('-');
-					$('#deudor-saldo-hoy').html(response.ultima_asignacion.saldo_hoy);
+					$('#deudor-deuda-recuperada').html(response.deuda_recuperada);
+					$('#deudor-saldo-hoy').html(response.saldo_hoy);
 					$('#deudor-fecha-ult-gest').html(response.ultima_gestion.fecha_ult_gestion);
 					$('#deudor-ult-gest').html(response.ultima_gestion.ult_gestion);
 					$('#deudor-ult-resp').html(response.ultima_gestion.ult_respuesta);

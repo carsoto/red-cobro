@@ -15,12 +15,14 @@ use App\DeudoresDocumento;
 use App\DeudoresMarca;
 use App\Direccion;
 use App\Documento;
+use App\Pago;
 use App\Proveedor;
 use App\Provincia;
 use App\Region;
 use App\Supervisor;
 use App\Telefono;
 
+use Carbon\Carbon;
 use Funciones;
 use Redirect;
 use Session;
@@ -44,6 +46,7 @@ class ArchivosController extends Controller
 
                 Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
                 $deuda_total = 0;
+                $fecha_actual = date('Y-m-d');
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $asignacion) {
                         $rut = Funciones::rut_sin_dv($asignacion['rut']);
@@ -89,13 +92,16 @@ class ArchivosController extends Controller
                             $deudor->telefonos()->sync($telefono2->idtelefonos, false);
                         }
 
+                        $fecha_emision = Funciones::formatear_fecha($asignacion['fecha_emision']);
+                        $fecha_vencimiento = Funciones::formatear_fecha($asignacion['fecha_vencimiento']);
+                        $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
                         $documento = Documento::firstOrCreate([
                             'numero' => $asignacion['num_documento'], 
                             'folio' => $asignacion['folio'], 
                             'deuda' => $asignacion['deuda'], 
-                            'fecha_emision' => Funciones::cadena_a_fecha($asignacion['fecha_emision']), 
-                            'fecha_vencimiento' => Funciones::cadena_a_fecha($asignacion['fecha_vencimiento']),
-                            'dias_mora' => $asignacion['dias_mora']
+                            'fecha_emision' => $fecha_emision,
+                            'fecha_vencimiento' => $fecha_vencimiento,
+                            'dias_mora' => $dias_mora
                         ]);
 
                         $deudor->documentos()->sync($documento->iddocumentos, false);
@@ -106,27 +112,22 @@ class ArchivosController extends Controller
 
                         $proveedor->documentos()->sync($documento->iddocumentos, false);
 
-                        $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', date('Y-m-d'))->get();
+                        $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
                         
                         $documentos = $deudor->documentos;
                         foreach ($documentos as $key => $doc) {
                             $deuda_total += $doc->deuda; 
                         }
-                        /*$deudor_documentos = DeudoresDocumento::select(DB::raw('GROUP_CONCAT(iddocumentos) AS documentos'))->where('iddeudores', '=', $deudor->iddeudores)->get();
-                        $deudor_documentos = explode(",", $deudor_documentos[0]->documentos);
-                        
-                        $total = Documento::select(DB::raw('SUM(deuda) AS deuda'))->whereIn('iddocumentos', $deudor_documentos)->get();
-                        $deuda_total = $total[0]->deuda;*/
 
                         if(count($hist_asignacion) == 0){
                             Asignacion::create([
                                 'deudores_iddeudores' => $deudor->iddeudores,
-                                'fecha_asignacion' => date('Y-m-d'),
+                                'fecha_asignacion' => $fecha_actual,
                                 'deuda' => $deuda_total
                             ]);
                             $deuda_total = 0;
                         }else{
-                            Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', date('Y-m-d'))->update(['deuda' => $deuda_total]);
+                            Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
                             $deuda_total = 0;
                         }
                     }
@@ -141,9 +142,21 @@ class ArchivosController extends Controller
 
             Excel::load($request->file('file'), function($hoja) {
                 $tiempo_inicial = microtime(true);
-
+                $documentos = Documento::all()->pluck('iddocumentos', 'numero')->toArray();
+                
                 foreach ($hoja->all() as $key => $registro) {
-                    foreach ($registro as $index => $asignacion) {
+                    foreach ($registro as $index => $info) {
+                        $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');
+                        
+                        if(array_key_exists($info->num_documento, $documentos)){
+                            echo '<br>ESTOY REGISTRADO<br>';
+                            Pago::create([
+                                'rut' => strtoupper($info->rut),
+                                'documentos_iddocumentos' => $documentos[$info->num_documento],
+                                'monto' => $info->monto_pago,
+                                'fecha' => $fecha_pago
+                            ]);
+                        }
                     }
                 }
                 
@@ -151,8 +164,6 @@ class ArchivosController extends Controller
                 $tiempo = $tiempo_final - $tiempo_inicial;
                 Session::flash('message', "Archivo de pagos importado con éxito. Tiempo estimado de carga: ".$tiempo);
             });
-
-            Session::flash('message', "Archivo de  fue importado con éxito.");
 
         }else if($tipo_archivo == "Marcar_deudores"){
             
@@ -178,7 +189,7 @@ class ArchivosController extends Controller
                 Session::flash('message', "Archivo de marcas a deudores importado con éxito. Tiempo estimado de carga: ".$tiempo);
             });
 
-        }else if($tipo_archivo == "Marcar_contactos"){
+        }/*else if($tipo_archivo == "Marcar_contactos"){
 
             Excel::load($request->file('file'), function($hoja) {
                 $tiempo_inicial = microtime(true);
@@ -192,7 +203,7 @@ class ArchivosController extends Controller
                 $tiempo = $tiempo_final - $tiempo_inicial;
                 Session::flash('message', "Archivo de marcas a contactos importado con éxito. Tiempo estimado de carga: ".$tiempo);
             });
-        }
+        }*/
         
         return Redirect::back();
     }   

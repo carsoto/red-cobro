@@ -549,6 +549,7 @@ class ComposerStaticInite353ea60f6fa427d8bdce028dcd78739
         'App\\Deudor' => __DIR__ . '/../..' . '/app/Deudor.php',
         'App\\DeudoresDocumento' => __DIR__ . '/../..' . '/app/DeudoresDocumento.php',
         'App\\DeudoresGestiones' => __DIR__ . '/../..' . '/app/DeudoresGestiones.php',
+        'App\\DeudoresMarca' => __DIR__ . '/../..' . '/app/DeudoresMarca.php',
         'App\\Direccion' => __DIR__ . '/../..' . '/app/Direccion.php',
         'App\\Documento' => __DIR__ . '/../..' . '/app/Documento.php',
         'App\\Empleado' => __DIR__ . '/../..' . '/app/Empleado.php',

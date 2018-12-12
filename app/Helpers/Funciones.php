@@ -2,10 +2,12 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
+
 class Funciones{
 
-	public static function cadena_a_fecha($str_fecha){
-		$anyo = substr($str_fecha, 0, 4);
+	public static function formatear_fecha($str_fecha){
+        $anyo = substr($str_fecha, 0, 4);
         $mes = substr($str_fecha, 4, 2);
         $dia = substr($str_fecha, 6, 2);
         $fecha = $anyo.'-'.$mes.'-'.$dia;
@@ -33,5 +35,13 @@ class Funciones{
 
             return $numero;
         }
+    }
+
+    public static function calcular_dias_mora($fecha_vencimiento, $fecha_actual){
+        $fechaVencimiento = Carbon::parse($fecha_vencimiento);
+        $fechaActual = Carbon::parse($fecha_actual);
+
+        $diasDiferencia = $fechaActual->diffInDays($fechaVencimiento);
+        return $diasDiferencia;
     }
 }
