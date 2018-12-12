@@ -440,6 +440,8 @@
 							{data: 'numero', name: 'numero'},
 							{data: 'folio', name: 'folio'},
 							{data: 'deuda', name: 'deuda'},
+							{data: 'pago', name: 'pago'},
+							{data: 'saldo', name: 'saldo'},
 							{data: 'dias_mora', name: 'dias_mora'},
 							{data: 'fecha_emision', name: 'fecha_emision'},
 							{data: 'fecha_vencimiento', name: 'fecha_vencimiento'},

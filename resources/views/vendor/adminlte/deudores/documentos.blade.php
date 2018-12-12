@@ -6,6 +6,8 @@
 		            <th>Número</th>
 		            <th>Folio</th>
 		            <th>Deuda</th>
+		            <th>Pago</th>
+		            <th>Saldo</th>
 		            <th>D. Mora</th>
 		            <th>F. de Emis.</th>
 		            <th>F. de Venc.</th>

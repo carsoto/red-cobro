@@ -30,6 +30,22 @@ class DocumentoController extends Controller
             ->editColumn('deuda', function ($documento) {
                 return number_format($documento->deuda, 2, ",", ".");
             })
+            ->addColumn('pago', function ($documento) {
+                $pagos = 0;
+                foreach ($documento->pagos as $key => $pago) {
+                    $pagos += $pago->monto;
+                }
+                return number_format($pagos, 2, ",", ".");
+            })
+            ->addColumn('saldo', function ($documento) {
+                $saldo = 0;
+                $pagos = 0;
+                foreach ($documento->pagos as $key => $pago) {
+                    $pagos += $pago->monto;
+                }
+                $saldo = $documento->deuda - $pagos;
+                return number_format($saldo, 2, ",", ".");
+            })
             ->editColumn('fecha_emision', function ($documento) {
                 return date('d-m-Y', strtotime($documento->fecha_emision));
             })
