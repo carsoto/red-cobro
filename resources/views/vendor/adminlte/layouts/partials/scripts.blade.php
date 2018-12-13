@@ -22,6 +22,8 @@
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
         });
+
+        $('[data-toggle="tooltip"]').tooltip();
         
     	var table_user = document.getElementById('tabla_usuarios');
     	if(table_user != undefined){
@@ -223,10 +225,12 @@
             type: 'POST',
             data: $('#form-gestion-rut').serialize(),
             success: function (response) {
-            	console.log(response);
+
             	if(response.mensaje != ''){
             		swal("Rut no encontrado!", response.mensaje, "error");
-            	}else{
+            	}
+
+            	else{
             		var marcas = response.marcas;
 
             		$('#deudor-rut').html(response.deudor.rut_dv);
@@ -267,32 +271,37 @@
 							$(this).remove();
 							n++;
 					});
-					if((response.telefonos.length > 0) || (response.correos.length > 0)){
-						for (var i = 0; i < response.telefonos.length; i++) {
+
+					for (var propiedad in response.contactos.telefonos) {
+						if (response.contactos.telefonos.hasOwnProperty(propiedad)) {
 							var row = $("<tr style='font-size: 11px;'>");
 							
-							row.append($("<td><a href='skype:"+response.telefonos[i].telefono+"?call'>"+response.telefonos[i].telefono+"</a></td>"))
-							 .append($("<td colspan='2'>-</td>"))
-							 .append($("<td>-</td>"))
-							 .append($("<td>-</td>"))
-							 .append($("<td>-</td>"));
+							row.append($("<td><a href='skype:"+propiedad+"?call'>"+propiedad+"</a></td>"))
+							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.telefonos[propiedad].respuesta +"'>"+ response.contactos.telefonos[propiedad].gestion +"</span></td>"));
 
-							$("#tabla-contactos tbody").append(row);
-						}
-
-						for (var i = 0; i < response.correos.length; i++) {
-							var row = $("<tr style='font-size: 11px;'>");
-
-							row.append($("<td><a href='skype:"+response.correos[i].correo+"?chat'>"+response.correos[i].correo+"</a></td>"))
-							 .append($("<td colspan='2'>-</td>"))
-							 .append($("<td>-</td>"))
-							 .append($("<td>-</td>"))
-							 .append($("<td>-</td>"));
-						 
 							$("#tabla-contactos tbody").append(row);
 						}
 					}
-					
+
+					for (var propiedad in response.contactos.correos) {
+						if (response.contactos.correos.hasOwnProperty(propiedad)) {
+							var row = $("<tr style='font-size: 11px;'>");
+							
+							row.append($("<td><a href='skype:"+propiedad+"?chat'>"+propiedad+"</a></td>"))
+							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.correos[propiedad].respuesta +"'>"+ response.contactos.correos[propiedad].gestion +"</span></td>"));
+
+							$("#tabla-contactos tbody").append(row);
+						}
+					}
+
+					if((response.contactos.telefonos.length == 0) && (response.contactos.correos.length == 0)){
+						var row = $("<tr style='font-size: 11px;'>");
+							
+						row.append($("<td>-</td>"))
+						   .append($("<td>-</td>"));
+
+						$("#tabla-contactos tbody").append(row);
+					}
             	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -371,6 +380,12 @@
 	            		$('#detalles-por-respuesta').css({"height": "170px", "overflow-y":"scroll"});
 	            		for (var i = 0; i < detalles.length; i++) {
 		            		$('#detalles-por-respuesta').append('<div class="radio icheck"><label><input type="radio" name="detalle" value="'+detalles[i].literal+' - '+detalles[i].detalle+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div>');
+
+		            		$('input').iCheck({
+					            checkboxClass: 'icheckbox_square-blue',
+					            radioClass: 'iradio_square-blue',
+					            //increaseArea: '2%' // optional
+					        });
 		            	}
 	            	}else{
 	            		$('#detalles-por-respuesta').css({"height": "", "overflow-y":""});

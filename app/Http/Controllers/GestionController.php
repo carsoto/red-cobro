@@ -51,6 +51,7 @@ class GestionController extends Controller
         $mensaje = '';
         $deuda = 0;
         $direcciones = $telefonos = $correos = $documentos = array();
+        $contactos = array('telefonos' => array(), 'correos' => array());
         $deuda_recuperada = 0;
 
         if(count($deudor) > 0){
@@ -113,7 +114,9 @@ class GestionController extends Controller
                 }else{
                     $ultima_gestion['ult_observacion'] = "-";
                 }
-            }else{
+            }
+
+            else{
                 $ultima_gestion['fecha_ult_gestion'] = "-";
                 $ultima_gestion['ult_gestion'] = "-";
                 $ultima_gestion['ult_respuesta'] = "-";
@@ -121,11 +124,28 @@ class GestionController extends Controller
                 $ultima_gestion['ult_observacion'] = "-";
             }
 
+            if(count($telefonos) > 0){
+                foreach($telefonos AS $key => $value){
+                    $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->telefono)->orderBy('pivot_created_at', 'desc')->first();
+                    if($ult_gestion_contacto != null){
+                        $contactos['telefonos'][$value->telefono] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                    }
+                }
+            }
+            
+            if(count($correos) > 0){
+                foreach($correos AS $key => $value){
+                    $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->correo)->orderBy('pivot_created_at', 'desc')->first();
+                    if($ult_gestion_contacto != null){
+                        $contactos['correos'][$value->correo] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                    }
+                }
+            }
         }else{
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
 
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'telefonos' => $telefonos, 'correos' => $correos, 'documentos' => $documentos, 'marcas' => $marcas, 'deuda_recuperada' => $deuda_recuperada, 'saldo_hoy' => $saldo_hoy, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'contactos' => $contactos, 'documentos' => $documentos, 'marcas' => $marcas, 'deuda_recuperada' => $deuda_recuperada, 'saldo_hoy' => $saldo_hoy, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
     }
 
     public function search(Request $request){

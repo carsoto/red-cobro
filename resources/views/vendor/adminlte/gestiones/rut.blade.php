@@ -312,29 +312,26 @@
 			                                <td class='text-center'><span><strong>MARCA 1</strong></span></td>
 			                                <td class='text-center'><span><strong>MARCA 2</strong></span></td>-->
 			                            </tr>
-			                            
-			                            	@if(count($datos_deudor['telefonos']) > 0)
-				                            	@foreach($datos_deudor['telefonos'] AS $key => $value)
-					                            	<tr style="font-size: 11px;">
-						                                <td><a href="skype:{{ $value->telefono }}?call">{{ $value->telefono }}</a></td>
-						                                <td></td>
-						                                <!--<td></td>
-						                                <td></td>
-						                                <td></td>-->
-						                            </tr>
-				                                @endforeach
-			                                @endif
-			                                @if(count($datos_deudor['correos']) > 0)
-				                            	@foreach($datos_deudor['correos'] AS $key => $value)
-					                            	<tr style="font-size: 11px;">
-						                                <td><a href="skype:{{ $value->correo }}?chat">{{ $value->correo }}</a></td>
-						                                <td></td>
-						                                <!--<td></td>
-						                                <td></td>
-						                                <td></td>-->
-						                            </tr>
-				                                @endforeach
-			                                @endif
+
+			                            @if((count($datos_deudor['contactos']['telefonos']) > 0) || (count($datos_deudor['contactos']['correos']) > 0))
+				                            @foreach($datos_deudor['contactos']['telefonos'] as $key => $value)
+				                            	<tr style="font-size: 11px;">
+					                                <td><a href="skype:{{ $key }}?call">{{ $key }}</a></td>
+					                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
+					                            </tr>
+				                            @endforeach
+				                            @foreach($datos_deudor['contactos']['correos'] as $key => $value)
+				                            	<tr style="font-size: 11px;">
+					                                <td><a href="skype:{{ $key }}?chat">{{ $key }}</a></td>
+					                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
+					                            </tr>
+				                            @endforeach
+			                            @else
+			                            	<tr style="font-size: 11px;">
+				                                <td>-</td>
+				                                <td>-</td>
+				                            </tr>
+			                            @endif
 				                    </table>
 				                    <div style="margin-top: 20px;">
 				                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
