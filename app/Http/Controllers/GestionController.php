@@ -129,6 +129,8 @@ class GestionController extends Controller
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->telefono)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
                         $contactos['telefonos'][$value->telefono] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                    }else{
+                        $contactos['telefonos'][$value->telefono] = array('gestion' => '-', 'respuesta' => '-');
                     }
                 }
             }
@@ -138,6 +140,8 @@ class GestionController extends Controller
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->correo)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
                         $contactos['correos'][$value->correo] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                    }else{
+                        $contactos['correos'][$value->correo] = array('gestion' => '-', 'respuesta' => '-');
                     }
                 }
             }

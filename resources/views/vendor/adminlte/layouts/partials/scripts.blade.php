@@ -502,6 +502,7 @@
 					$("#message").addClass('alert-success');
 		    		$("#message").html(response.mensaje);
 		    		$("#message").show();
+		    		$('#rut-modal-detalles').modal('close');
 				},
 				error: function (xhr, ajaxOptions, thrownError) {
 				    swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
