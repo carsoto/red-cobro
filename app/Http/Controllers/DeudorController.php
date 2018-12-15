@@ -49,14 +49,11 @@ class DeudorController extends Controller
     }
 
     public function gestioneshistorial($id_deudor){
-        $dias = array();
-        $meses = array(1 => 'ENERO', 2 => 'FEBRERO', 3 => 'MARZO', 4 => 'ABRIL', 5 => 'MAYO', 6 => 'JUNIO', 7 => 'JULIO', 8 => 'AGOSTO', 9 => 'SEPTIEMBRE', 10 => 'OCTUBRE', 11 => 'NOVIEMBRE', 12 => 'DICIEMBRE');
-
-        for ($i=1; $i <= 31; $i++) { 
-            $dias[$i] = $i;
+        $gestiones = Gestion::all();
+        foreach ($gestiones as $key => $gestion) {
+            $tipos_gestion[$gestion->idgestiones] = $gestion->codigo.' - '.$gestion->descripcion;
         }
-
-        return view('adminlte::deudores.historial-gestiones', array('iddeudor' => $id_deudor, 'dias' => $dias, 'meses' => $meses))->render();
+        return view('adminlte::deudores.historial-gestiones', array('iddeudor' => $id_deudor, 'tipos_gestion' => $tipos_gestion))->render();
     }
 
     public function gestionnueva($id_deudor){

@@ -164,52 +164,29 @@ class GestionController extends Controller
         $deudor = $deudor[0];
         $gestiones = $deudor->gestiones;
         $filtered_gestiones_fecha = [];
+        $id_gestion = 0;
 
-        if(($request->dia == null) && ($request->mes == null) && ($request->anyo == null)){
-            $mensaje_error = 'Por favor, seleccione una fecha válida a consultar. Escoja un mes o un año para sintetizar su consulta.';
-            
-        }else if(($request->dia != null) && ($request->mes != null) && ($request->anyo != null)){
-            //BUSQUEDA FECHA ESPECIFICA
-            if($request->dia < 10){
-                $request->dia = '0'.$request->dia;
+        if(isset($request->fecha_consulta)){
+            if($request->tipo_gestion != null){
+                $id_gestion = $request->tipo_gestion;
             }
-            $fecha_gestion = $request->anyo.'-'.$request->mes.'-'.$request->dia;
-            
-            $gestiones->each(function ($item) use (&$fecha_gestion, &$filtered_gestiones_fecha) {
-                if($item->pivot->fecha_gestion == $fecha_gestion){
-                    $filtered_gestiones_fecha[] = $item;
+
+            $fecha_gestion = Carbon::parse($request->fecha_consulta)->format('Y-m-d');
+
+            $gestiones->each(function ($item) use (&$fecha_gestion, &$id_gestion, &$filtered_gestiones_fecha) {
+                if($id_gestion == 0){
+                    if($item->pivot->fecha_gestion == $fecha_gestion){
+                        $filtered_gestiones_fecha[] = $item;
+                    }
+                }else{
+                    if(($item->pivot->fecha_gestion == $fecha_gestion) && ($item->pivot->gestiones_idgestiones == $id_gestion)){
+                        $filtered_gestiones_fecha[] = $item;
+                    }
                 }
             });
 
-        }else if(($request->mes != null) && ($request->anyo != null)){
-            //BUSQUEDA POR MES Y AÑO
-            $mes = $request->mes;
-            $anyo = $request->anyo;
-
-            $gestiones->each(function ($item) use (&$mes, &$anyo, &$filtered_gestiones_fecha) {
-                if(($item->pivot->mes == $mes) && ($item->pivot->anyo == $anyo)){
-                    $filtered_gestiones_fecha[] = $item;
-                }
-            });
-
-        }else if(($request->mes != null)){
-            //BSQUEDA POR MES
-            $mes = $request->mes;
-
-            $gestiones->each(function ($item) use (&$mes, &$filtered_gestiones_fecha) {
-                if($item->pivot->mes == $mes){
-                    $filtered_gestiones_fecha[] = $item;
-                }
-            });
-
-        }else if(($request->anyo != null)){
-            $anyo = $request->anyo;
-
-            $gestiones->each(function ($item) use (&$anyo, &$filtered_gestiones_fecha) {
-                if($item->pivot->anyo == $anyo){
-                    $filtered_gestiones_fecha[] = $item;
-                }
-            });
+        }else{
+            $mensaje_error = 'Por favor, seleccione una fecha válida a consultar.';
         }
 
         if(count($filtered_gestiones_fecha) > 0){

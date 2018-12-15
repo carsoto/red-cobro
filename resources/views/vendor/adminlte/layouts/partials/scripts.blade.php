@@ -6,6 +6,8 @@
 <script src="{{ asset('/public/plugins/datatables/jquery.dataTables.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datatables/dataTables.bootstrap.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -15,7 +17,7 @@
     window.Laravel = {!! json_encode([
         'csrfToken' => csrf_token(),
     ]) !!};
-
+    
     (function($) {
     	$('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
@@ -432,6 +434,16 @@
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
     			$('#rut-modal-detalles').modal('show');
+    			$('#datepicker').datepicker({
+    				language: "es",
+    				format: 'dd-mm-yyyy',
+				    orientation: "auto left",
+				    forceParse: false,
+				    autoclose: true,
+				    todayHighlight: true,
+				    toggleActive: true,
+				    endDate: '0',
+    			});
     			/*var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
 		    	if(table_hist_gestiones != undefined){
 			    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({

@@ -20825,7 +20825,7 @@ button.close {
 }
 @media (min-width: 992px) {
   .modal-lg {
-    width: 900px;
+    width: 1200px;
   }
 }
 .tooltip {
@@ -21832,4 +21832,12 @@ button.toast-close-button {
 /*# sourceMappingURL=all.css.map */
 .swal-wide{
     width:1050px !important;
+}
+
+#tabla_hist_gestiones th{
+  font-size: 12px;
+}
+
+#tabla_hist_gestiones td{
+  font-size: 12px;
 }
