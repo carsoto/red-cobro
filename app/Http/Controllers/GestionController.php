@@ -11,6 +11,7 @@ use App\Respuesta;
 use App\RespuestasDetalle;
 use App\DeudoresGestiones;
 use App\DeudoresMarca;
+use Funciones;
 use Session;
 use Datatables;
 use Redirect;
@@ -188,13 +189,16 @@ class GestionController extends Controller
         }else{
             $mensaje_error = 'Por favor, seleccione una fecha válida a consultar.';
         }
-
+        
         if(count($filtered_gestiones_fecha) > 0){
             return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
                 return $gestiones->pivot->anyo;
 
             })->editColumn('contacto', function($gestiones) {
                 return $gestiones->pivot->contacto;
+
+            })->editColumn('gestor', function($gestiones) {
+                return $gestiones->pivot->gestor;
 
             })->editColumn('respuesta', function($gestiones) {
                 return $gestiones->pivot->respuesta;
@@ -242,6 +246,7 @@ class GestionController extends Controller
         $nueva_gestion = new DeudoresGestiones();
 
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
+        $nueva_gestion->gestor = Funciones::nombre_completo_usuario();
         $nueva_gestion->contacto = $request->contacto;
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
         $nueva_gestion->respuesta = $request->respuesta;

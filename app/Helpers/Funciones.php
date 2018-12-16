@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class Funciones{
 
@@ -43,5 +44,12 @@ class Funciones{
 
         $diasDiferencia = $fechaActual->diffInDays($fechaVencimiento);
         return $diasDiferencia;
+    }
+
+    public static function nombre_completo_usuario(){
+        $nombre = explode(' ', Auth::user()->name);
+        $apellido = explode(' ', Auth::user()->lastname);
+        $nombre_completo = $nombre[0].' '.$apellido[0];
+        return $nombre_completo;
     }
 }

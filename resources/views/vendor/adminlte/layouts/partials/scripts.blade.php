@@ -539,6 +539,7 @@
 						//
 						$("#historial-de-gestiones").show();
 						var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
+						
 				    	if(table_hist_gestiones != undefined){
 					    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
 						        processing: true,
@@ -546,6 +547,7 @@
 						        data: response.data,
 						        columns: [
 			            			{data: 'contacto', name: 'contacto'},
+			            			{data: 'gestor', name: 'gestor'},
 			            			{data: 'descripcion', name: 'descripcion'},
 			            			{data: 'respuesta', name: 'respuesta'},
 			            			{data: 'detalle', name: 'detalle'},

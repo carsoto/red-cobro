@@ -47,6 +47,7 @@ class DeudoresGestiones extends Eloquent
 
 	protected $fillable = [
 		'deudores_iddeudores',
+		'gestor',
 		'contacto',
 		'gestiones_idgestiones',
 		'respuesta',

@@ -26,6 +26,7 @@
 		    <thead>
 		        <tr>
 		        	<th>Contacto</th>
+		        	<th>Gestor</th>
 		            <th>Gestión</th>
 		            <th>Respuesta</th>
 		            <th>Detalle</th>
