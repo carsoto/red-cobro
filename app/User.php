@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role', 'active', 'avatar'
+        'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
     ];
 
     /**
@@ -37,7 +37,9 @@ class User extends Authenticatable
     public static function rules($update = false, $id = null)
     {
         $commun = [
+        	'username' => 'required|min:9',
             'name' => 'required|min:2',
+            'lastname' => 'required|min:2',
             'email'    => "required|email|unique:users,email,$id",
             'password' => 'nullable|confirmed',
         ];

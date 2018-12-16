@@ -14,7 +14,7 @@ return [
     */
 
     'logged'                  => 'Usted está en el sistema!',
-    'someproblems'            => 'Hay algunos problemas con su entrada.',
+    'someproblems'            => 'Hay algunos problemas con su formulario.',
     'siginsession'            => 'Inicia sesión para acceder',
     'remember'                => 'Recuérdame',
     'buttonsign'              => 'Iniciar Sesión',
@@ -125,4 +125,6 @@ return [
     'password'                => 'Contraseña',
     'retrypepassword'         => 'Vuelva a escribir la contraseña',
     'fullname'                => 'Nombre completo',
+    'name'                    => 'Nombre',
+    'lastname'                => 'Apellido',
 ];

@@ -62,12 +62,30 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $messages = [
+            'username.required' => 'El RUT es obligatorio',
+            'username.max' => 'El RUT no puede tener más de 11 caracteres',
+            'username.regex' => 'No es un RUT válido',
+            'username.unique' => 'El RUT ya se encuentra registrado',
+            'name.required' => 'El nombre es obligatorio',
+            'lastname.required' => 'El apellido es obligatorio',
+            'email.required' => 'El correo electrónico es obligatorio',
+            'email.unique' => 'El correo electrónico ya se encuentra registrado',
+            'password.required' => 'La contraseña es obligatoria',
+            'password.min' => 'La contraseña debe contener al menos 6 caracteres',
+            'password.confirmed' => 'Las contraseñas no coinciden',
+            'terms.required' => 'Debe aceptar los términos y condiciones'
+
+        ];
+
         return Validator::make($data, [
+            'username' => ['required', 'max:11', 'unique:users', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
             'name' => 'required|max:255',
+            'lastname' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
             'terms' => 'required',
-        ]);
+        ],$messages);
     }
 
     /**
@@ -78,12 +96,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
+            'username' => $data['username'],
             'name' => $data['name'],
+            'lastname' => $data['lastname'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
 
         $user->roles()->attach(Role::where('name', 'agente')->first());
+
+        return $user;
     }
 }

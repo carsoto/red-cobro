@@ -29,8 +29,16 @@
                 <form action="{{ url('/register') }}" method="post">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.fullname') }}" name="name" value="{{ old('name') }}"/>
+                        <input type="text" class="form-control" placeholder="RUT" name="username" value="{{ old('username') }}"/>
+                        <span class="glyphicon glyphicon-credit-card form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.name') }}" name="name" value="{{ old('name') }}"/>
                         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <input type="text" class="form-control" placeholder="{{ trans('adminlte_lang::message.lastname') }}" name="lastname" value="{{ old('lastname') }}"/>
+                        <span class="glyphicon glyphicon-star-empty form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
                         <input type="email" class="form-control" placeholder="{{ trans('adminlte_lang::message.email') }}" name="email" value="{{ old('email') }}"/>
