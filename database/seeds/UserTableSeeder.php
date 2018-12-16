@@ -19,6 +19,7 @@ class UserTableSeeder extends Seeder
 		
 		$user = new User();
         $user->name = 'Victor';
+        $user->username = '1234567-1';
         $user->email = 'admin@example.com';
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
@@ -27,6 +28,7 @@ class UserTableSeeder extends Seeder
 
         $user = new User();
         $user->name = 'Andrea';
+        $user->username = '12345678-1';
         $user->email = 'supervisor@example.com';
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
@@ -35,6 +37,7 @@ class UserTableSeeder extends Seeder
 
         $user = new User();
         $user->name = 'Carmen';
+        $user->username = '123456789-1';
         $user->email = 'agente@example.com';
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
