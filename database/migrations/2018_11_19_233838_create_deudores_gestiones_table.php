@@ -27,6 +27,8 @@ class CreateDeudoresGestionesTable extends Migration
             $table->integer('anyo');
             $table->integer('mes');
             $table->date('fecha_gestion')->nullable();
+            $table->string('prox_gestion')->nullable();
+            $table->date('fecha_prox_gestion')->nullable();
         
             $table->index('deudores_iddeudores','fk_deudores_gestiones_deudores_idx');
             $table->index('gestiones_idgestiones','fk_deudores_gestiones_gestiones1_idx');

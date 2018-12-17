@@ -16,6 +16,7 @@ use Session;
 use Datatables;
 use Redirect;
 use Carbon\Carbon;
+use DB;
 
 class GestionController extends Controller
 {
@@ -166,6 +167,7 @@ class GestionController extends Controller
         $gestiones = $deudor->gestiones;
         $filtered_gestiones_fecha = [];
         $id_gestion = 0;
+        $lista_gestiones = Gestion::select(DB::raw("CONCAT(codigo,' - ',descripcion) AS gestion"), 'idgestiones')->pluck('gestion', 'idgestiones');
 
         if(isset($request->fecha_consulta)){
             if($request->tipo_gestion != null){
@@ -191,11 +193,11 @@ class GestionController extends Controller
         }
         
         if(count($filtered_gestiones_fecha) > 0){
-            return Datatables::of($filtered_gestiones_fecha)->editColumn('anyo', function($gestiones) {
-                return $gestiones->pivot->anyo;
-
-            })->editColumn('contacto', function($gestiones) {
+            return Datatables::of($filtered_gestiones_fecha)->editColumn('contacto', function($gestiones) {
                 return $gestiones->pivot->contacto;
+
+            })->editColumn('descripcion', function ($gestiones) use (&$lista_gestiones) {
+                return $lista_gestiones[$gestiones->idgestiones];
 
             })->editColumn('gestor', function($gestiones) {
                 return $gestiones->pivot->gestor;
@@ -209,11 +211,18 @@ class GestionController extends Controller
             })->editColumn('fecha_gestion', function($gestiones) {
                 return date('d-m-Y', strtotime($gestiones->pivot->fecha_gestion));
 
-            })->editColumn('mes', function($gestiones) {
-                return $gestiones->pivot->mes;
-
             })->editColumn('observacion', function($gestiones) {
                 return $gestiones->pivot->observacion;
+
+            })->editColumn('prox_gestion', function ($gestiones) use (&$lista_gestiones) {
+                if($gestiones->pivot->prox_gestion != ""){
+                    return $lista_gestiones[$gestiones->pivot->prox_gestion];
+                }else{
+                    return $gestiones->pivot->prox_gestion;
+                }
+
+            })->editColumn('fecha_prox_gestion', function($gestiones) {
+                return $gestiones->pivot->fecha_prox_gestion;
 
             })->make(true);
 
@@ -259,6 +268,20 @@ class GestionController extends Controller
         $nueva_gestion->anyo = date('Y');
         $nueva_gestion->mes = date('m');
         $nueva_gestion->fecha_gestion = date('Y-m-d');
+        $prox_gestion = null;
+        $fecha_prox_gestion = null;
+
+        if(isset($request->prox_gestion)){
+            $prox_gestion = $request->prox_gestion;
+        }
+
+        if(isset($request->fecha_prox_gestion)){
+            $fecha_prox_gestion = Carbon::parse($request->fecha_prox_gestion)->format('Y-m-d');
+        }
+
+        $nueva_gestion->prox_gestion = $prox_gestion;
+        $nueva_gestion->fecha_prox_gestion = $fecha_prox_gestion;
+
         
         if($nueva_gestion->save()){
             return Response::json(array('mensaje' => 'Gestión agregada con éxito'));

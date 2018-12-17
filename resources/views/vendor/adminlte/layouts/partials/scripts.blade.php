@@ -442,20 +442,7 @@
 				    autoclose: true,
 				    todayHighlight: true,
 				    toggleActive: true,
-				    endDate: '0',
     			});
-    			/*var table_hist_gestiones = document.getElementById('tabla_hist_gestiones');
-		    	if(table_hist_gestiones != undefined){
-			    	var datatable_hist_gestiones = $('#tabla_hist_gestiones').DataTable({
-				        processing: true,
-				        serverSide: true,
-				        {iddeudor}
-				        ajax: 'documentos/table/listado/'+iddeudor,
-				        columns: [		
-				            //{data: 'name', name: 'name'},
-				        ]
-				    });	
-		    	}*/
 
 		    	var table_documentos = document.getElementById('tabla_documentos');
 		    	if(table_documentos != undefined){
@@ -552,9 +539,9 @@
 			            			{data: 'respuesta', name: 'respuesta'},
 			            			{data: 'detalle', name: 'detalle'},
 			            			{data: 'observacion', name: 'observacion'},
-			            			//{data: 'anyo', name: 'anyo'},
-			            			//{data: 'mes', name: 'mes'},
 			            			{data: 'fecha_gestion', name: 'fecha_gestion'},
+			            			{data: 'prox_gestion', name: 'prox_gestion'},
+			            			{data: 'fecha_prox_gestion', name: 'fecha_prox_gestion'},
 						        ]
 						    });	
 				    	}

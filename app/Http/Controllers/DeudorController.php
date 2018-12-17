@@ -64,9 +64,7 @@ class DeudorController extends Controller
         $contactos = array();
         $gestiones_reg = Gestion::all();
         $gestiones = array();
-        $contactos[0] = 'SELECCIONE UN CONTACTO';
-        $gestiones[0] = 'SELECCIONE UNA GESTIÓN';
-        $respuestas[0] = 'SELECCIONE UNA RESPUESTA';
+        $respuestas = array();
 
         foreach ($gestiones_reg as $key => $g) {
             $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;

@@ -31,9 +31,9 @@
 		            <th>Respuesta</th>
 		            <th>Detalle</th>
 		            <th>Observación</th>
-		            <!--<th>Año</th>
-		            <th>Mes</th>-->
 		            <th>Fecha</th>
+		            <th>Próxima gestión</th>
+		            <th>Fecha próx. gestión</th>
 		        </tr>
 		    </thead>
 		</table>	
