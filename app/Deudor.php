@@ -83,7 +83,9 @@ class Deudor extends Eloquent
 
 	public function marcas()
 	{
-		return $this->hasMany(\App\DeudoresMarca::class, 'deudores_iddeudores')->orderby('fecha_marca', 'asc')->limit(6);
+		return $this->belongsToMany(\App\Marca::class, 'deudores_marcas', 'iddeudores', 'idmarcas')
+					->withPivot('id', 'activo')
+					->withTimestamps();
 	}
 	
 	public function telefonos()

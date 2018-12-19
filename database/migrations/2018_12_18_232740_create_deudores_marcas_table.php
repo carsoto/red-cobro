@@ -13,22 +13,22 @@ class CreateDeudoresMarcasTable extends Migration
      */
     public function up()
     {
-        Schema::create('deudores_marcas', function(Blueprint $table) {
-            $table->engine = 'InnoDB';
-        
-            $table->increments('iddeudores_marcas')->unsigned();
-            $table->integer('deudores_iddeudores')->unsigned();
-            $table->string('marca', 255);
-            $table->date('fecha_marca');
+        Schema::create('deudores_marcas', function (Blueprint $table) {
+            $table->increments('id')->unsigned();
+            $table->integer('iddeudores')->unsigned();
+            $table->integer('idmarcas')->unsigned();
             $table->integer('activo')->default(1);
         
-            $table->index('deudores_iddeudores','fk_deudores_marcas_deudores_idx');
+            $table->index('idmarcas','fk_deudores_has_marcas_marcas1_idx');
+            $table->index('iddeudores','fk_deudores_has_marcas_deudores1_idx');
         
-            $table->foreign('deudores_iddeudores')
+            $table->foreign('iddeudores')
                 ->references('iddeudores')->on('deudores');
         
-            $table->timestamps();
+            $table->foreign('idmarcas')
+                ->references('idmarcas')->on('marcas');
         
+            $table->timestamps();
         });
     }
 

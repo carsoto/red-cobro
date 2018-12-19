@@ -12,7 +12,7 @@ use App\Comuna;
 use App\Correo;
 use App\Deudor;
 use App\DeudoresDocumento;
-use App\DeudoresMarca;
+use App\Marca;
 use App\Direccion;
 use App\Documento;
 use App\Pago;
@@ -169,21 +169,27 @@ class ArchivosController extends Controller
             
             Excel::load($request->file('file'), function($hoja) {
                 $tiempo_inicial = microtime(true);
-                $fecha_actual = date('Y-m-d');
 
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $row) {
                         $deudor = Deudor::where('rut', '=', Funciones::rut_sin_dv($row->rut))->get();
-                        $deudor = $deudor[0];
                         
-                        DeudoresMarca::create([ 
-                            'deudores_iddeudores' => $deudor->iddeudores,
-                            'marca' => strtoupper($row->marca),
-                            'fecha_marca' => $fecha_actual,
-                        ]);
+                        if(count($deudor) > 0){
+                            $deudor = $deudor[0];
+                        
+                            for ($i=1; $i <= 10; $i++) {
+                                $marca = $row->{"marca_".$i};
+                                if($marca != ""){
+                                    $nueva_marca = Marca::updateOrCreate(['marca' => $marca], [
+                                        'marca' => $marca
+                                    ]);
+                                    $deudor->marcas()->sync($nueva_marca->idmarcas, false);
+                                }
+                            }
+                        }
                     }
                 }
-                
+                //exit;
                 $tiempo_final = microtime(true);
                 $tiempo = $tiempo_final - $tiempo_inicial;
                 Session::flash('message', "Archivo de marcas a deudores importado con éxito. Tiempo estimado de carga: ".$tiempo);

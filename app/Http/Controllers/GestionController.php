@@ -10,7 +10,7 @@ use App\Gestion;
 use App\Respuesta;
 use App\RespuestasDetalle;
 use App\DeudoresGestiones;
-use App\DeudoresMarca;
+use App\Marca;
 use Funciones;
 use Session;
 use Datatables;
@@ -62,14 +62,14 @@ class GestionController extends Controller
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
             $documentos = $deudor->documentos;
-            $marcas = $deudor->marcas;
+            $marcas = $deudor->marcas->take(6);
             $cantd_marcas = count($marcas);
 
             if($cantd_marcas < 6){
                 $marcas_vacias = 6 - $cantd_marcas;
 
                 for ($i=0; $i < $marcas_vacias; $i++) { 
-                    $new_marca = new DeudoresMarca;
+                    $new_marca = new Marca;
                     $new_marca->marca = "-";
                     $marcas->push($new_marca);
                 }

@@ -39,9 +39,9 @@
 							        	<label>
 							                <input value="Marcar_deudores" type="radio" name="tipo_archivo"> Marcar Deudores
 							            </label>
-							            <label>
+							            <!--<label>
 							                <input value="Marcar_contactos" type="radio" name="tipo_archivo"> Marcar Contactos
-							            </label>
+							            </label>-->
 							        </div>
 								</div>
 							</div>
