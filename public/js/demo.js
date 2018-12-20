@@ -106,35 +106,39 @@ var barChartDataDos = {
 
 var handleChartJs = function() {
 
-    var ctx2 = document.getElementById('bar-chart-uno').getContext('2d');
-    var barChart = new Chart(ctx2, {
-        type: 'bar',
-        data: barChartDataUno,
-        options: {
-            title: {
-                display: true,
-                text: 'Asignacion Mensual en Rut'
-            },
-            legend: {
-                position: "bottom"
+    if ($("#bar-chart-uno").length > 0) {
+        var ctx2 = document.getElementById('bar-chart-uno').getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: barChartDataUno,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Asignacion Mensual en Rut'
+                },
+                legend: {
+                    position: "bottom"
+                }
             }
-        }
-    });
+        });
+    }
 
-    var ctx2 = document.getElementById('bar-chart-dos').getContext('2d');
-    var barChart = new Chart(ctx2, {
-        type: 'bar',
-        data: barChartDataDos,
-        options: {
-            title: {
-                display: true,
-                text: 'Asignacion Mensual en M$'
-            },
-            legend: {
-                position: "bottom"
+    if ($("#bar-chart-dos").length > 0) {
+        var ctx2 = document.getElementById('bar-chart-dos').getContext('2d');
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: barChartDataDos,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Asignacion Mensual en M$'
+                },
+                legend: {
+                    position: "bottom"
+                }
             }
-        }
-    });
+        });
+    }
 };
 
 var ChartJs = function() {
