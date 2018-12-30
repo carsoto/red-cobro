@@ -17,6 +17,7 @@ class CreateMarcasTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('idmarcas')->unsigned();
+            $table->integer('orden');
             $table->string('marca', 255);
         
             $table->timestamps();

@@ -149,7 +149,7 @@ class ArchivosController extends Controller
                         $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');
                         
                         if(array_key_exists($info->num_documento, $documentos)){
-                            echo '<br>ESTOY REGISTRADO<br>';
+                            
                             Pago::create([
                                 'rut' => strtoupper($info->rut),
                                 'documentos_iddocumentos' => $documentos[$info->num_documento],
@@ -181,7 +181,8 @@ class ArchivosController extends Controller
                                 $marca = $row->{"marca_".$i};
                                 if($marca != ""){
                                     $nueva_marca = Marca::updateOrCreate(['marca' => $marca], [
-                                        'marca' => $marca
+                                        'orden' => $i,
+                                        'marca' => $marca,
                                     ]);
                                     $deudor->marcas()->sync($nueva_marca->idmarcas, false);
                                 }

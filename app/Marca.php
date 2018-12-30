@@ -26,7 +26,7 @@ class Marca extends Eloquent
 	protected $primaryKey = 'idmarcas';
 
 	protected $fillable = [
-		'marca'
+		'marca', 'orden'
 	];
 
 	public function deudores()
