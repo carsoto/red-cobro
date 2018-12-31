@@ -18,6 +18,7 @@ class UserTableSeeder extends Seeder
         $role_agente = Role::where('name', 'agente')->first();
 		
 		$user = new User();
+        $user->created_by = 0;
         $user->name = 'Victor';
         $user->lastname = 'Fuentes';
         $user->username = '1234567-1';
@@ -28,6 +29,7 @@ class UserTableSeeder extends Seeder
         $user->roles()->attach($role_admin);
 
         $user = new User();
+        $user->created_by = 1;
         $user->name = 'Andrea';
         $user->lastname = 'Borges';
         $user->username = '12345678-1';
@@ -38,6 +40,7 @@ class UserTableSeeder extends Seeder
         $user->roles()->attach($role_supervisor);
 
         $user = new User();
+        $user->created_by = 2;
         $user->name = 'Carmen';
         $user->lastname = 'Soto';
         $user->username = '123456789-1';

@@ -4,8 +4,24 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class Funciones{
+
+    public static function usuarios_correspondiente($id_logueado){
+        $usuarios_recursivos = "";
+        $usuarios = User::where('created_by', '=', $id_logueado)->pluck('id')->toArray();
+        $usuarios_recursivos = implode(",", $usuarios);
+
+        while(count($usuarios) > 0){
+            $usuarios = User::whereIn('created_by', $usuarios)->pluck('id')->toArray();
+            $e = implode(",", $usuarios);
+            if($e != ""){
+                $usuarios_recursivos = $usuarios_recursivos.",".$e;
+            }
+        }
+        return explode(",", $usuarios_recursivos);
+    }
 
 	public static function formatear_fecha($str_fecha){
         $anyo = substr($str_fecha, 0, 4);

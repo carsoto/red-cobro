@@ -54,6 +54,9 @@
                 <li><a href="{{ route('provincias.index') }}"><span>Provincias</span></a></li>
                 <li><a href="{{ route('comunas.index') }}"><span>Comunas</span></a></li>-->
             @endif
+            @if(Auth::user()->hasRole('supervisor'))
+                <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
+            @endif
             <!--<li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
