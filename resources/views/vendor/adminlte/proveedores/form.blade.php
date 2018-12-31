@@ -1,23 +1,29 @@
+@if (count($errors) > 0)
+    <div class="alert alert-danger">
+        <strong>Whoops!</strong> {{ trans('adminlte_lang::message.someproblems') }}<br><br>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-{{ Form::label('name', 'Nombre completo') }}
-{!! Form::text('name', $usuario->name, array('class' => 'form-control', 'placeholder' => 'Introduce tu nombre y apellido')) !!}
-<br>
-{{ Form::label('email', 'Dirección de correo electrónico') }}
-{!! Form::text('email', $usuario->e_mail, array('class' => 'form-control', 'placeholder' => 'Introduce tu correo')) !!}        
-<br>
-{{ Form::label('password', 'Contraseña') }}
-{!!  Form::password('password', array('class' => 'form-control')) !!} 
-<br>
-{{ Form::label('password_confirmation', 'Confirmar contraseña') }} 
-{!! Form::password('password_confirmation', array('class' => 'form-control')) !!} 
-<br>
-{{ dd($usuario) }}
-{{ Form::label('role', 'Perfil') }}
-{!! Form::select('role', $roles, $usuario->roles->pivot, array('class' => 'form-control')) !!}
-<br>
-{{ Form::label('status', 'Estado') }}
-{!! Form::select('status', $status, null, array('class' => 'form-control')) !!}
-<br>
-{{ Form::label('avatar', 'Imagen') }}
-{!! Form::file('avatar'); !!}
+@if (Session::has('message'))
+    <div class="alert alert-success">{{ Session::get('message') }}</div>
+@endif
 
+<div class="form-group col-lg-6 col-md-6 col-sm-6">
+    {!! Form::text('rut_dv', $proveedor->rut_dv, array('class' => 'form-control', 'placeholder' => 'RUT')) !!}
+</div>
+
+<div class="form-group col-lg-6 col-md-6 col-sm-6">
+    {!! Form::text('razon_social', $proveedor->razon_social, array('class' => 'form-control', 'placeholder' => 'Razón Social')) !!}
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <a href="{!! route('proveedores.index') !!}" class="btn btn-danger btn-flat">Cancelar</a>
+        {!! Form::submit('Guardar', ['class' => 'btn btn-success btn-flat']) !!}
+    </div>
+</div>

@@ -160,7 +160,7 @@
 		        serverSide: true,
 		        ajax: 'proveedores/table/listado',
 		        columns: [		
-		            {data: 'rut', name: 'rut'},
+		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
 		            {data: 'action', name: 'action', orderable: false}
 		        ]
