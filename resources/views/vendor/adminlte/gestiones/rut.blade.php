@@ -33,272 +33,199 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-			                <div class="box box-solid">
-			                    <div class="box-body">
-			                        <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0;">
-			                            <strong>INFORMACIÓN GENERAL</strong>
+	                        <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0;">
+	                            <strong>INFORMACIÓN GENERAL</strong>
+	                        </h4>
+	                        <div class="box box-primary">
+	                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+									<h4 style="font-size: 12px; text-align: center; padding-top: 2px;">
+			                            <strong>RUT</strong>
 			                        </h4>
-									
-			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-primary">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>RUT</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-rut'>{{ $datos_deudor['deudor']->rut_dv }}</span>
+			                        <div class="text-center">
+										<span class='' id='deudor-rut'>{{ $datos_deudor['deudor']->rut_dv }}</span>
+										<div class="overlay cargando" style="display: none;">
+											<i class="fa fa-spinner fa-spin"></i>
+										</div>
+									</div>
+							    </div>
+
+							    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+							    	<h4 style="font-size: 12px; text-align: center; padding-top: 2px;">
+			                            <strong>RAZÓN SOCIAL</strong>
+			                        </h4>
+			                        <div class="text-center">
+				                        <span class='' id='deudor-razon-social'>{{ $datos_deudor['deudor']->razon_social }}</span>
+										<div class="overlay cargando" style="display: none;">
+											<i class="fa fa-spinner fa-spin"></i>
+										</div>
+									</div>
+							    </div>
+
+							    <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+	                        	
+									<h4 style="font-size: 12px; text-align: center; padding-top: 2px;">
+			                            <strong>EN GESTIÓN</strong>
+			                        </h4>
+									<div class="text-center">
+										@if($datos_deudor['deudor']->en_gestion)
+											<span class="label label-success" id='deudor-en-gestion' style="font-size: 11px;">SI</span>
+										@else
+											<span class="label label-danger" id='deudor-en-gestion' style="font-size: 11px;">NO</span>
+										@endif
+										<div class="overlay cargando" style="display: none;">
+											<i class="fa fa-spinner fa-spin"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+	                        	
+									<h4 style="font-size: 12px; text-align: center; padding-top: 2px;">
+			                            <strong>FECHA DE ASIGNACIÓN</strong>
+			                        </h4>
+									<div class="text-center">
+										<span class='' id='deudor-fecha-asignacion'>{{ $datos_deudor['ultima_asignacion']['fecha_asignacion'] }}</span>
+										<div class="overlay cargando" style="display: none;">
+											<i class="fa fa-spinner fa-spin"></i>
+										</div>
+									</div>
+								</div>
+	                        </div>
+	                        <div class="margin-marcas">
+	                        	<div class="box box-warning">
+		                        	@foreach($datos_deudor['marcas'] AS $clave => $info)
+			                        	<div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+											<h4 style="font-size: 12px; text-align: center; padding-top: 2px;">
+					                            <strong>MARCA {{ ($clave + 1) }}</strong>
+					                        </h4>
+											<div class="text-center">
+												<span class='' id='deudor-marca-{{ ($clave + 1) }}'>{{ $info->marca }}</span>
 												<div class="overlay cargando" style="display: none;">
 													<i class="fa fa-spinner fa-spin"></i>
 												</div>
 											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-primary">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>RAZÓN SOCIAL</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-razon-social'>{{ $datos_deudor['deudor']->razon_social }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-2 col-md-2 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-primary">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>EN GESTIÓN</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												@if($datos_deudor['deudor']->en_gestion)
-													<span class="label label-success" id='deudor-en-gestion' style="font-size: 11px;">SI</span>
-												@else
-													<span class="label label-danger" id='deudor-en-gestion' style="font-size: 11px;">NO</span>
-												@endif
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-primary">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>FECHA DE ASIGNACIÓN</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-fecha-asignacion'>{{ $datos_deudor['ultima_asignacion']['fecha_asignacion'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-			                        </div>
-
-			                        @foreach($datos_deudor['marcas'] AS $clave => $info)
-			                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-				                        	<div class="box box-warning">
-												<div class="box-header text-center" style="padding: 0px;">
-													<h4 style="font-size: 12px; text-align: center;">
-							                            <strong>MARCA {{ ($clave + 1) }}</strong>
-							                        </h4>
-												<!-- /.box-tools -->
-												</div>
-												<!-- /.box-header -->
-												<div class="box-body text-center" style="font-size: 11px;">
-													<span class='' id='deudor-marca-{{ ($clave + 1) }}'>{{ $info->marca }}</span>
-													<div class="overlay cargando" style="display: none;">
-														<i class="fa fa-spinner fa-spin"></i>
-													</div>
-												</div>
-										    </div>
-				                        </div>
+										</div>
 			                        @endforeach
-
-		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-danger">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>DÍAS MORA</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+		                        </div>
+	                        </div>
+	                        <div class="margin-deudas">
+	                        	<div class="box box-danger">
+	                        		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>DÍAS MORA</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-dias-mora'>{{ $datos_deudor['ultima_asignacion']['dias_mora'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-dias-mora'>{{ $datos_deudor['ultima_asignacion']['dias_mora'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>	
 		                        	</div>
 
 		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-danger">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>DEUDA ASIGNADA</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>DEUDA ASIGNADA</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-deuda-asignada'>{{ $datos_deudor['ultima_asignacion']['deuda'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-deuda-asignada'>{{ $datos_deudor['ultima_asignacion']['deuda'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>
 		                        	</div>
 
 		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-danger">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>DEUDA RECUPERADA</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>DEUDA RECUPERADA</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-deuda-recuperada'>{{ $datos_deudor['deuda_recuperada'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-deuda-recuperada'>{{ $datos_deudor['deuda_recuperada'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>
 		                        	</div>
 
 		                        	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-danger">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>SALDO HOY</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>SALDO HOY</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-saldo-hoy'>{{ $datos_deudor['saldo_hoy'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-saldo-hoy'>{{ $datos_deudor['saldo_hoy'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
+										</div>
+		                        	</div>
+		                        </div>
+	                        </div>
+	                        <div class="margin-ult-gestion">
+	                        	<div class="box box-info">
+	                        		<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>FECHA ÚLTIMA GESTIÓN</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-fecha-ult-gest'>{{ $datos_deudor['ultima_gestion']['fecha_ult_gestion'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-									    </div>
+										</div>
 		                        	</div>
 
 		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-info">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>FECHA ÚLTIMA GESTIÓN</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>ÚLTIMA GESTIÓN</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-ult-gest'>{{ $datos_deudor['ultima_gestion']['ult_gestion'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-fecha-ult-gest'>{{ $datos_deudor['ultima_gestion']['fecha_ult_gestion'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>
 		                        	</div>
 
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-info">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>ÚLTIMA GESTIÓN</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+		                        	<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px; padding-left: 0px;">
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>ÚLTIMA RESPUESTA</strong>
+				                        </h4>
+										
+										<div class="text-center">
+											<span class='' id='deudor-ult-resp'>{{ $datos_deudor['ultima_gestion']['ult_respuesta'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-gest'>{{ $datos_deudor['ultima_gestion']['ult_gestion'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>
 		                        	</div>
-
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-info">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>ÚLTIMA RESPUESTA</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+	                        	</div>
+	                        </div>
+	                        <div class="margin-ult-gestion-det">
+	                        	<div class="box box-info">
+	                        		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="padding-right: 0px; padding-left: 0px;">
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>ÚLTIMO DETALLE RESP.</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-ult-det-resp'>{{ $datos_deudor['ultima_gestion']['ult_detalle'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-resp'>{{ $datos_deudor['ultima_gestion']['ult_respuesta'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
+										</div>
 		                        	</div>
-
-		                        	<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-info">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>ÚLTIMO DETALLE RESP.</strong>
-						                        </h4>
-											<!-- /.box-tools -->
-											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-det-resp'>{{ $datos_deudor['ultima_gestion']['ult_detalle'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-		                        	</div>
-
 		                        	<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12" style="padding-right: 0px; padding-left: 0px;">
-			                        	<div class="box box-info">
-											<div class="box-header text-center" style="padding: 0px;">
-												<h4 style="font-size: 12px; text-align: center;">
-						                            <strong>OBSERVACIÓN ÚLTIMA GESTIÓN</strong>
-						                        </h4>
-											<!-- /.box-tools -->
+										<h4 style="font-size: 12px; text-align: center;">
+				                            <strong>OBSERVACIÓN ÚLTIMA GESTIÓN</strong>
+				                        </h4>
+										<div class="text-center">
+											<span class='' id='deudor-ult-obs-gest'>{{ $datos_deudor['ultima_gestion']['ult_observacion'] }}</span>
+											<div class="overlay cargando" style="display: none;">
+												<i class="fa fa-spinner fa-spin"></i>
 											</div>
-											<!-- /.box-header -->
-											<div class="box-body text-center" style="font-size: 11px;">
-												<span class='' id='deudor-ult-obs-gest'>{{ $datos_deudor['ultima_gestion']['ult_observacion'] }}</span>
-												<div class="overlay cargando" style="display: none;">
-													<i class="fa fa-spinner fa-spin"></i>
-												</div>
-											</div>
-									    </div>
-		                        	</div>
+										</div>
+									</div>
+	                        	</div>
+	                        </div>
 
-		                        	
-		                        	<table id='tabla-contactos' class="table table-bordered" style="width:100%">
+	                        <table id='tabla-contactos' class="table table-bordered" style="width:100%">
 				                    	<tr>
 			                                <th colspan="2">
 			                                <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0; margin-bottom: 0;">
@@ -334,22 +261,20 @@
 			                            @endif
 				                    </table>
 				                    <div style="margin-top: 20px;">
-				                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-										{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+					                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+											{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+											{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("historial_gestiones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+											{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("documentos", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+										</div>
+										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+											{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+											
+										</div>
 									</div>
-									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-										{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("historial_gestiones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-										{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("documentos", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-									</div>
-									<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-										{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-										
-									</div>
-									</div>
-			                	</div>
-			                </div>
 			            </div>
 			        </div>
 			    </div>

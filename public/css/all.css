@@ -21841,3 +21841,35 @@ button.toast-close-button {
 #tabla_hist_gestiones td{
   font-size: 12px;
 }
+
+.margin-marcas{ padding-top: 70px; }
+.margin-deudas{ padding-top: 70px; }
+.margin-ult-gestion{ padding-top: 70px; }
+.margin-ult-gestion-det{ padding-top: 70px; margin-bottom: 70px; }
+
+@media (max-width: 767px) { 
+  .margin-marcas{ padding-top: 170px; }
+  .margin-deudas{ padding-top: 150px; }
+  .margin-ult-gestion{ padding-top: 110px; }
+  .margin-ult-gestion-det{ padding-top: 140px; margin-bottom: 70px; }
+}
+@media (max-width: 991px) { 
+  .margin-marcas{ padding-top: 130px; }
+  .margin-deudas{ padding-top: 150px; }
+  .margin-ult-gestion{ padding-top: 110px; }
+  .margin-ult-gestion-det{ padding-top: 140px; margin-bottom: 70px; }
+}
+
+@media (max-width: 375px) { 
+  .margin-marcas{ padding-top: 170px; }
+  .margin-deudas{ padding-top: 150px; }
+  .margin-ult-gestion{ padding-top: 110px; }
+  .margin-ult-gestion-det{ padding-top: 140px; margin-bottom: 70px; }
+}
+
+/*@media (max-width: 768px) { 
+  .margin-marcas{ padding-top: 100px; }
+  .margin-deudas{ padding-top: 50px; }
+  .margin-ult-gestion{ padding-top: 50px; }
+  .margin-ult-gestion-det{ padding-top: 50px; }
+}*/
