@@ -8,6 +8,8 @@
 <script src="{{ asset('/public/js/sweetalert.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/chart-js/Chart.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/js/dashboard-charts.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
@@ -19,6 +21,8 @@
     ]) !!};
     
     (function($) {
+    	ChartJs.init();
+
     	$('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
