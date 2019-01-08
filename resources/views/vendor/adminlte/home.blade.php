@@ -14,9 +14,9 @@
 @section('main-content')
 	<div class="container-fluid spark-screen">
 		<div class="row">
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<div class="box box-success">
-					<div class="box-header"><strong>Asignación Mensual en RUT</strong></div>
+					<div class="box-header"><strong>Asignación mensual en RUT</strong></div>
 					<div class="box-body">
 						<div>
 							<canvas id="asignacion-mensual-rut" data-render="chart-js"></canvas>
@@ -24,9 +24,9 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<div class="box box-danger">
-					<div class="box-header"><strong>Asignación Mensual en M$</strong></div>
+					<div class="box-header"><strong>Asignación mensual en M$</strong></div>
 					<div class="box-body">
 						<div>
 							<canvas id="asignacion-mensual-m" data-render="chart-js"></canvas>
@@ -34,8 +34,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="box box-info">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="box box-warning">
 					<div class="box-header"><strong>Histórico de asignación en casos</strong></div>
 					<div class="box-body">
 						<div>
@@ -44,8 +44,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
-				<div class="box box-warning">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+				<div class="box box-info">
 					<div class="box-header"><strong>Histórico de asignación en montos</strong></div>
 					<div class="box-body">
 						<div>
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 				<div class="box box-primary">
 					<div class="box-header"><strong>Histórico de contactabilidad</strong></div>
 					<div class="box-body">
