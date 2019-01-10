@@ -40,15 +40,12 @@ class ArchivosController extends Controller
         $tipo_archivo = $request->tipo_archivo;
 
         if($tipo_archivo == "Asignaciones"){
-
-            Excel::load($request->file('file'), function($hoja) {
-                $tiempo_inicial = microtime(true);
-
-                Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
-                $deuda_total = 0;
-                $fecha_actual = date('Y-m-d');
-                foreach ($hoja->all() as $key => $registro) {
-                    foreach ($registro as $index => $asignacion) {
+            $tiempo_inicial = microtime(true);
+            $registros = Excel::load($request->file('file'), 'UTF-8')->all()->toArray();
+            Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
+            $deuda_total = 0;
+            $fecha_actual = date('Y-m-d');
+            foreach ($registros as $index => $asignacion) {
                         $rut = Funciones::rut_sin_dv($asignacion['rut']);
 
                         $deudor = Deudor::updateOrCreate(['rut' => $rut], [ 
@@ -58,14 +55,15 @@ class ArchivosController extends Controller
                                     'en_gestion' => 1
                         ]);
 
-                        $direccion = Direccion::firstOrCreate([
-                            'idcomunas' => $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]), 
-                            'direccion' => $asignacion["direccion"],
-                            'complemento' => $asignacion["complemento"]
-                        ]);
+                        if(($asignacion["region"] != "") && ($asignacion["ciudad"] != "") && ($asignacion["comuna"] != "")){
+                            $direccion = Direccion::firstOrCreate([
+                                'idcomunas' => $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]), 
+                                'direccion' => $asignacion["direccion"],
+                                'complemento' => $asignacion["complemento"]
+                            ]);
 
-                        $deudor->direcciones()->sync($direccion->iddirecciones, false);
-
+                            $deudor->direcciones()->sync($direccion->iddirecciones, false);
+                        }
                         $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
                         if($asignacion['email'] != ''){
                             if (strpos($asignacion['email'], '@') !== false ) {
@@ -92,8 +90,8 @@ class ArchivosController extends Controller
                             $deudor->telefonos()->sync($telefono2->idtelefonos, false);
                         }
 
-                        $fecha_emision = Funciones::formatear_fecha($asignacion['fecha_emision']);
-                        $fecha_vencimiento = Funciones::formatear_fecha($asignacion['fecha_vencimiento']);
+                        $fecha_emision = Carbon::parse($asignacion['fecha_emision'])->format('Y-m-d');
+                        $fecha_vencimiento = Carbon::parse($asignacion['fecha_vencimiento'])->format('Y-m-d');
                         $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
                         $documento = Documento::firstOrCreate([
                             'numero' => $asignacion['num_documento'], 
@@ -130,13 +128,12 @@ class ArchivosController extends Controller
                             Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
                             $deuda_total = 0;
                         }
-                    }
-                }
-                
-                $tiempo_final = microtime(true);
-                $tiempo = $tiempo_final - $tiempo_inicial;
-                Session::flash('message', "Archivo de asignaciones importado con éxito. Tiempo estimado de carga: ".$tiempo);
-            });
+            }
+        
+            $tiempo_final = microtime(true);
+            $tiempo = $tiempo_final - $tiempo_inicial;
+            Session::flash('message', "Archivo de asignaciones importado con éxito. Tiempo estimado de carga: ".$tiempo);
+
 
         }else if($tipo_archivo == "Pagos"){
 
@@ -216,25 +213,27 @@ class ArchivosController extends Controller
     }   
 
     public function getComuna($region, $provincia, $comuna){
-
-        $comuna = Comuna::firstOrCreate([
-            'idprovincias' => $this->getProvincia($region, $provincia),
-            'comuna' => $comuna
-        ]);
-        return $comuna->idcomunas;
+        if($region != "" && $provincia != ""){
+            $comuna = Comuna::firstOrCreate([
+                'idprovincias' => $this->getProvincia($region, $provincia),
+                'comuna' => $comuna
+            ]);
+            return $comuna->idcomunas;
+        }
     }
 
     public function getProvincia($region, $provincia){
-        $region = Region::firstOrCreate([
-            'region' => $region
-        ]);
+        if($region != ""){
+            $region = Region::firstOrCreate([
+                'region' => $region
+            ]);
 
-        $provincia = Provincia::firstOrCreate([
-            'idregion' => $region->idregion,
-            'provincia' => $provincia
-        ]);
-
-        return $provincia->idprovincias;
+            $provincia = Provincia::firstOrCreate([
+                'idregion' => $region->idregion,
+                'provincia' => $provincia
+            ]);    
+            return $provincia->idprovincias;
+        }
     }
 
     public function exportar()

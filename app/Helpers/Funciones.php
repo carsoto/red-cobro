@@ -34,6 +34,7 @@ class Funciones{
 	public static function formatearRut($rut_sin_formato) {
 
         if (strpos($rut_sin_formato, '-') !== false ) {
+            $rut_sin_formato = str_replace(' ', '', $rut_sin_formato);
             $procesar_rut = explode('-', $rut_sin_formato);
             $numero = number_format($procesar_rut[0], 0, ',', '.');
             $dverificador = strtoupper($procesar_rut[1]);
