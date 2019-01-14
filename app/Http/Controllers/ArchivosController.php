@@ -16,7 +16,7 @@ use App\Marca;
 use App\Direccion;
 use App\Documento;
 use App\Pago;
-use App\Proveedor;
+use App\Gestor;
 use App\Provincia;
 use App\Region;
 use App\Supervisor;
@@ -104,11 +104,11 @@ class ArchivosController extends Controller
 
                         $deudor->documentos()->sync($documento->iddocumentos, false);
 
-                        $proveedor = Proveedor::firstOrCreate([
+                        $gestor = Gestor::firstOrCreate([
                             'razon_social' => $asignacion['proveedor']
                         ]);               
 
-                        $proveedor->documentos()->sync($documento->iddocumentos, false);
+                        $gestor->documentos()->sync($documento->iddocumentos, false);
 
                         $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
                         

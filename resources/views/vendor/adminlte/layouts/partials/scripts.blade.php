@@ -157,12 +157,12 @@
 		    });*/
     	}
 
-      	var table_proveedor = document.getElementById('tabla_proveedores');
-    	if(table_proveedor != undefined){
-    		var datatable_proveedores = $('#tabla_proveedores').DataTable({
+      	var table_gestor = document.getElementById('tabla_gestores');
+    	if(table_gestor != undefined){
+    		var datatable_gestores = $('#tabla_gestores').DataTable({
 		        processing: true,
 		        serverSide: true,
-		        ajax: 'proveedores/table/listado',
+		        ajax: 'gestores/table/listado',
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},

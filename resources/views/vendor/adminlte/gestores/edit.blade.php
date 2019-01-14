@@ -1,11 +1,11 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	Proveedores
+	Gestores
 @endsection
 
 @section('contentheader_title')
-	Proveedores
+	Gestores
 @endsection
 
 @section('contentheader_description')
@@ -18,9 +18,9 @@
 			<div class="col-lg-12">
 				<div class="box box-primary">
 		            <div class="box-body">
-	                    {!! Form::model($proveedor, ['route' => ['proveedores.update', encrypt($proveedor->idproveedores)], 'method' => 'put']) !!}
+	                    {!! Form::model($gestor, ['route' => ['gestores.update', encrypt($gestor->idgestores)], 'method' => 'put']) !!}
 
-                        	@include('adminlte::proveedores.form')
+                        	@include('adminlte::gestores.form')
 
                    		{!! Form::close() !!}
 		            </div>

@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('adminlte::auth.login');
 });
 
+Route::get('login', function () {
+    return view('adminlte::auth.login');
+});
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::resource('usuarios', 'UserController');
@@ -46,9 +50,9 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion.nueva');
 	});
 
-	Route::resource('proveedores', 'ProveedorController');
-	Route::group(['prefix' => 'proveedores'], function () {
-		Route::get('table/listado', 'ProveedorController@list')->name('proveedores.listado');  
+	Route::resource('gestores', 'GestorController');
+	Route::group(['prefix' => 'gestores'], function () {
+		Route::get('table/listado', 'GestorController@list')->name('gestores.listado');  
 	});
 
 	Route::resource('documentos', 'DocumentoController');

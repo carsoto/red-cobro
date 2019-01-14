@@ -17,16 +17,16 @@ class CreateEmpleadosTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('idempleados')->unsigned();
-            $table->integer('idproveedores')->unsigned();
+            $table->integer('idgestores')->unsigned();
             $table->integer('rut')->index();
             $table->string('rut_dv', 45);
             $table->string('nombre', 45);
             $table->integer('idpadre')->unsigned();
         
-            $table->index('idproveedores','fk_supervisores_proveedores1_idx');
+            $table->index('idgestores','fk_supervisores_gestores1_idx');
         
-            $table->foreign('idproveedores')
-                ->references('idproveedores')->on('proveedores');
+            $table->foreign('idgestores')
+                ->references('idgestores')->on('gestores');
         
             $table->timestamps();
         

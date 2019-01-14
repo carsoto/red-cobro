@@ -30,13 +30,13 @@ class Empleado extends Eloquent
 	protected $primaryKey = 'idempleados';
 
 	protected $casts = [
-		'idproveedores' => 'int',
+		'idgestores' => 'int',
 		'rut' => 'int',
 		'idpadre' => 'int'
 	];
 
 	protected $fillable = [
-		'idproveedores',
+		'idgestores',
 		'rut',
 		'rut_dv',
 		'nombre',
@@ -45,6 +45,6 @@ class Empleado extends Eloquent
 
 	public function proveedore()
 	{
-		return $this->belongsTo(\App\Proveedore::class, 'idproveedores');
+		return $this->belongsTo(\App\Gestor::class, 'idgestores');
 	}
 }

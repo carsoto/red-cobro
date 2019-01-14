@@ -24,11 +24,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  *
  * @package App
  */
-class Proveedor extends Eloquent
+class Gestor extends Eloquent
 {
-	protected $table = 'proveedores';
+	protected $table = 'gestores';
 
-	protected $primaryKey = 'idproveedores';
+	protected $primaryKey = 'idgestores';
 
 	protected $casts = [
 		'rut' => 'int'
@@ -42,12 +42,12 @@ class Proveedor extends Eloquent
 
 	public function empleados()
 	{
-		return $this->hasMany(\App\Empleado::class, 'idproveedores');
+		return $this->hasMany(\App\Empleado::class, 'idgestores');
 	}
 
 	public function documentos()
 	{
-		return $this->belongsToMany(\App\Documento::class, 'proveedores_documentos', 'idproveedores', 'iddocumentos')
+		return $this->belongsToMany(\App\Documento::class, 'gestores_documentos', 'idgestores', 'iddocumentos')
 					->withPivot('id', 'idestado_documentos')
 					->withTimestamps();
 	}

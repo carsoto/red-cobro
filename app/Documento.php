@@ -67,7 +67,7 @@ class Documento extends Eloquent
 
 	public function proveedores()
 	{
-		return $this->belongsToMany(\App\Proveedor::class, 'proveedores_documentos', 'iddocumentos', 'idproveedores')
+		return $this->belongsToMany(\App\Gestor::class, 'gestores_documentos', 'iddocumentos', 'idgestores')
 					->withPivot('id', 'idestado_documentos')
 					->withTimestamps();
 	}

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProveedoresDocumentosTable extends Migration
+class CreateGestoresDocumentosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,20 @@ class CreateProveedoresDocumentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('proveedores_documentos', function(Blueprint $table) {
+        Schema::create('gestores_documentos', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('idproveedores')->unsigned();
+            $table->integer('idgestores')->unsigned();
             $table->integer('iddocumentos')->unsigned();
             $table->integer('idestado_documentos')->unsigned()->nullable();
         
-            $table->index('iddocumentos','fk_proveedores_has_documentos_documentos1_idx');
-            $table->index('idproveedores','fk_proveedores_has_documentos_proveedores1_idx');
-            $table->index('idestado_documentos','fk_proveedores_documentos_estado_documentos1_idx');
+            $table->index('iddocumentos','fk_gestores_has_documentos_documentos1_idx');
+            $table->index('idgestores','fk_gestores_has_documentos_gestores1_idx');
+            $table->index('idestado_documentos','fk_gestores_documentos_estado_documentos1_idx');
         
-            $table->foreign('idproveedores')
-                ->references('idproveedores')->on('proveedores');
+            $table->foreign('idgestores')
+                ->references('idgestores')->on('gestores');
         
             $table->foreign('iddocumentos')
                 ->references('iddocumentos')->on('documentos');
@@ -48,7 +48,7 @@ class CreateProveedoresDocumentosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('proveedores_documentos');
+        Schema::drop('gestores_documentos');
 
     }
 }

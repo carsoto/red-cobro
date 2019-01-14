@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
-use App\Proveedor;
+use App\Gestor;
 use Validator;
 use Session;
 use Redirect;
 
-class ProveedorController extends Controller
+class GestorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,23 +19,23 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        return view('adminlte::proveedores.index');
+        return view('adminlte::gestores.index');
     }
 
     public function list(){
         
-        $proveedores = Proveedor::all();
+        $gestores = Gestor::all();
         
-        return Datatables::of($proveedores)
-            ->addColumn('action', function ($proveedor) {
-                //<a href="#" data-id="'.encrypt($proveedor->idproveedores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_proveedor"><i class="fa fa-trash"></i></a>
-                return '<a href="'.route('proveedores.edit', encrypt($proveedor->idproveedores)).'" data-id="'.encrypt($proveedor->idproveedores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+        return Datatables::of($gestores)
+            ->addColumn('action', function ($gestor) {
+                //<a href="#" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_gestor"><i class="fa fa-trash"></i></a>
+                return '<a href="'.route('gestores.edit', encrypt($gestor->idgestores)).'" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
             })
-            ->editColumn('idproveedores', '{{ encrypt($idproveedores) }}')
+            ->editColumn('idgestores', '{{ encrypt($idgestores) }}')
             ->make(true);
     }
 
-    protected function validator(array $data, $proveedor = null, $update = null)
+    protected function validator(array $data, $gestor = null, $update = null)
     {
         $messages = [
             'rut_dv.required' => 'El RUT es obligatorio',
@@ -47,12 +47,12 @@ class ProveedorController extends Controller
 
         if($update){
             $rules = [
-                'rut_dv' => ['required', 'max:11', 'unique:proveedores,rut_dv,'.$proveedor->idproveedores.',idproveedores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
+                'rut_dv' => ['required', 'max:11', 'unique:gestores,rut_dv,'.$gestor->idgestores.',idgestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
                 'razon_social' => 'required|max:255',
             ];
         }else{
             $rules = [
-                'rut_dv' => ['required', 'max:11', 'unique:proveedores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
+                'rut_dv' => ['required', 'max:11', 'unique:gestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
                 'razon_social' => 'required|max:255',
             ];
         }
@@ -67,8 +67,8 @@ class ProveedorController extends Controller
      */
     public function create()
     {
-        $proveedor = new Proveedor();
-        return view('adminlte::proveedores.create', array('proveedor' => $proveedor));
+        $gestor = new gestor();
+        return view('adminlte::gestores.create', array('gestor' => $gestor));
     }
 
     /**
@@ -83,13 +83,13 @@ class ProveedorController extends Controller
         
         $rut = explode('-', $request->rut_dv);
 
-        Proveedor::create([
+        Gestor::create([
             'rut' => $rut[0],
             'rut_dv' => $request->rut_dv,
             'razon_social' => $request->razon_social,
         ]);
         
-        Session::flash('message', "Proveedor creado exitosamente");
+        Session::flash('message', "Gestor creado exitosamente");
         return Redirect::back();
     }
 
@@ -112,8 +112,8 @@ class ProveedorController extends Controller
      */
     public function edit($id)
     {
-        $proveedor = Proveedor::where('idproveedores', '=', decrypt($id))->first();
-        return view('adminlte::proveedores.edit', array('proveedor' => $proveedor));
+        $gestor = Gestor::where('idgestores', '=', decrypt($id))->first();
+        return view('adminlte::gestores.edit', array('gestor' => $gestor));
     }
 
     /**
@@ -125,15 +125,15 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $proveedor = Proveedor::where('idproveedores', '=', decrypt($id))->first();
-        $this->validator($request->all(), $proveedor, true)->validate();
+        $gestor = Gestor::where('idgestores', '=', decrypt($id))->first();
+        $this->validator($request->all(), $gestor, true)->validate();
         $rut = explode('-', $request->rut_dv);
-        //$proveedor->idproveedores = decrypt($id);
-        $proveedor->rut = $rut[0];
-        $proveedor->rut_dv = $request->rut_dv;
-        $proveedor->razon_social = $request->razon_social;  
-        $proveedor->save();
-        Session::flash('message', "Proveedor actualizado exitosamente");
+        //$gestor->idgestores = decrypt($id);
+        $gestor->rut = $rut[0];
+        $gestor->rut_dv = $request->rut_dv;
+        $gestor->razon_social = $request->razon_social;  
+        $gestor->save();
+        Session::flash('message', "Gestor actualizado exitosamente");
         return Redirect::back();
     }
 

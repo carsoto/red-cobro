@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProveedoresTable extends Migration
+class CreateGestoresTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateProveedoresTable extends Migration
      */
     public function up()
     {
-        Schema::create('proveedores', function(Blueprint $table) {
+        Schema::create('gestores', function(Blueprint $table) {
             $table->engine = 'InnoDB';
         
-            $table->increments('idproveedores')->unsigned();
+            $table->increments('idgestores')->unsigned();
             $table->integer('rut')->nullable()->index();
             $table->string('rut_dv', 45)->nullable();
             $table->string('razon_social', 150);
@@ -35,7 +35,7 @@ class CreateProveedoresTable extends Migration
      */
     public function down()
     {
-        Schema::drop('proveedores');
+        Schema::drop('gestores');
 
     }
 }

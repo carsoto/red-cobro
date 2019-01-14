@@ -47,7 +47,7 @@
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
-                <li><a href="{{ route('proveedores.index') }}"><i class='fa fa-folder-open-o'></i><span>Proveedores</span></a></li>
+                <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
                <!-- <li><a href="{{ route('gestiones.index') }}"><i class='fa fa-gears'></i><span>Gestiones</span></a></li>
                 <li><a href="{{ route('documentos.index') }}"><span>Documentos</span></a></li>
                 <li><a href="{{ route('regiones.index') }}"><span>Regiones</span></a></li>
