@@ -169,27 +169,22 @@ class GestionController extends Controller
         $id_gestion = 0;
         $lista_gestiones = Gestion::select(DB::raw("CONCAT(codigo,' - ',descripcion) AS gestion"), 'idgestiones')->pluck('gestion', 'idgestiones');
 
-        if(isset($request->fecha_consulta)){
+        if(($request->fecha_inicio_consulta) && ($request->fecha_fin_consulta)){
             if($request->tipo_gestion != null){
                 $id_gestion = $request->tipo_gestion;
             }
 
-            $fecha_gestion = Carbon::parse($request->fecha_consulta)->format('Y-m-d');
+            $inicio_gestion = Carbon::parse($request->fecha_inicio_consulta)->format('Y-m-d');
+            $fin_gestion = Carbon::parse($request->fecha_fin_consulta)->format('Y-m-d');
 
-            $gestiones->each(function ($item) use (&$fecha_gestion, &$id_gestion, &$filtered_gestiones_fecha) {
-                if($id_gestion == 0){
-                    if($item->pivot->fecha_gestion == $fecha_gestion){
-                        $filtered_gestiones_fecha[] = $item;
-                    }
-                }else{
-                    if(($item->pivot->fecha_gestion == $fecha_gestion) && ($item->pivot->gestiones_idgestiones == $id_gestion)){
-                        $filtered_gestiones_fecha[] = $item;
-                    }
-                }
-            });
-
+            if($id_gestion == 0){
+                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha_gestion', [$inicio_gestion, $fin_gestion])->get();
+            }else{
+                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha_gestion', [$inicio_gestion, $fin_gestion])->where('gestiones_idgestiones', '=', $id_gestion)->get();
+            }
+            
         }else{
-            $mensaje_error = 'Por favor, seleccione una fecha válida a consultar.';
+            $mensaje_error = 'Por favor, seleccione una fecha inicio y fin válida a consultar.';
         }
         
         if(count($filtered_gestiones_fecha) > 0){

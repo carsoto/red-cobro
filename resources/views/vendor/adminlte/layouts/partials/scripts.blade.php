@@ -12,7 +12,7 @@
 <script src="{{ asset('/public/js/dashboard-charts.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
-      Both of these plugins are recommended to enhance the
+      Both of these plugins are reommended to enhance the
       user experience. Slimscroll is required when using the
       fixed layout. -->
 <script>
@@ -439,7 +439,7 @@
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
     			$('#rut-modal-detalles').modal('show');
-    			$('#datepicker').datepicker({
+    			$('.date-picker').datepicker({
     				language: "es",
     				format: 'dd-mm-yyyy',
 				    orientation: "auto left",

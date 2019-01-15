@@ -17,7 +17,7 @@
 		</div>
 		{!! Form::select('prox_gestion', $gestiones, null, array('placeholder' => 'SELECCIONE LA PRÓXIMA GESTIÓN', 'class' => 'form-control input-sm')) !!}
 		<br>
-		<div class="input-group date" id="datepicker">
+		<div class="input-group date date-picker" id="datepicker">
 			<input type="text" name='fecha_prox_gestion' class="form-control pull-right input-sm" placeholder="FECHA PRÓXIMA GESTIÓN">
 			<div class="input-group-addon">
 				<i class="fa fa-calendar"></i>
