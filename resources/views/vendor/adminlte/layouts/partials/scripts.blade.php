@@ -209,6 +209,56 @@
 		        ]
 		    });
     	}
+
+    	$(document).on('click', ".cambiar_estatus_contacto", function(e) {
+	        var _this = $(this);
+	        var tipo = _this.attr("tipo");
+	        var id_contacto = _this.attr("id-contacto");
+	        e.preventDefault();
+	        swal({
+	            title: "¿Está seguro?",
+				text: "Cuando quiera puede volver a cambiar su estatus",
+				icon: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: '#DD4B39',
+	            cancelButtonColor: '#00C0EF',
+	            buttons: ["Cancelar", true],
+	            closeOnConfirm: false
+	        }).then(function(isConfirm) {
+	        	if(isConfirm){
+		        	$.ajax({
+			           	url: 'deudores/modificar/contacto',
+			            dataType: "JSON",
+			            type: 'POST',
+			            data: {_token: "{!! csrf_token() !!}", iddeudor: _this.attr("id-deudor"), tipo: tipo, id_contacto: id_contacto},
+			            success: function (response) {
+			            	
+			            	if(response.status == 'success'){
+			            		swal("Hecho!", response.msg, "success");
+			            		if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-danger(?!\S)/)){
+									document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-danger(?!\S)/g , '');
+									document.getElementById("status_" + tipo + id_contacto).className += ' label-success';
+			            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Activo';
+
+			            		}else if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-success(?!\S)/)){
+			            			document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-success(?!\S)/g , '');
+									document.getElementById("status_" + tipo + id_contacto).className += ' label-danger';
+			            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Inactivo';
+			            		}
+			            	}else{
+			            		swal("Ocurrió un error!", response.msg, "error");
+			            	}
+			            },
+			            error: function (xhr, ajaxOptions, thrownError) {
+			                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+			            }
+
+			        });	
+	        	}
+	        });
+	    });
+
+
     })(jQuery);
 
     function buscar_por_rut(){
@@ -556,6 +606,72 @@
 			error: function (xhr, ajaxOptions, thrownError) {
 			    swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
 			}
+		});
+    }
+
+    function agregar_contacto(iddeudor){
+    	console.log(iddeudor);
+    	/*swal("Write something here:", {
+		  content: "input",
+		})
+		.then((value) => {
+		  swal(`You typed: ${value}`);
+		});*/
+		var tipo = "";
+		swal({
+            title: "Agregar un nuevo contacto",
+			content: "input",
+			icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: '#DD4B39',
+            cancelButtonColor: '#00C0EF',
+            buttons: ["Cancelar", true],
+            //closeOnConfirm: false
+        }).then((value) => {
+        	if((value != null) && (value != "")){
+				var emailReg = /^([w-.]+@([w-]+.)+[w-]{2,4})?$/i;
+				if(!emailReg.test(value)){
+					swal(`Disculpe, el contacto ingresado (${value}) no es un correo electrónico`);
+					return false;
+				}else{
+					tipo = 'correo';
+				}
+
+				var telefonoReg = /[0-9 -()+]+$/i;
+				if(!telefonoReg.test(value)){
+					swal(`Disculpe, el contacto ingresado (${value}) no es un número de teléfono válido`);
+					return false;
+				}else{
+					tipo = 'telefono';
+				}
+
+        		/*$.ajax({
+		           	url: 'deudores/agregar/contacto',
+		            dataType: "JSON",
+		            type: 'POST',
+		            data: {_token: "{!! csrf_token() !!}", iddeudor: _this.attr("id-deudor"), tipo: tipo, id_contacto: id_contacto},
+		            success: function (response) {
+		            	if(response.status == 'success'){
+		            		swal("Hecho!", response.msg, "success");
+		            		if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-danger(?!\S)/)){
+								document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-danger(?!\S)/g , '');
+								document.getElementById("status_" + tipo + id_contacto).className += ' label-success';
+		            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Activo';
+
+		            		}else if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-success(?!\S)/)){
+		            			document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-success(?!\S)/g , '');
+								document.getElementById("status_" + tipo + id_contacto).className += ' label-danger';
+		            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Inactivo';
+		            		}
+		            	}else{
+		            		swal("Ocurrió un error!", response.msg, "error");
+		            	}
+		            },
+		            error: function (xhr, ajaxOptions, thrownError) {
+		                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
+		            }
+		        });	*/
+        	}
 		});
     }
 </script>

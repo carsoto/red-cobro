@@ -116,6 +116,74 @@ class DeudorController extends Controller
         return view('adminlte::deudores.gestion.historico');
     }
 
+    public function agregar_contacto(Request $request)
+    {
+        $id_deudor = $request->id_deudor;
+        $contacto = $request->contacto;
+
+        $deudor = Deudor::findOrFail(decrypt($id_deudor));
+        if($tipo == 'telefono'){
+            $telefono = str_replace(' ', '', $contacto);
+            if($telefono != ''){
+                $new_contact = Telefono::updateOrCreate(['telefono' => $telefono], [
+                    'telefono' => $telefono
+                ]);
+                $deudor->telefonos()->sync($new_contact->idtelefonos, false);
+            }
+        }if($tipo == 'correo'){
+            $correo = str_replace(' ', '', $contacto);
+            if($correo != ''){
+                if (strpos($correo, '@') !== false ) {
+                    $correo = Correo::updateOrCreate(['correo' => $correo], [
+                        'correo' => $correo
+                    ]);
+                    $deudor->correos()->sync($correo->idcorreos_electronicos, false);
+                } 
+            }
+        }
+    }
+
+    public function modificar_contacto(Request $request){
+        $id_deudor = $request->iddeudor;
+        $tipo = $request->tipo;
+        $id_contacto = $request->id_contacto;
+
+        $deudor = Deudor::findOrFail(decrypt($id_deudor));
+
+        if($tipo == 'telefono'){
+            $contacto = $deudor->telefonos()->where('telefonos.idtelefonos', '=', $id_contacto)->get();
+        }
+
+        if($tipo == 'correo'){
+            $contacto = $deudor->correos()->where('correos.idcorreos_electronicos', '=', $id_contacto)->get();
+        }
+
+        $contacto = $contacto[0];
+        
+        if($contacto->pivot->activo){
+            $contacto->pivot->activo = 0;
+        } else {
+            $contacto->pivot->activo = 1;
+        }
+
+        if($contacto->pivot->save()){
+            $status = 'success';
+            if($contacto->pivot->activo){
+                $msg = 'El contacto fue activado exitosamente!';
+            } else {
+                $msg = 'El contacto fue inactivado exitosamente!';
+            }
+        } else {
+            $status = 'failed';
+            if($contacto->pivot->activo){
+                $msg = 'Disculpe, el contacto no pudo ser activado!';
+            }else{
+                $msg = 'Disculpe, el contacto no pudo ser inactivado!';
+            }
+        }    
+        return Response::json(array('status' => $status, 'msg' => $msg));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

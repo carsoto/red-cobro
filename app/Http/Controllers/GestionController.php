@@ -130,9 +130,9 @@ class GestionController extends Controller
                 foreach($telefonos AS $key => $value){
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->telefono)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
-                        $contactos['telefonos'][$value->telefono] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['telefonos'][$value->telefono] = array('gestion' => '-', 'respuesta' => '-');
+                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
                     }
                 }
             }
@@ -141,9 +141,9 @@ class GestionController extends Controller
                 foreach($correos AS $key => $value){
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->correo)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
-                        $contactos['correos'][$value->correo] = array('gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta);
+                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['correos'][$value->correo] = array('gestion' => '-', 'respuesta' => '-');
+                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
                     }
                 }
             }
@@ -182,7 +182,7 @@ class GestionController extends Controller
             }else{
                 $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha_gestion', [$inicio_gestion, $fin_gestion])->where('gestiones_idgestiones', '=', $id_gestion)->get();
             }
-            
+
         }else{
             $mensaje_error = 'Por favor, seleccione una fecha inicio y fin válida a consultar.';
         }

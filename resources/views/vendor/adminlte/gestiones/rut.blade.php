@@ -226,55 +226,76 @@
 	                        </div>
 
 	                        <table id='tabla-contactos' class="table table-bordered" style="width:100%">
-				                    	<tr>
-			                                <th colspan="2">
-			                                <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0; margin-bottom: 0;">
-					                            <strong>CONTACTO</strong>
-					                        </h4></th>
-			                            </tr>
-				                    	<tr style="font-size: 12px; text-align: center;">
-			                                <td class='text-center'><span><strong>FONOS/MAIL</strong></span></td>
-			                                <td class='text-center'><span><strong>RESULTADO ÚLTIMA GESTIÓN</strong></span></td>
-			                                <!--<td class='text-center'><span><strong>ORIGEN</strong></span></td>
-			                                <td class='text-center'><span><strong>MARCA 1</strong></span></td>
-			                                <td class='text-center'><span><strong>MARCA 2</strong></span></td>-->
-			                            </tr>
+		                    	<tr>
+	                                <th colspan="4">
+	                                <h4 style="background-color:#f7f7f7; font-size: 14px; text-align: center; padding: 7px 10px; margin-top: 0; margin-bottom: 0;">
+			                            <strong>CONTACTO</strong>
+			                        </h4></th>
+	                            </tr>
+	                            <tr>
+	                            	<td colspan="4" class="text-right">{{ Form::button('<i class="fa fa-plus"></i> AGREGAR CONTACTO', ['type' => 'button', 'class' => 'btn btn-primary btn-sm btn-flat', 'onclick' => 'agregar_contacto("'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}</td>
+	                            </tr>
+		                    	<tr style="font-size: 12px; text-align: center;">
+	                                <td class='text-center'><span><strong>FONOS/MAIL</strong></span></td>
+	                                <td class='text-center'><span><strong>RESULTADO ÚLTIMA GESTIÓN</strong></span></td>
+	                                <td class='text-center'><span><strong>ESTATUS</strong></span></td>
+	                                <td class='text-center'><span><i class="fa fa-gears"></i></span></td>
+	                                <!--<td class='text-center'><span><strong>MARCA 2</strong></span></td>-->
+	                            </tr>
 
-			                            @if((count($datos_deudor['contactos']['telefonos']) > 0) || (count($datos_deudor['contactos']['correos']) > 0))
-				                            @foreach($datos_deudor['contactos']['telefonos'] as $key => $value)
-				                            	<tr style="font-size: 11px;">
-					                                <td><a href="skype:{{ $key }}?call">{{ $key }}</a></td>
-					                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
-					                            </tr>
-				                            @endforeach
-				                            @foreach($datos_deudor['contactos']['correos'] as $key => $value)
-				                            	<tr style="font-size: 11px;">
-					                                <td><a href="skype:{{ $key }}?chat">{{ $key }}</a></td>
-					                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
-					                            </tr>
-				                            @endforeach
-			                            @else
-			                            	<tr style="font-size: 11px;">
-				                                <td>-</td>
-				                                <td>-</td>
-				                            </tr>
-			                            @endif
-				                    </table>
-				                    <div style="margin-top: 20px;">
-					                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-											{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-										</div>
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-											{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("historial_gestiones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-										</div>
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-											{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("documentos", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-										</div>
-										<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
-											{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
-											
-										</div>
-									</div>
+	                            @if((count($datos_deudor['contactos']['telefonos']) > 0) || (count($datos_deudor['contactos']['correos']) > 0))
+		                            @foreach($datos_deudor['contactos']['telefonos'] as $key => $value)
+		                            	<tr style="font-size: 11px;">
+			                                <td><a href="skype:{{ $key }}?call">{{ $key }}</a></td>
+			                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
+			                                <td>
+			                                	@if($value['estatus'])
+			                                		<span id="status_telefono{{ $value['id'] }}" class="label label-success" style="font-size: 11px;">Activo</span>
+			                                	@else
+			                                		<span id="status_telefono{{ $value['id'] }}" class="label label-danger" style="font-size: 11px;">Inactivo</span>
+			                                	@endif
+			                                </td>
+			                                <td><a href="#" class="cambiar_estatus_contacto" tipo="telefono" id-contacto="{{ $value['id'] }}" id-deudor="{{ encrypt($datos_deudor['deudor']->iddeudores) }}"><i class="fa fa-close"></i></a></td>
+			                            </tr>
+		                            @endforeach
+		                            @foreach($datos_deudor['contactos']['correos'] as $key => $value)
+		                            	<tr style="font-size: 11px;">
+			                                <td><a href="skype:{{ $key }}?chat">{{ $key }}</a></td>
+			                                <td><span data-toggle="tooltip" title="Respuesta: {{ $value['respuesta'] }}">{{ $value['gestion'] }}</span></td>
+			                                <td>
+			                                	@if($value['estatus'])
+			                                		<span id="status_correo{{ $value['id'] }}" class="label label-success" style="font-size: 11px;">Activo</span>
+			                                	@else
+			                                		<span id="status_correo{{ $value['id'] }}" class="label label-danger" style="font-size: 11px;">Inactivo</span>
+			                                	@endif
+			                                </td>
+			                                <td><a href="#" class="cambiar_estatus_contacto" tipo="correo" id-contacto="{{ $value['id'] }}" id-deudor="{{ encrypt($datos_deudor['deudor']->iddeudores) }}"><i class="fa fa-close"></i></a></td>
+			                            </tr>
+		                            @endforeach
+	                            @else
+	                            	<tr style="font-size: 11px;">
+		                                <td>-</td>
+		                                <td>-</td>
+		                                <td>-</td>
+		                                <td>-</td>
+		                            </tr>
+	                            @endif
+		                    </table>
+		                    <div style="margin-top: 20px;">
+			                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+									{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+									{{ Form::button('<i class="fa fa-history"></i> HISTORIAL DE GESTIONES', ['type' => 'button', 'class' => 'btn btn-info btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("historial_gestiones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+									{{ Form::button('<i class="fa fa-file-o"></i> DOCUMENTOS', ['type' => 'button', 'class' => 'btn btn-warning btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("documentos", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+								</div>
+								<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
+									{{ Form::button('<i class="fa fa-map-marker"></i> DIRECCIONES', ['type' => 'button', 'class' => 'btn btn-danger btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("direcciones", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
+									
+								</div>
+							</div>
 			            </div>
 			        </div>
 			    </div>
