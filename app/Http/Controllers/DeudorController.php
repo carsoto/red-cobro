@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Datatables;
 use App\Deudor;
 use App\Gestion;
+use App\Telefono;
+use App\Correo;
 use Response;
 use DateTime;
 
@@ -120,6 +122,10 @@ class DeudorController extends Controller
     {
         $id_deudor = $request->id_deudor;
         $contacto = $request->contacto;
+        $tipo = $request->tipo;
+        $status = '';
+        $msg = '';
+        $id = '';
 
         $deudor = Deudor::findOrFail(decrypt($id_deudor));
         if($tipo == 'telefono'){
@@ -128,7 +134,17 @@ class DeudorController extends Controller
                 $new_contact = Telefono::updateOrCreate(['telefono' => $telefono], [
                     'telefono' => $telefono
                 ]);
-                $deudor->telefonos()->sync($new_contact->idtelefonos, false);
+
+                $id = $new_contact->idtelefonos;
+
+                if($deudor->telefonos()->sync($new_contact->idtelefonos, false)){
+                    $status = 'success';
+                    $msg = 'El contacto fue agregado exitosamente!';
+                }
+                else{
+                    $status = 'fail';
+                    $msg = 'Ocurrió un error no se pudo agregar el teléfono';
+                }
             }
         }if($tipo == 'correo'){
             $correo = str_replace(' ', '', $contacto);
@@ -137,10 +153,21 @@ class DeudorController extends Controller
                     $correo = Correo::updateOrCreate(['correo' => $correo], [
                         'correo' => $correo
                     ]);
-                    $deudor->correos()->sync($correo->idcorreos_electronicos, false);
+
+                    $id = $correo->idcorreos_electronicos;
+
+                    if($deudor->correos()->sync($correo->idcorreos_electronicos, false)){
+                        $status = 'success';
+                        $msg = 'El contacto fue agregado exitosamente!';
+                    }
+                    else{
+                        $status = 'fail';
+                        $msg = 'Ocurrió un error no se pudo agregar el correo electrónico';
+                    }
                 } 
             }
         }
+        return Response::json(array('status' => $status, 'msg' => $msg, 'id' => $id));
     }
 
     public function modificar_contacto(Request $request){

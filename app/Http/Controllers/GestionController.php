@@ -58,6 +58,7 @@ class GestionController extends Controller
 
         if(count($deudor) > 0){
             $deudor = $deudor[0];
+            $id_deudor = encrypt($deudor->iddeudores);
             $direcciones = $deudor->direcciones;
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
@@ -151,7 +152,7 @@ class GestionController extends Controller
             $mensaje = 'Por favor, verifique el rut ingresado es inválido';
         }
 
-        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'contactos' => $contactos, 'documentos' => $documentos, 'marcas' => $marcas, 'deuda_recuperada' => $deuda_recuperada, 'saldo_hoy' => $saldo_hoy, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion);
+        return array('deudor' => $deudor, 'mensaje' => $mensaje, 'direcciones' => $direcciones, 'contactos' => $contactos, 'documentos' => $documentos, 'marcas' => $marcas, 'deuda_recuperada' => $deuda_recuperada, 'saldo_hoy' => $saldo_hoy, 'ultima_asignacion' => $ultima_asignacion, 'ultima_gestion' => $ultima_gestion, 'id_deudor' => $id_deudor);
     }
 
     public function search(Request $request){

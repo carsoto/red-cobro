@@ -48,7 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('gestion/documentos/{iddeudor}','DeudorController@documentos')->name('deudores.documentos');
 		Route::get('gestion/historial/{iddeudor}','DeudorController@gestioneshistorial')->name('deudores.gestion.historial');
 		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion.nueva');
-		Route::post('agregar/contacto/','DeudorController@modificar_contacto')->name('deudores.agregar.contacto');
+		Route::post('agregar/contacto/','DeudorController@agregar_contacto')->name('deudores.agregar.contacto');
 		Route::post('modificar/contacto/','DeudorController@modificar_contacto')->name('deudores.modificar.contacto');
 	});
 

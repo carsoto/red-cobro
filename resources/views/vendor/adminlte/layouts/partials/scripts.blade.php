@@ -288,6 +288,7 @@
 
             	else{
             		var marcas = response.marcas;
+            		var label_status = '';
 
             		$('#deudor-rut').html(response.deudor.rut_dv);
 					$('#deudor-razon-social').html(response.deudor.razon_social);
@@ -321,19 +322,26 @@
 					var tabla_contactos = $("#tabla-contactos");
 					var cantd_filas = $('#tabla-contactos >tbody >tr').length;
 					var n = 1;
-
-					$('#tabla-contactos tr').each(function() {
-						if (n > 2 && n <= cantd_filas)
-							$(this).remove();
-							n++;
+					console.log(cantd_filas);
+					$('#tabla-contactos >tbody >tr').each(function() {
+						console.log('ss');
+						$(this).remove();
 					});
 
 					for (var propiedad in response.contactos.telefonos) {
 						if (response.contactos.telefonos.hasOwnProperty(propiedad)) {
 							var row = $("<tr style='font-size: 11px;'>");
 							
+							if(response.contactos.telefonos[propiedad].estatus){
+								label_status = '<span id="status_telefono'+ response.contactos.telefonos[propiedad].id +'" class="label label-success" style="font-size: 11px;">Activo</span>';
+							}else{
+								label_status = '<span id="status_telefono'+ response.contactos.telefonos[propiedad].id +'" class="label label-danger" style="font-size: 11px;">Inactivo</span>';
+							}
 							row.append($("<td><a href='skype:"+propiedad+"?call'>"+propiedad+"</a></td>"))
-							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.telefonos[propiedad].respuesta +"'>"+ response.contactos.telefonos[propiedad].gestion +"</span></td>"));
+							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.telefonos[propiedad].respuesta +"'>"+ response.contactos.telefonos[propiedad].gestion +"</span></td>"))
+							   .append($('<td>'+ label_status +'</td>'))
+							   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="telefono" id-contacto="' + response.contactos.telefonos[propiedad].id + '" id-deudor="' + response.id_deudor + '"><i class="fa fa-edit"></i></a></td>'));
+
 
 							$("#tabla-contactos tbody").append(row);
 						}
@@ -343,8 +351,15 @@
 						if (response.contactos.correos.hasOwnProperty(propiedad)) {
 							var row = $("<tr style='font-size: 11px;'>");
 							
+							if(response.contactos.correos[propiedad].estatus){
+								label_status = '<span id="status_correo'+ response.contactos.correos[propiedad].id +'" class="label label-success" style="font-size: 11px;">Activo</span>';
+							}else{
+								label_status = '<span id="status_correo'+ response.contactos.correos[propiedad].id +'" class="label label-danger" style="font-size: 11px;">Inactivo</span>';
+							}
 							row.append($("<td><a href='skype:"+propiedad+"?chat'>"+propiedad+"</a></td>"))
-							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.correos[propiedad].respuesta +"'>"+ response.contactos.correos[propiedad].gestion +"</span></td>"));
+							   .append($("<td><span data-toggle='tooltip' title='Respuesta:" + response.contactos.correos[propiedad].respuesta +"'>"+ response.contactos.correos[propiedad].gestion +"</span></td>"))
+							   .append($('<td>'+ label_status +'</td>'))
+							   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="correo" id-contacto="' + response.contactos.correos[propiedad].id + '" id-deudor="' + response.id_deudor + '"><i class="fa fa-edit"></i></a></td>'));
 
 							$("#tabla-contactos tbody").append(row);
 						}
@@ -609,14 +624,15 @@
 		});
     }
 
+	function isValidEmail(mail) { 
+		return /^\w+([\.\+\-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(mail); 
+	}
+
+	function isValidPhone(phone) { 
+		return /^[1-9]{9}$/.test(phone); 
+	}
+	
     function agregar_contacto(iddeudor){
-    	console.log(iddeudor);
-    	/*swal("Write something here:", {
-		  content: "input",
-		})
-		.then((value) => {
-		  swal(`You typed: ${value}`);
-		});*/
 		var tipo = "";
 		swal({
             title: "Agregar un nuevo contacto",
@@ -629,48 +645,58 @@
             //closeOnConfirm: false
         }).then((value) => {
         	if((value != null) && (value != "")){
-				var emailReg = /^([w-.]+@([w-]+.)+[w-]{2,4})?$/i;
-				if(!emailReg.test(value)){
-					swal(`Disculpe, el contacto ingresado (${value}) no es un correo electrónico`);
-					return false;
-				}else{
-					tipo = 'correo';
-				}
-
-				var telefonoReg = /[0-9 -()+]+$/i;
-				if(!telefonoReg.test(value)){
-					swal(`Disculpe, el contacto ingresado (${value}) no es un número de teléfono válido`);
-					return false;
-				}else{
-					tipo = 'telefono';
-				}
-
-        		/*$.ajax({
+        		if(value.indexOf('@') !== -1){
+        			if(isValidEmail(value)){
+        				tipo = 'correo';
+        			}else{
+        				swal(`Disculpe, el contacto ingresado (${value}) no es un correo electrónico válido`);
+						return false;
+        			}
+        		}else{
+        			if(isValidPhone(value)){
+        				tipo = 'telefono';
+        			}else{
+        				swal(`Disculpe, el contacto ingresado (${value}) no es un teléfono válido`);
+						return false;
+        			}
+        		}
+        		var contacto = value;
+        		$.ajax({
 		           	url: 'deudores/agregar/contacto',
 		            dataType: "JSON",
 		            type: 'POST',
-		            data: {_token: "{!! csrf_token() !!}", iddeudor: _this.attr("id-deudor"), tipo: tipo, id_contacto: id_contacto},
+		            data: {_token: "{!! csrf_token() !!}", id_deudor: iddeudor, tipo: tipo, contacto: contacto},
 		            success: function (response) {
 		            	if(response.status == 'success'){
 		            		swal("Hecho!", response.msg, "success");
-		            		if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-danger(?!\S)/)){
-								document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-danger(?!\S)/g , '');
-								document.getElementById("status_" + tipo + id_contacto).className += ' label-success';
-		            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Activo';
+		            		var tabla_contactos = $("#tabla-contactos");
+							var cantd_filas = $('#tabla-contactos >tbody >tr').length;
 
-		            		}else if(document.getElementById("status_" + tipo + id_contacto).className.match(/(?:^|\s)label-success(?!\S)/)){
-		            			document.getElementById("status_" + tipo + id_contacto).className = document.getElementById("status_" + tipo + id_contacto).className.replace( /(?:^|\s)label-success(?!\S)/g , '');
-								document.getElementById("status_" + tipo + id_contacto).className += ' label-danger';
-		            			document.getElementById("status_" + tipo + id_contacto).innerHTML = 'Inactivo';
-		            		}
-		            	}else{
+							var row = $("<tr style='font-size: 11px;'>");
+
+							if(tipo == 'telefono'){
+								row.append($("<td><a href='skype:"+contacto+"?call'>"+contacto+"</a></td>"))
+								   .append($("<td>-</td>"))
+								   .append($('<td><span id="status_telefono'+ response.id +'" class="label label-success" style="font-size: 11px;">Activo</span></td>'))
+								   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="telefono" id-contacto="' + response.id + '" id-deudor="' + iddeudor + '"><i class="fa fa-edit"></i></a></td>'));
+							} else{
+								row.append($("<td><a href='skype:"+contacto+"?chat'>"+contacto+"</a></td>"))
+								   .append($("<td>-</td>"))
+								   .append($('<td><span id="status_correo'+ response.id +'" class="label label-success" style="font-size: 11px;">Activo</span></td>'))
+								   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="correo" id-contacto="' + response.id + '" id-deudor="' + iddeudor + '"><i class="fa fa-edit"></i></a></td>'));
+							}
+							
+
+							$("#tabla-contactos tbody").append(row);
+
+		            	} else{	
 		            		swal("Ocurrió un error!", response.msg, "error");
 		            	}
 		            },
 		            error: function (xhr, ajaxOptions, thrownError) {
 		                swal("Ocurrió un error!", "Por favor, intente de nuevo", "error");
 		            }
-		        });	*/
+		        });
         	}
 		});
     }
