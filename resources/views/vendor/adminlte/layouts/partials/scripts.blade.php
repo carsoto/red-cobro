@@ -519,7 +519,9 @@
             success: function (response) {
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
-            	document.getElementById('consultar-gestiones').click();
+            	if(document.getElementById('consultar-gestiones') != null){
+			document.getElementById('consultar-gestiones').click();
+		}
     			$('#rut-modal-detalles').modal('show');
     			$('.date-picker').datepicker({
     				language: "es",
