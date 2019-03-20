@@ -9,6 +9,7 @@ use App\Deudor;
 use App\Gestion;
 use App\Telefono;
 use App\Correo;
+use Carbon\Carbon;
 use Response;
 use DateTime;
 
@@ -30,6 +31,41 @@ class DeudorController extends Controller
         $deudores = Deudor::all();
         
         return Datatables::of($deudores)
+        	->addColumn('fecha_asignacion', function ($deudor) { 
+				$asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+				return Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
+        	})
+        	->addColumn('dias_mora', function ($deudor) { 
+        		return $deudor->documentos->max('dias_mora');
+        	})
+        	->addColumn('marca_1', function ($deudor) { 
+        		$m = $deudor->marcas()->where('orden', '=', 1)->first();
+        		if($m == null){
+        			$mark = "-";
+        		}else{
+        			$mark = $m->marca;
+        		}
+        		return $mark; 
+        	})
+        	->addColumn('marca_2', function ($deudor) { 
+        		$m = $deudor->marcas()->where('orden', '=', 2)->first();
+        		if($m == null){
+        			$mark = "-";
+        		}else{
+        			$mark = $m->marca;
+        		}
+        		return $mark; 
+        	})
+        	->addColumn('deuda_recuperada', function ($deudor) { 
+				$deuda_recuperada = 0;
+				$documentos = $deudor->documentos;
+				foreach ($documentos as $clave_doc => $doc) {
+				    foreach ($doc->pagos as $clave_pago => $pago) {
+				        $deuda_recuperada += $pago->monto;
+				    }
+				}
+        		return number_format($deuda_recuperada, 2, ",", ".");
+        	})
             ->addColumn('action', function ($deudor) {
                 /*return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>';*/
                 return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';

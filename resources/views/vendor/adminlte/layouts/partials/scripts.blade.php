@@ -105,6 +105,11 @@
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
+					{data: 'fecha_asignacion', name:'fecha_asignacion'},
+					{data: 'dias_mora', name:'dias_mora'},
+					{data: 'marca_1', name:'marca_1'},
+					{data: 'marca_2', name:'marca_2'},
+					{data: 'deuda_recuperada', name:'deuda_recuperada'},
 		            {data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
