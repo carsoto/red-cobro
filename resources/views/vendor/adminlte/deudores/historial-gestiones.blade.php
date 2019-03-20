@@ -9,7 +9,7 @@
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
 				<div class="input-group date date-picker">
-					<input type="text" name='fecha_inicio_consulta' class="form-control pull-right input-sm" placeholder="FECHA INICIO">
+					<input value="{{ Carbon\Carbon::now()->subDays(30)->format('Y-m-d') }}" type="text" name='fecha_inicio_consulta' class="form-control pull-right input-sm" placeholder="FECHA INICIO">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
@@ -17,14 +17,14 @@
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
 				<div class="input-group date date-picker">
-					<input type="text" name='fecha_fin_consulta' class="form-control pull-right input-sm" placeholder="FECHA FIN">
+					<input value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" type="text" name='fecha_fin_consulta' class="form-control pull-right input-sm" placeholder="FECHA FIN">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-				{!! Form::button('<i class="fa fa-search"></i> CONSULTAR', array('class' => 'btn btn-primary btn-sm btn-flat btn-block', 'onclick' => 'consultar_gestiones("'.$iddeudor.'")')) !!}	
+				{!! Form::button('<i class="fa fa-search"></i> CONSULTAR', array('id' => 'consultar-gestiones', 'class' => 'btn btn-primary btn-sm btn-flat btn-block', 'onclick' => 'consultar_gestiones("'.$iddeudor.'")')) !!}	
 			</div>
 		</div>
 	{!! Form::close() !!}
