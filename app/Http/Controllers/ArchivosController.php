@@ -91,7 +91,13 @@ class ArchivosController extends Controller
                         }
 
                         $fecha_emision = Carbon::parse($asignacion['fecha_emision'])->format('Y-m-d');
-                        $fecha_vencimiento = Carbon::parse($asignacion['fecha_vencimiento'])->format('Y-m-d');
+
+                        if((isset($asignacion['fecha_vencimiento'])) && ($asignacion['fecha_vencimiento'] != "")){
+                            $fecha_vencimiento = Carbon::parse($asignacion['fecha_vencimiento'])->format('Y-m-d');
+                        }else{
+                            $fecha_vencimiento = Carbon::parse($asignacion['fecha_emision'])->addDays(30)->format('Y-m-d');
+                        }
+                        
                         $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
                         $documento = Documento::firstOrCreate([
                             'numero' => $asignacion['num_documento'], 
