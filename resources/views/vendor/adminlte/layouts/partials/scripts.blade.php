@@ -10,6 +10,13 @@
 <script src="{{ asset('/public/plugins/datepicker/locales/bootstrap-datepicker.es.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/chart-js/Chart.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/js/dashboard-charts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/dataTables.buttons.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/buttons.flash.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/jszip.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/pdfmake.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/vfs_fonts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/buttons.html5.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/public/plugins/datatables/buttons.print.min.js') }}" type="text/javascript"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are reommended to enhance the
@@ -91,6 +98,10 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'deudores/table/listado',
+		        dom: 'Bfrtip',
+		        buttons: [
+		            { extend: 'excel', text: '<i class="fa fa-download"></i> Exportar a excel' }
+		        ],
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
