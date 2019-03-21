@@ -95,12 +95,13 @@
     	var table_deudor = document.getElementById('tabla_deudores');
     	if(table_deudor != undefined){
     		var datatable_deudores = $('#tabla_deudores').DataTable({
-		        processing: true,
-		        serverSide: true,
 		        ajax: 'deudores/table/listado',
 		        dom: 'Bfrtip',
 		        buttons: [
-		            { extend: 'excel', text: '<i class="fa fa-download"></i> Exportar a excel' }
+		            { 
+		            	extend: 'excel', 
+		            	text: '<i class="fa fa-download"></i> Exportar a excel',
+		            }
 		        ],
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
@@ -113,7 +114,6 @@
 		            {data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
-
 		    /*$(document).on('click', ".detalle_deuda", function(e) {
 		        var _this = $(this);
 		        e.preventDefault();

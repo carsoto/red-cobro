@@ -218,7 +218,7 @@ class GestionController extends Controller
                 }
 
             })->editColumn('fecha_prox_gestion', function($gestiones) {
-                return $gestiones->pivot->fecha_prox_gestion;
+                return Carbon::parse($gestiones->pivot->fecha_prox_gestion)->format('d-m-Y');
 
             })->make(true);
 

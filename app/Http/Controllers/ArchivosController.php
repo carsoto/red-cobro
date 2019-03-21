@@ -46,94 +46,100 @@ class ArchivosController extends Controller
             $deuda_total = 0;
             $fecha_actual = date('Y-m-d');
             foreach ($registros as $index => $asignacion) {
-                        $rut = Funciones::rut_sin_dv($asignacion['rut']);
+                if((isset($asignacion['rut'])) && ($asignacion['rut'] != "")) {
+                    $rut = Funciones::rut_sin_dv($asignacion['rut']);
 
-                        $deudor = Deudor::updateOrCreate(['rut' => $rut], [ 
-                                    'rut' => Funciones::rut_sin_dv($asignacion['rut']),
-                                    'rut_dv' => strtoupper($asignacion['rut']),
-                                    'razon_social' => $asignacion['razon_social_nombre'],
-                                    'en_gestion' => 1
+                    $deudor = Deudor::updateOrCreate(['rut' => $rut], [ 
+                        'rut' => Funciones::rut_sin_dv($asignacion['rut']),
+                        'rut_dv' => strtoupper($asignacion['rut']),
+                        'razon_social' => $asignacion['razon_social_nombre'],
+                        'en_gestion' => 1
+                    ]);
+
+                    if(($asignacion["region"] != "") && ($asignacion["ciudad"] != "") && ($asignacion["comuna"] != "")){
+                        $comuna = $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]);
+                        $direccion = Direccion::firstOrCreate(['idcomunas' => $comuna, 'direccion' => $asignacion["direccion"]], [
+                            'idcomunas' => $comuna, 
+                            'direccion' => $asignacion["direccion"],
+                            'complemento' => $asignacion["complemento"]
                         ]);
 
-                        if(($asignacion["region"] != "") && ($asignacion["ciudad"] != "") && ($asignacion["comuna"] != "")){
-                            $direccion = Direccion::firstOrCreate([
-                                'idcomunas' => $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]), 
-                                'direccion' => $asignacion["direccion"],
-                                'complemento' => $asignacion["complemento"]
+                        $deudor->direcciones()->sync($direccion->iddirecciones, false);
+                    }
+                    $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
+                    if($asignacion['email'] != ''){
+                        if (strpos($asignacion['email'], '@') !== false ) {
+                            $correo = Correo::updateOrCreate(['correo' => $asignacion['email']], [
+                                'correo' => $asignacion['email']
                             ]);
+                            $deudor->correos()->sync($correo->idcorreos_electronicos, false);
+                        } 
+                    }
 
-                            $deudor->direcciones()->sync($direccion->iddirecciones, false);
-                        }
-                        $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
-                        if($asignacion['email'] != ''){
-                            if (strpos($asignacion['email'], '@') !== false ) {
-                                $correo = Correo::updateOrCreate(['correo' => $asignacion['email']], [
-                                    'correo' => $asignacion['email']
-                                ]);
-                                $deudor->correos()->sync($correo->idcorreos_electronicos, false);
-                            } 
-                        }
-
-                        $asignacion['fono_1'] = str_replace(' ', '', $asignacion['fono_1']);
-                        if($asignacion['fono_1'] != ''){
-                            $telefono1 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_1']], [
-                                'telefono' => $asignacion['fono_1']
-                            ]);
-                            $deudor->telefonos()->sync($telefono1->idtelefonos, false);
-                        }
-
-                        $asignacion['fono_2'] = str_replace(' ', '', $asignacion['fono_2']);
-                        if($asignacion['fono_2'] != ''){
-                            $telefono2 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_2']], [
-                                'telefono' => $asignacion['fono_2']
-                            ]);
-                            $deudor->telefonos()->sync($telefono2->idtelefonos, false);
-                        }
-
-                        $fecha_emision = Carbon::parse($asignacion['fecha_emision'])->format('Y-m-d');
-
-                        if((isset($asignacion['fecha_vencimiento'])) && ($asignacion['fecha_vencimiento'] != "")){
-                            $fecha_vencimiento = Carbon::parse($asignacion['fecha_vencimiento'])->format('Y-m-d');
-                        }else{
-                            $fecha_vencimiento = Carbon::parse($asignacion['fecha_emision'])->addDays(30)->format('Y-m-d');
-                        }
-                        
-                        $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
-                        $documento = Documento::firstOrCreate([
-                            'numero' => $asignacion['num_documento'], 
-                            'folio' => $asignacion['folio'], 
-                            'deuda' => $asignacion['deuda'], 
-                            'fecha_emision' => $fecha_emision,
-                            'fecha_vencimiento' => $fecha_vencimiento,
-                            'dias_mora' => $dias_mora
+                    $asignacion['fono_1'] = str_replace(' ', '', $asignacion['fono_1']);
+                    if($asignacion['fono_1'] != ''){
+                        $telefono1 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_1']], [
+                            'telefono' => $asignacion['fono_1']
                         ]);
+                        $deudor->telefonos()->sync($telefono1->idtelefonos, false);
+                    }
 
-                        $deudor->documentos()->sync($documento->iddocumentos, false);
+                    $asignacion['fono_2'] = str_replace(' ', '', $asignacion['fono_2']);
+                    if($asignacion['fono_2'] != ''){
+                        $telefono2 = Telefono::updateOrCreate(['telefono' => $asignacion['fono_2']], [
+                            'telefono' => $asignacion['fono_2']
+                        ]);
+                        $deudor->telefonos()->sync($telefono2->idtelefonos, false);
+                    }
 
-                        $gestor = Gestor::firstOrCreate([
-                            'razon_social' => $asignacion['proveedor']
-                        ]);               
+                    $fecha_emision = Carbon::parse($asignacion['fecha_emision'])->format('Y-m-d');
 
-                        $gestor->documentos()->sync($documento->iddocumentos, false);
+                    if((isset($asignacion['fecha_vencimiento'])) && ($asignacion['fecha_vencimiento'] != "")){
+                        $fecha_vencimiento = Carbon::parse($asignacion['fecha_vencimiento'])->format('Y-m-d');
+                    }else{
+                        $fecha_vencimiento = Carbon::parse($asignacion['fecha_emision'])->addDays(30)->format('Y-m-d');
+                    }
+                    
+                    $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
+                    $documento = Documento::firstOrCreate([
+                        'numero' => $asignacion['num_documento'],
+                        'fecha_emision' => $fecha_emision,
+                    ],[
+                        'numero' => $asignacion['num_documento'], 
+                        'folio' => $asignacion['folio'], 
+                        'deuda' => $asignacion['deuda'], 
+                        'fecha_emision' => $fecha_emision,
+                        'fecha_vencimiento' => $fecha_vencimiento,
+                        'dias_mora' => $dias_mora
+                    ]);
 
-                        $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
-                        
-                        $documentos = $deudor->documentos;
-                        foreach ($documentos as $key => $doc) {
-                            $deuda_total += $doc->deuda; 
-                        }
+                    $deudor->documentos()->sync($documento->iddocumentos, false);
 
-                        if(count($hist_asignacion) == 0){
-                            Asignacion::create([
-                                'deudores_iddeudores' => $deudor->iddeudores,
-                                'fecha_asignacion' => $fecha_actual,
-                                'deuda' => $deuda_total
-                            ]);
-                            $deuda_total = 0;
-                        }else{
-                            Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
-                            $deuda_total = 0;
-                        }
+                    $gestor = Gestor::firstOrCreate(['razon_social' => $asignacion['proveedor']], [
+                        'razon_social' => $asignacion['proveedor']
+                    ]);               
+
+                    $gestor->documentos()->sync($documento->iddocumentos, false);
+
+                    $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
+                    
+                    $documentos = $deudor->documentos;
+                    foreach ($documentos as $key => $doc) {
+                        $deuda_total += $doc->deuda; 
+                    }
+
+                    if(count($hist_asignacion) == 0){
+                        Asignacion::create([
+                            'deudores_iddeudores' => $deudor->iddeudores,
+                            'fecha_asignacion' => $fecha_actual,
+                            'deuda' => $deuda_total
+                        ]);
+                        $deuda_total = 0;
+                    }else{
+                        Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
+                        $deuda_total = 0;
+                    }
+                }
             }
         
             $tiempo_final = microtime(true);
@@ -153,7 +159,12 @@ class ArchivosController extends Controller
                         
                         if(array_key_exists($info->num_documento, $documentos)){
                             
-                            Pago::create([
+                            Pago::firstOrCreate([
+                                'rut' => strtoupper($info->rut),
+                                'documentos_iddocumentos' => $documentos[$info->num_documento],
+                                'monto' => $info->monto_pago,
+                                'fecha' => $fecha_pago
+                            ], [
                                 'rut' => strtoupper($info->rut),
                                 'documentos_iddocumentos' => $documentos[$info->num_documento],
                                 'monto' => $info->monto_pago,

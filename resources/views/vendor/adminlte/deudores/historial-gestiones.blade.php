@@ -9,7 +9,7 @@
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
 				<div class="input-group date date-picker">
-					<input value="{{ Carbon\Carbon::now()->subDays(30)->format('Y-m-d') }}" type="text" name='fecha_inicio_consulta' class="form-control pull-right input-sm" placeholder="FECHA INICIO">
+					<input value="{{ Carbon\Carbon::now()->subDays(30)->format('d-m-Y') }}" type="text" name='fecha_inicio_consulta' class="form-control pull-right input-sm" placeholder="FECHA INICIO">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>
@@ -17,7 +17,7 @@
 			</div>
 			<div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">
 				<div class="input-group date date-picker">
-					<input value="{{ Carbon\Carbon::now()->format('Y-m-d') }}" type="text" name='fecha_fin_consulta' class="form-control pull-right input-sm" placeholder="FECHA FIN">
+					<input value="{{ Carbon\Carbon::now()->format('d-m-Y') }}" type="text" name='fecha_fin_consulta' class="form-control pull-right input-sm" placeholder="FECHA FIN">
 					<div class="input-group-addon">
 						<i class="fa fa-calendar"></i>
 					</div>

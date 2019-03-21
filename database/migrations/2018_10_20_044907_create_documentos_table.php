@@ -23,6 +23,7 @@ class CreateDocumentosTable extends Migration
             $table->date('fecha_emision');
             $table->date('fecha_vencimiento');
             $table->integer('dias_mora')->nullable();
+            $table->integer('activo')->default(1);
         
             $table->timestamps();
         
