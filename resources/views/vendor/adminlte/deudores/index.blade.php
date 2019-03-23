@@ -21,12 +21,13 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<div class="table-responsive" style="padding-top: 15px;">
-							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable" style="width:100%; font-size: 12px;">
+							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable" style="width:100%; font-size: 11px;">
 		                        <thead>
 		                            <tr>
 		                                <th>Rut</th>
 		                                <th>Razón social</th>
 		                                <th>F. de asignación</th>
+		                                <th>Asignado</th>
 		                                <th>Días mora</th>
 		                                <th>Marca 1</th>
 		                                <th>Marca 2</th>

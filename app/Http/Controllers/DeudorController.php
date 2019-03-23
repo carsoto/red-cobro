@@ -35,6 +35,10 @@ class DeudorController extends Controller
 				$asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
 				return Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
         	})
+            ->addColumn('asignado', function ($deudor) { 
+                $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+                return number_format($asignacion->deuda, 2, ",", ".");
+            })
         	->addColumn('dias_mora', function ($deudor) { 
         		return $deudor->documentos->max('dias_mora');
         	})
