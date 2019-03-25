@@ -70,7 +70,7 @@ class Deudor extends Eloquent
 	public function documentos()
 	{
 		return $this->belongsToMany(\App\Documento::class, 'deudores_documentos', 'iddeudores', 'iddocumentos')
-					->withPivot('id', 'idestado_documentos')
+					->withPivot('id', 'activo')
 					->withTimestamps();
 	}
 

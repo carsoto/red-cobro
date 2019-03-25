@@ -24,14 +24,14 @@
 							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable" style="width:100%; font-size: 11px;">
 		                        <thead>
 		                            <tr>
-		                                <th>Rut</th>
+		                                <th width="60px">Rut</th>
 		                                <th>Razón social</th>
-		                                <th>F. de asignación</th>
-		                                <th>Asignado</th>
-		                                <th>Días mora</th>
-		                                <th>Marca 1</th>
-		                                <th>Marca 2</th>
-		                                <th>S. recuperado</th>
+		                                <th width="80px">F. de asignación</th>
+		                                <th width="60px">Asignado</th>
+		                                <th width="60px">Días mora</th>
+		                                <th width="100px">Marca 1</th>
+		                                <th width="100px">Marca 2</th>
+		                                <th width="60px">S. recuperado</th>
 		                                <th><i class="fa fa-gears"></i></th>
 		                            </tr>
 		                        </thead>

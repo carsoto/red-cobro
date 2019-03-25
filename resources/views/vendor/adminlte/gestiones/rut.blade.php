@@ -283,7 +283,7 @@
 		                            @endif
 	                        	</tbody>
 		                    </table>
-		                    <div style="margin-top: 20px;">
+		                    <div style="margin-top: 20px;" id='menu_botones'>
 			                    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" style="padding: 10px;">
 									{{ Form::button('<i class="fa fa-plus"></i> AGREGAR GESTIÓN', ['type' => 'button', 'class' => 'btn btn-success btn-sm btn-flat btn-block', 'onclick' => 'opciones_rut("agregar_gestion", "'.encrypt($datos_deudor['deudor']->iddeudores).'");'] )  }}
 								</div>

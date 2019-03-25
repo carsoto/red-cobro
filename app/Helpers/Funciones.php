@@ -5,7 +5,7 @@ namespace App\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-
+use DB;
 class Funciones{
 
     public static function usuarios_correspondiente($id_logueado){
@@ -68,5 +68,21 @@ class Funciones{
         $apellido = explode(' ', Auth::user()->lastname);
         $nombre_completo = $nombre[0].' '.$apellido[0];
         return $nombre_completo;
+    }
+
+    public static function revisar_saldo($numero, $rut_dv){
+        $saldos = DB::select(DB::raw("SELECT d.iddocumentos, de.iddeudores, d.deuda, SUM(p.monto) AS pagos, d.deuda - SUM(p.monto) AS pendiente
+                                        FROM
+                                            deudores de, documentos d, deudores_documentos dd, pagos p
+                                        WHERE
+                                            d.numero = ".$numero."
+                                        AND de.rut_dv = '".$rut_dv."'
+                                        AND dd.iddocumentos = d.iddocumentos
+                                        AND dd.iddeudores = de.iddeudores
+                                        AND p.rut = de.rut_dv GROUP BY d.iddocumentos"));
+        if(count($saldos) > 0){
+            $saldos = $saldos[0];
+        }
+        return $saldos;
     }
 }

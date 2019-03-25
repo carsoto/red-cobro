@@ -18,9 +18,9 @@ class CreatePagosTable extends Migration
         
             $table->increments('idpagos')->unsigned();
             $table->string('rut', 45);
-            $table->integer('documentos_iddocumentos')->unsigned();
+            $table->integer('documentos_iddocumentos')->unsigned()->inddex();
             $table->decimal('monto', 9, 2);
-            $table->date('fecha');
+            $table->date('fecha')->inddex();
         
             $table->index('documentos_iddocumentos', 'fk_pagos_documentos_idx');
         

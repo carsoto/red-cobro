@@ -148,28 +148,50 @@ class ArchivosController extends Controller
 
 
         }else if($tipo_archivo == "Pagos"){
-
             Excel::load($request->file('file'), function($hoja) {
-                $tiempo_inicial = microtime(true);
                 $documentos = Documento::all()->pluck('iddocumentos', 'numero')->toArray();
-                
+                $tiempo_inicial = microtime(true);
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $info) {
-                        $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');
-                        
-                        if(array_key_exists($info->num_documento, $documentos)){
+                        if($info->rut != ""){
+
+                            $saldos = Funciones::revisar_saldo($info->num_documento, $info->rut);
                             
-                            Pago::firstOrCreate([
-                                'rut' => strtoupper($info->rut),
-                                'documentos_iddocumentos' => $documentos[$info->num_documento],
-                                'monto' => $info->monto_pago,
-                                'fecha' => $fecha_pago
-                            ], [
-                                'rut' => strtoupper($info->rut),
-                                'documentos_iddocumentos' => $documentos[$info->num_documento],
-                                'monto' => $info->monto_pago,
-                                'fecha' => $fecha_pago
-                            ]);
+                            if($info->fecha_pago != ""){
+                                $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');    
+                            }else{
+                               $fecha_pago = date('Y-m-d');
+                            }   
+
+                            if((is_a($saldos, "Illuminate\Database\Eloquent\Collection")) && ($saldos->pendiente != 0)){
+                                Pago::firstOrCreate([
+                                    'rut' => strtoupper($info->rut),
+                                    'documentos_iddocumentos' => $saldos->iddocumentos,
+                                    'monto' => $info->monto_pago,
+                                    'fecha' => $fecha_pago
+                                ], [
+                                    'rut' => strtoupper($info->rut),
+                                    'documentos_iddocumentos' => $documentos[$info->num_documento],
+                                    'monto' => $info->monto_pago,
+                                    'fecha' => $fecha_pago
+                                ]);
+                            }
+
+                            else{
+                                if(array_key_exists(intval($info->num_documento), $documentos)){
+                                    Pago::create([
+                                        'rut' => strtoupper($info->rut),
+                                        'documentos_iddocumentos' => $documentos[$info->num_documento],
+                                        'monto' => $info->monto_pago,
+                                        'fecha' => $fecha_pago
+                                    ]);
+                                }
+                            }
+
+                            $nuevo_saldo = Funciones::revisar_saldo($info->num_documento, $info->rut);
+                            if($nuevo_saldo->pendiente == 0){
+                                Deudor::find($nuevo_saldo->iddeudores)->documentos()->updateExistingPivot($nuevo_saldo->iddocumentos, ['activo' => 0]);
+                            }
                         }
                     }
                 }

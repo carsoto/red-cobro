@@ -24,7 +24,7 @@ class DocumentoController extends Controller
         
         $deudor = Deudor::where('iddeudores', '=', decrypt($iddeudor))->get();
         $deudor = $deudor[0];
-        $documentos = $deudor->documentos;
+        $documentos = $deudor->documentos()->where('activo', '=', 1)->get();
         
         return Datatables::of($documentos)
             ->editColumn('deuda', function ($documento) {

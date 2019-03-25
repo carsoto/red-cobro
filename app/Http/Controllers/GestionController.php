@@ -62,7 +62,7 @@ class GestionController extends Controller
             $direcciones = $deudor->direcciones;
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
-            $documentos = $deudor->documentos;
+            $documentos = $deudor->documentos()->where('activo', '=', 1)->get();
             $marcas = $deudor->marcas->take(6);
             $cantd_marcas = count($marcas);
 

@@ -341,7 +341,7 @@
 					var n = 1;
 					console.log(cantd_filas);
 					$('#tabla-contactos >tbody >tr').each(function() {
-						console.log('ss');
+						//console.log('ss');
 						$(this).remove();
 					});
 
@@ -390,6 +390,13 @@
 
 						$("#tabla-contactos tbody").append(row);
 					}
+
+					$('#menu_botones').html(
+						'<div style="padding: 10px;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><button type="button" onclick="opciones_rut(\'agregar_gestion\', \''+ response.id_deudor +'\');" class="btn btn-success btn-sm btn-flat btn-block"><i class="fa fa-plus"></i> AGREGAR GESTIÓN</button></div>'
+						+ '<div style="padding: 10px;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><button type="button" onclick="opciones_rut(\'historial_gestiones\', \''+ response.id_deudor +'\');" class="btn btn-info btn-sm btn-flat btn-block"><i class="fa fa-history"></i> HISTORIAL DE GESTIONES</button></div>'
+						+ '<div style="padding: 10px;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><button type="button" onclick="opciones_rut(\'documentos\', \''+ response.id_deudor +'\');" class="btn btn-warning btn-sm btn-flat btn-block"><i class="fa fa-file-o"></i> DOCUMENTOS</button></div>'
+						+ '<div style="padding: 10px;" class="col-lg-3 col-md-3 col-sm-6 col-xs-12"><button type="button" onclick="opciones_rut(\'direcciones\', \''+ response.id_deudor +'\');" class="btn btn-danger btn-sm btn-flat btn-block"><i class="fa fa-map-marker"></i> DIRECCIONES</button></div>'
+					);
             	}
             },
             error: function (xhr, ajaxOptions, thrownError) {
