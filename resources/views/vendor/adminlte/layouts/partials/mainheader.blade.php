@@ -4,9 +4,9 @@
     <!-- Logo -->
     <a href="{{ url('/home') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>R</b>C</span>
+        <span class="logo-mini">R<b>C</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg">{{ env('APP_NAME') }}</span>
+        <span class="logo-lg"><img src="{{ asset('public/images/logo-rc-blanco.png') }}" width="150px"></span>
     </a>
 
     <!-- Header Navbar -->

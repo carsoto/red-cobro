@@ -76,12 +76,12 @@ class GestionController extends Controller
                 }
             }
 
-            foreach ($documentos as $clave_doc => $doc) {
+            foreach ($deudor->documentos as $clave_doc => $doc) {
                 foreach ($doc->pagos as $clave_pago => $pago) {
                     $deuda_recuperada += $pago->monto;
                 }
             }
-        
+            
             $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
             
             $ultima_asignacion = array();
@@ -130,10 +130,11 @@ class GestionController extends Controller
             if(count($telefonos) > 0){
                 foreach($telefonos AS $key => $value){
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->telefono)->orderBy('pivot_created_at', 'desc')->first();
+            
                     if($ult_gestion_contacto != null){
-                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
+                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'fecha' => Carbon::parse($ult_gestion_contacto->pivot->fecha_gestion)->format('d-m-Y'), 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
+                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
                     }
                 }
             }
@@ -142,9 +143,9 @@ class GestionController extends Controller
                 foreach($correos AS $key => $value){
                     $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->correo)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
-                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
+                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'fecha' => Carbon::parse($ult_gestion_contacto->pivot->fecha_gestion)->format('d-m-Y'), 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
+                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
                     }
                 }
             }
