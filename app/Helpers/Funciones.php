@@ -85,4 +85,20 @@ class Funciones{
         }
         return $saldos;
     }
+
+    /*public static function carteras(){
+        if(Auth::user()->hasRole('superadmin')){
+            $carteras = Cartera::pluck('descripcion', 'idcarteras');
+        }else{
+            //$carteras = Cartera::where('iduser', '=', Auth::id())->pluck('descripcion', 'idcarteras');
+            $carteras    
+        }
+        
+        return $carteras;
+    }
+
+    public static function usuario_gestores_carteras(){
+        $ugc = DB::select(DB::raw("SELECT GROUP_CONCAT(c.idcarteras) AS id FROM carteras c, users_gestores_carteras gc WHERE gc.users_id = ".Auth::id()." AND gc.carteras_idcarteras = c.idcarteras"));
+        return $ugc[0]->id;
+    }*/
 }

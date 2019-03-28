@@ -8,6 +8,7 @@ use Excel;
 use App\User;
 use App\Agente;
 use App\Asignacion;
+use App\Cartera;
 use App\Comuna;
 use App\Correo;
 use App\Deudor;
@@ -22,11 +23,13 @@ use App\Region;
 use App\Supervisor;
 use App\Telefono;
 
+use Auth;
 use Carbon\Carbon;
 use Funciones;
 use Redirect;
 use Session;
 use DB;
+
 
 class ArchivosController extends Controller
 {
@@ -42,7 +45,7 @@ class ArchivosController extends Controller
         if($tipo_archivo == "Asignaciones"){
             $tiempo_inicial = microtime(true);
             $registros = Excel::load($request->file('file'), 'UTF-8')->all()->toArray();
-            Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
+            //Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
             $deuda_total = 0;
             $fecha_actual = date('Y-m-d');
             foreach ($registros as $index => $asignacion) {
@@ -66,6 +69,7 @@ class ArchivosController extends Controller
 
                         $deudor->direcciones()->sync($direccion->iddirecciones, false);
                     }
+
                     $asignacion['email'] = str_replace(' ', '', $asignacion['email']);
                     if($asignacion['email'] != ''){
                         if (strpos($asignacion['email'], '@') !== false ) {
@@ -101,6 +105,7 @@ class ArchivosController extends Controller
                     }
                     
                     $dias_mora = Funciones::calcular_dias_mora($fecha_vencimiento, $fecha_actual);
+                    
                     $documento = Documento::firstOrCreate([
                         'numero' => $asignacion['num_documento'],
                         'fecha_emision' => $fecha_emision,
@@ -119,7 +124,23 @@ class ArchivosController extends Controller
                         'razon_social' => $asignacion['proveedor']
                     ]);               
 
-                    $gestor->documentos()->sync($documento->iddocumentos, false);
+                    //$gestor->documentos()->sync($documento->iddocumentos, false);
+                    $gestor->documentos()->sync(array($documento->iddocumentos => array('deudores_iddeudores' => $deudor->iddeudores)), false);
+                    if((isset($asignacion['cartera'])) && ($asignacion['cartera'] != "")){
+                        $cartera = Cartera::firstOrCreate([
+                            'descripcion' => $asignacion['cartera'],
+                        ],[
+                            'descripcion' => $asignacion['cartera']
+                        ]);    
+                    }else{
+                        $cartera = Cartera::firstOrCreate([
+                            'descripcion' => 'SIN CARTERA'
+                        ],[
+                            'descripcion' => 'SIN CARTERA'
+                        ]);
+                    }
+                    
+                    $gestor->carteras()->sync(array($cartera->idcarteras => array('users_id' => Auth::id())), true);
 
                     $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
                     
@@ -135,7 +156,9 @@ class ArchivosController extends Controller
                             'deuda' => $deuda_total
                         ]);
                         $deuda_total = 0;
-                    }else{
+                    }
+
+                    else{
                         Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
                         $deuda_total = 0;
                     }

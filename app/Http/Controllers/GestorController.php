@@ -9,6 +9,7 @@ use App\Gestor;
 use Validator;
 use Session;
 use Redirect;
+use Funciones;
 
 class GestorController extends Controller
 {
@@ -27,6 +28,11 @@ class GestorController extends Controller
         $gestores = Gestor::all();
         
         return Datatables::of($gestores)
+            ->addColumn('cartera', function ($gestores) {
+                foreach ($gestores->carteras as $cartera) {
+                    return strtoupper($cartera->descripcion);
+                }
+            })
             ->addColumn('action', function ($gestor) {
                 //<a href="#" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_gestor"><i class="fa fa-trash"></i></a>
                 return '<a href="'.route('gestores.edit', encrypt($gestor->idgestores)).'" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
@@ -67,8 +73,12 @@ class GestorController extends Controller
      */
     public function create()
     {
-        $gestor = new gestor();
-        return view('adminlte::gestores.create', array('gestor' => $gestor));
+        $gestor = new Gestor();
+        //$cartera_clientes = Funciones::carteras();
+        $cartera_selected = 0;
+        $cartera_clientes = array();
+        
+        return view('adminlte::gestores.create', array('gestor' => $gestor, 'cartera_selected' => $cartera_selected, 'cartera_clientes' => $cartera_clientes));
     }
 
     /**
@@ -113,7 +123,10 @@ class GestorController extends Controller
     public function edit($id)
     {
         $gestor = Gestor::where('idgestores', '=', decrypt($id))->first();
-        return view('adminlte::gestores.edit', array('gestor' => $gestor));
+        $cartera_selected = 0;
+        $cartera_clientes = array();
+        
+        return view('adminlte::gestores.edit', array('gestor' => $gestor, 'cartera_selected' => $cartera_selected, 'cartera_clientes' => $cartera_clientes));
     }
 
     /**

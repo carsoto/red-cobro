@@ -48,7 +48,21 @@ class Gestor extends Eloquent
 	public function documentos()
 	{
 		return $this->belongsToMany(\App\Documento::class, 'gestores_documentos', 'idgestores', 'iddocumentos')
-					->withPivot('id', 'idestado_documentos')
+					->withPivot('id', 'deudores_iddeudores')
+					->withTimestamps();
+	}
+
+	public function carteras()
+	{
+		return $this->belongsToMany(\App\Cartera::class, 'users_gestores_carteras', 'gestores_idgestores', 'carteras_idcarteras')
+					->withPivot('idusersgestorescarteras', 'users_id')
+					->withTimestamps();
+	}
+
+	public function users()
+	{
+		return $this->belongsToMany(\App\User::class, 'users_gestores_carteras', 'gestores_idgestores', 'users_id')
+					->withPivot('idusersgestorescarteras', 'carteras_idcarteras')
 					->withTimestamps();
 	}
 }

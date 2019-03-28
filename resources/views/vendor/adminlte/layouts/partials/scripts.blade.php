@@ -183,6 +183,7 @@
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
+		            {data: 'cartera', name: 'cartera'},
 		            {data: 'action', name: 'action', orderable: false}
 		        ]
 		    });

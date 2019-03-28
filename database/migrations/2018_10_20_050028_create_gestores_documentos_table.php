@@ -18,21 +18,21 @@ class CreateGestoresDocumentosTable extends Migration
         
             $table->increments('id')->unsigned();
             $table->integer('idgestores')->unsigned();
+            $table->integer('deudores_iddeudores')->unsigned();
             $table->integer('iddocumentos')->unsigned();
-            $table->integer('idestado_documentos')->unsigned()->nullable();
         
             $table->index('iddocumentos','fk_gestores_has_documentos_documentos1_idx');
             $table->index('idgestores','fk_gestores_has_documentos_gestores1_idx');
-            $table->index('idestado_documentos','fk_gestores_documentos_estado_documentos1_idx');
-        
-            $table->foreign('idgestores')
-                ->references('idgestores')->on('gestores');
+            $table->index('deudores_iddeudores','fk_gestores_documentos_deudores1_idx');
         
             $table->foreign('iddocumentos')
                 ->references('iddocumentos')->on('documentos');
         
-            $table->foreign('idestado_documentos')
-                ->references('idestado_documentos')->on('estado_documentos');
+            $table->foreign('idgestores')
+                ->references('idgestores')->on('gestores');
+        
+            $table->foreign('deudores_iddeudores')
+                ->references('iddeudores')->on('deudores');
         
             $table->timestamps();
         

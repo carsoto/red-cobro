@@ -90,4 +90,17 @@ class User extends Authenticatable
         return false;
     }
 
+    public function carteras()
+    {
+        return $this->belongsToMany(\App\Cartera::class, 'users_gestores_carteras', 'users_id', 'carteras_idcarteras')
+                    ->withPivot('idusersgestorescarteras', 'gestores_idgestores')
+                    ->withTimestamps();
+    }
+
+    public function gestores()
+    {
+        return $this->belongsToMany(\App\Gestor::class, 'users_gestores_carteras', 'users_id', 'gestores_idgestores')
+                    ->withPivot('idusersgestorescarteras', 'carteras_idcarteras')
+                    ->withTimestamps();
+    }
 }

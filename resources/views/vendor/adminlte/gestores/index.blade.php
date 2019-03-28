@@ -35,6 +35,7 @@
 		                            <tr>
 		                                <th>Rut</th>
 		                                <th>Razón social</th>
+		                                <th>Cartera</th>
 		                                <th><i class="fa fa-gears"></i></th>
 		                            </tr>
 		                        </thead>
