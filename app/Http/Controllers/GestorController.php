@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Datatables;
 use App\Gestor;
+use App\Cartera;
 use Validator;
 use Session;
 use Redirect;
 use Funciones;
+use Auth;
 
 class GestorController extends Controller
 {
@@ -79,6 +81,29 @@ class GestorController extends Controller
         $cartera_clientes = array();
         
         return view('adminlte::gestores.create', array('gestor' => $gestor, 'cartera_selected' => $cartera_selected, 'cartera_clientes' => $cartera_clientes));
+    }
+
+    public function nuevacartera(){
+        //$cartera_clientes = Funciones::carteras();
+        return view('adminlte::gestores.create_cartera');
+    }
+
+    public function crearcartera(Request $request){
+        if($request->cartera != ''){
+            $desc_cartera = strtoupper($request->cartera);
+            
+            $cartera = Cartera::firstOrCreate(['descripcion' => $desc_cartera], [
+                'descripcion' => $desc_cartera,
+            ]);
+
+            //$gestor->carteras()->sync($cartera->idcarteras, false);
+            
+            Session::flash('message', "Cartera creada exitosamente");
+        }else{
+            Session::flash('message-error', "Cartera no puede estar en blanco");
+        }
+
+        return Redirect::back();
     }
 
     /**

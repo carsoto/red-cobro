@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::resource('gestores', 'GestorController');
 	Route::group(['prefix' => 'gestores'], function () {
+		Route::get('crear/cartera','GestorController@nuevacartera')->name('gestores.nueva.cartera');
+		Route::post('crear/cartera', 'GestorController@crearcartera')->name('gestores.store.cartera');
 		Route::get('table/listado', 'GestorController@list')->name('gestores.listado');  
 	});
 
