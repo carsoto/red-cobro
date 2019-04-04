@@ -16,7 +16,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'created_by', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
+        'idcarteras', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
+    ];
+
+    protected $casts = [
+        'idcarteras' => 'int'
     ];
 
     /**
@@ -88,5 +92,10 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function cartera()
+    {
+        return $this->belongsTo(\App\Cartera::class, 'idcarteras');
     }
 }
