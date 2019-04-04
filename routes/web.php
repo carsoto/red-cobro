@@ -15,11 +15,11 @@
     return view('welcome');
 });*/
 
-Route::get('/', function () {
+Route::get('/{gestor}', function () {
     return view('adminlte::auth.login');
 });
 
-Route::get('login', function () {
+Route::get('login/{gestor}', function () {
     return view('adminlte::auth.login');
 });
 

@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Seeder;
+
+class GestoresCarterasTableSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        set_time_limit(0);
+
+        $array_records = array (
+            array('idgestores' => 1, 'idcarteras' => 1, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+            array('idgestores' => 1, 'idcarteras' => 2, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+            array('idgestores' => 1, 'idcarteras' => 3, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+            array('idgestores' => 2, 'idcarteras' => 1, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+            array('idgestores' => 2, 'idcarteras' => 2, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+            array('idgestores' => 1, 'idcarteras' => 3, 'base' => NULL, 'host_user' => NULL, 'host_password' => NULL, 'created_at' => date('Y-m-d')),
+        );
+
+
+
+        foreach (array_chunk($array_records, 100) as $records) {
+        	\DB::table('gestores_carteras')->insert($records);
+        }
+    }
+}
