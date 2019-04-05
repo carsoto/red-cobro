@@ -17,7 +17,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         //'idcarteras', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
-        'idgestorescarteras', 'username', 'name', 'lastname', 'email', 'status', 'email_verified_at', 'password', 'remember_token'
+        'username', 'name', 'lastname', 'email', 'status', 'email_verified_at', 'password', 'remember_token'
     ];
 
     protected $casts = [
@@ -98,8 +98,17 @@ class User extends Authenticatable
         return false;
     }
 
-    public function gestores_cartera()
+    public function carteras()
     {
-        return $this->belongsTo(\App\GestoresCartera::class, 'idgestorescarteras');
+        return $this->belongsToMany(\App\Cartera::class, 'gestores_carteras_users', 'users_id', 'idcarteras')
+                    ->withPivot('idgestores_carteras_users', 'idgestores')
+                    ->withTimestamps();
+    }
+
+    public function gestores()
+    {
+        return $this->belongsToMany(\App\Gestore::class, 'gestores_carteras_users', 'users_id', 'idgestores')
+                    ->withPivot('idgestores_carteras_users', 'idcarteras')
+                    ->withTimestamps();
     }
 }

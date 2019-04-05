@@ -14,14 +14,12 @@
 /*Route::get('/', function () {
     return view('welcome');
 });*/
+Route::get('/{gestor}', 'Auth\LoginController@showLoginForm');
+Route::get('login/{gestor}', 'Auth\LoginController@showLoginForm');
+Route::get('/', 'Auth\LoginController@showLoginForm');
+Route::get('login/', 'Auth\LoginController@showLoginForm');
 
-Route::get('/{gestor}', function () {
-    return view('adminlte::auth.login');
-});
-
-Route::get('login/{gestor}', function () {
-    return view('adminlte::auth.login');
-});
+Route::get('/admin/home', 'HomeController@index');
 
 Route::group(['middleware' => 'auth'], function () {
 

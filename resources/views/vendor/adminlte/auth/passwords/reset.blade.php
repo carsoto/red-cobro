@@ -11,7 +11,7 @@
     <div id="app">
         <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url('/home') }}">{{ env('APP_NAME') }}</a>
+            <a href="{{ url('/admin/home') }}">{{ env('APP_NAME') }}</a>
         </div><!-- /.login-logo -->
 
         @if (session('status'))

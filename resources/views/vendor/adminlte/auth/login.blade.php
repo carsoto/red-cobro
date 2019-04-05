@@ -1,7 +1,7 @@
 @extends('adminlte::layouts.auth')
 
 @section('htmlheader_title')
-    Log in
+    Accesso
 @endsection
 
 @section('content')
@@ -9,7 +9,7 @@
     <div id="app">
         <div class="login-box">
             <div class="login-logo">
-                <a href="{{ url('/home') }}"><img src="{{ asset('public/images/logo-rc-azul.png') }}" width="320px"></a>
+                <a href="{{ url('/admin/home') }}"><img src="{{ asset('public/images/logo-rc-azul.png') }}" width="320px"></a>
             </div><!-- /.login-logo -->
 
         @if (count($errors) > 0)
@@ -32,6 +32,20 @@
                 <input type="text" class="form-control" placeholder="RUT" name="username"/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
+
+            <div class="form-group has-feedback">
+                <select class="form-control" id="cartera-seleccionada" name="cartera_seleccionada" style="color: #999999;">
+                    <option value="0">SELECCIONAR CARTERA</option>
+                    @if(count($carteras) > 0)
+                        @foreach($carteras AS $key => $cartera)
+                            <option value="{{ $cartera->idcarteras }}">{{ $cartera->nombre }}</option>
+                        @endforeach
+                    @endif
+                </select>
+                <span class="glyphicon glyphicon-tags form-control-feedback"></span>
+            </div>
+
+  
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>

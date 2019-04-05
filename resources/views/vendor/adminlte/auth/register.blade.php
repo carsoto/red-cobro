@@ -10,7 +10,7 @@
     <div id="app">
         <div class="register-box">
             <div class="register-logo">
-                <a href="{{ url('/home') }}">{{ env('APP_NAME') }}</a>
+                <a href="{{ url('/admin/home') }}">{{ env('APP_NAME') }}</a>
             </div>
 
             @if (count($errors) > 0)

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Gestor;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -25,9 +27,16 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm()
+    public function showLoginForm($gestor = null)
     {
-        return view('adminlte::auth.login');
+        $gestor = Gestor::where('razon_social', '=', strtolower($gestor))->first();
+        $carteras = array();
+
+        if($gestor != null){
+            $carteras = $gestor->carteras;
+        }
+
+        return view('adminlte::auth.login', array('carteras' => $carteras));
     }
 
     /**
@@ -35,7 +44,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/home';
 
     /**
      * Create a new controller instance.
@@ -51,4 +60,12 @@ class LoginController extends Controller
     {
         return 'username';
     }
+
+    /*public function authenticate()
+    {
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            // Authentication passed...
+            return redirect()->intended('dashboard');
+        }
+    }*/
 }

@@ -17,7 +17,6 @@ class CreateUsersTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
-            $table->integer('idgestorescarteras')->unsigned()->nullable();
             $table->string('username', 45)->unique();
             $table->string('name', 191);
             $table->string('lastname', 191);
@@ -26,11 +25,6 @@ class CreateUsersTable extends Migration
             $table->time('email_verified_at')->nullable()->default(null);
             $table->string('password', 191);
             $table->string('remember_token', 100)->nullable()->default(null);
-        
-            $table->index('idgestorescarteras','fk_users_gestores_carteras1');
-        
-            $table->foreign('idgestorescarteras')
-                ->references('idgestorescarteras')->on('gestores_carteras');
         
             $table->timestamps();
         
