@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 04 Apr 2019 03:08:48 +0000.
+ * Date: Fri, 05 Apr 2019 01:15:21 +0000.
  */
 
 namespace App;
@@ -13,16 +13,11 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class Cartera
  * 
  * @property int $idcarteras
- * @property int $idgestores
  * @property string $nombre
- * @property string $base
- * @property string $host_user
- * @property string $host_password
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \App\Gestore $gestore
- * @property \Illuminate\Database\Eloquent\Collection $usuarios
+ * @property \Illuminate\Database\Eloquent\Collection $gestores
  *
  * @package App
  */
@@ -30,29 +25,14 @@ class Cartera extends Eloquent
 {
 	protected $primaryKey = 'idcarteras';
 
-	protected $casts = [
-		'idgestores' => 'int'
-	];
-
-	protected $hidden = [
-		'host_password'
-	];
-
 	protected $fillable = [
-		'idgestores',
-		'nombre',
-		'base',
-		'host_user',
-		'host_password'
+		'nombre'
 	];
 
-	public function gestor()
+	public function gestores()
 	{
-		return $this->belongsTo(\App\Gestor::class, 'idgestores');
-	}
-
-	public function usuarios()
-	{
-		return $this->hasMany(\App\Usuario::class, 'idcarteras');
+		return $this->belongsToMany(\App\Gestor::class, 'gestores_carteras', 'idcarteras', 'idgestores')
+					->withPivot('idgestorescarteras', 'base', 'host_user', 'host_password')
+					->withTimestamps();
 	}
 }

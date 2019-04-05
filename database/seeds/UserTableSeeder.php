@@ -26,7 +26,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
         $user->save();
-        $user->roles()->attach($role_superadmin);
+        $user->roles()->sync($role_superadmin, false);
 
         $user = new User();
         $user->name = 'Paola';
@@ -36,7 +36,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
         $user->save();
-        $user->roles()->attach($role_admin);
+        $user->roles()->sync($role_admin, false);
 
         $user = new User();
         $user->name = 'Andrea';
@@ -46,7 +46,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
         $user->save();
-        $user->roles()->attach($role_supervisor);
+        $user->roles()->sync($role_supervisor, false);
 
         $user = new User();
         $user->name = 'Carmen';
@@ -56,7 +56,7 @@ class UserTableSeeder extends Seeder
         $user->password = bcrypt('12345');
         $user->status = 'Activo';
         $user->save();
-        $user->roles()->attach($role_agente);
+        $user->roles()->sync($role_agente, false);
     }
 }
 

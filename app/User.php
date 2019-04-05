@@ -16,11 +16,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'idcarteras', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
+        //'idcarteras', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
+        'idgestorescarteras', 'username', 'name', 'lastname', 'email', 'status', 'email_verified_at', 'password', 'remember_token'
     ];
 
     protected $casts = [
-        'idcarteras' => 'int'
+        'idgestorescarteras' => 'int'
     ];
 
     /**
@@ -59,7 +60,10 @@ class User extends Authenticatable
     }
 
     public function roles() {
-        return $this->belongsToMany('App\Role')->withTimestamps();
+        //return $this->belongsToMany('App\Role')->withTimestamps();
+        return $this->belongsToMany(\App\Role::class, 'role_user', 'roles_id', 'users_id')
+                    ->withPivot('id')
+                    ->withTimestamps();
     }
 
     public function authorizeRoles($roles)
@@ -94,8 +98,8 @@ class User extends Authenticatable
         return false;
     }
 
-    public function cartera()
+    public function gestores_cartera()
     {
-        return $this->belongsTo(\App\Cartera::class, 'idcarteras');
+        return $this->belongsTo(\App\GestoresCartera::class, 'idgestorescarteras');
     }
 }
