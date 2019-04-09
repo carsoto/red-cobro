@@ -20,10 +20,6 @@ class User extends Authenticatable
         'username', 'name', 'lastname', 'email', 'status', 'email_verified_at', 'password', 'remember_token'
     ];
 
-    protected $casts = [
-        'idgestorescarteras' => 'int'
-    ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -110,5 +106,13 @@ class User extends Authenticatable
         return $this->belongsToMany(\App\Gestore::class, 'gestores_carteras_users', 'users_id', 'idgestores')
                     ->withPivot('idgestores_carteras_users', 'idcarteras')
                     ->withTimestamps();
+    }
+
+    public function hasCartera($id)
+    {
+        if ($this->carteras()->where('idcarteras', $id)->first()) {
+            return true;
+        }
+        return false;
     }
 }

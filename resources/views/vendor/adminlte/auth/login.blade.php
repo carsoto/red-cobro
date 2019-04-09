@@ -35,7 +35,7 @@
 
             <div class="form-group has-feedback">
                 <select class="form-control" id="cartera-seleccionada" name="cartera_seleccionada" style="color: #999999;">
-                    <option value="0">SELECCIONAR CARTERA</option>
+                    <option value="">SELECCIONAR CARTERA</option>
                     @if(count($carteras) > 0)
                         @foreach($carteras AS $key => $cartera)
                             <option value="{{ $cartera->idcarteras }}">{{ $cartera->nombre }}</option>

@@ -39,4 +39,18 @@ class Gestor extends Eloquent
 					->withPivot('idgestorescarteras', 'base', 'host_user', 'host_password')
 					->withTimestamps();
 	}
+	
+	/*public function carteras()
+	{
+		return $this->belongsToMany(\App\Cartera::class, 'gestores_carteras_users', 'idgestores', 'idcarteras')
+					->withPivot('idgestorescarterasusers', 'users_id')
+					->withTimestamps();
+	}*/
+
+	public function users()
+	{
+		return $this->belongsToMany(\App\User::class, 'gestores_carteras_users', 'idgestores', 'users_id')
+					->withPivot('idgestorescarterasusers', 'idcarteras')
+					->withTimestamps();
+	}
 }
