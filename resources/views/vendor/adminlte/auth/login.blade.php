@@ -32,19 +32,6 @@
                 <input type="text" class="form-control" placeholder="RUT" name="username"/>
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
-
-            <div class="form-group has-feedback">
-                <select class="form-control" id="cartera-seleccionada" name="cartera_seleccionada" style="color: #999999;">
-                    <option value="">SELECCIONAR CARTERA</option>
-                    @if(count($carteras) > 0)
-                        @foreach($carteras AS $key => $cartera)
-                            <option value="{{ $cartera->idcarteras }}">{{ $cartera->nombre }}</option>
-                        @endforeach
-                    @endif
-                </select>
-                <span class="glyphicon glyphicon-tags form-control-feedback"></span>
-            </div>
-
   
             <div class="form-group has-feedback">
                 <input type="password" class="form-control" placeholder="{{ trans('adminlte_lang::message.password') }}" name="password"/>

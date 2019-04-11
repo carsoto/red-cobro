@@ -36,14 +36,14 @@ class LoginController extends Controller
             return Redirect::to($this->redirectTo);
         }
 
-        $gestor = Gestor::where('razon_social', '=', strtolower($gestor))->first();
+        /*$gestor = Gestor::where('razon_social', '=', strtolower($gestor))->first();
         $carteras = array();
 
         if($gestor != null){
             $carteras = $gestor->carteras;
-        }
+        }*/
 
-        return view('adminlte::auth.login', array('carteras' => $carteras));
+        return view('adminlte::auth.login');
     }
 
     /**
@@ -78,14 +78,18 @@ class LoginController extends Controller
 
     protected function validateLogin(Request $request)
     {
+        $messages = [
+            'username.required' => 'El RUT es obligatorio',
+            'password.required' => 'La contraseña es obligatoria',
+        ];
+
         $request->validate([
-            $this->username() => 'required|string',
+            $this->username() => ['required', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
             'password' => 'required|string',
-            'cartera_seleccionada' => 'required|numeric',
-        ]);
+        ], $messages);
     }
 
-    public function login(Request $request)
+    /*public function login(Request $request)
     {
         
         $this->validateLogin($request);
@@ -108,6 +112,6 @@ class LoginController extends Controller
         // user surpasses their maximum number of attempts they will get locked out.
         $this->incrementLoginAttempts($request);
 
-        return $this->sendFailedLoginResponse($request);*/
-    }
+        return $this->sendFailedLoginResponse($request);
+    }*/
 }
