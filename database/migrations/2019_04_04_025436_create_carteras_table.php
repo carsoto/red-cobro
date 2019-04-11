@@ -17,7 +17,14 @@ class CreateCarterasTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('idcarteras')->unsigned();
+            $table->integer('idgestores')->unsigned()->nullable();
             $table->string('nombre', 45);
+            $table->integer('status');
+            
+            $table->index('idgestores','fk_gestores_carteras_gestores1_idx');
+            
+            $table->foreign('idgestores')
+                ->references('idgestores')->on('gestores');
         
             $table->timestamps();
         

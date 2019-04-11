@@ -17,15 +17,21 @@ class CreateUsersTable extends Migration
             $table->engine = 'InnoDB';
         
             $table->increments('id')->unsigned();
+            $table->integer('roles_id')->unsigned();
             $table->string('username', 45)->unique();
             $table->string('name', 191);
             $table->string('lastname', 191);
             $table->string('email', 191)->unique();
-            $table->enum('status', ['Activo',  'Inactivo']);
+            $table->integer('status')->nullable();
             $table->time('email_verified_at')->nullable()->default(null);
             $table->string('password', 191);
             $table->string('remember_token', 100)->nullable()->default(null);
         
+            $table->index('roles_id','fk_users_roles1_idx');
+        
+            $table->foreign('roles_id')
+                ->references('id')->on('roles');
+
             $table->timestamps();
         
         });
