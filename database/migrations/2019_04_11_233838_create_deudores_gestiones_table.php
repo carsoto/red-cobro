@@ -31,6 +31,7 @@ class CreateDeudoresGestionesTable extends Migration
             $table->binary('observacion')->nullable();
             $table->string('mes', 2)->nullable();
             $table->string('ano', 4)->nullable();
+            $table->integer('compromiso')->nullable();
             $table->integer('contacto_directo')->nullable();
             $table->integer('contacto_indirecto')->nullable();
             $table->integer('sin_contacto')->nullable();
