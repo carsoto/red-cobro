@@ -1,36 +1,58 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ * Date: Thu, 11 Apr 2019 05:59:56 +0000.
+ */
+
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Reliese\Database\Eloquent\Model as Eloquent;
 
-class User extends Authenticatable
+/**
+ * Class User
+ * 
+ * @property int $id
+ * @property int $roles_id
+ * @property string $username
+ * @property string $name
+ * @property string $lastname
+ * @property string $email
+ * @property int $status
+ * @property \Carbon\Carbon $email_verified_at
+ * @property string $password
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * 
+ * @property \App\Role $role
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
+ * @property \Illuminate\Database\Eloquent\Collection $deudores_gestiones
+ * @property \Illuminate\Database\Eloquent\Collection $carteras
+ *
+ * @package App
+ */
+class User extends Eloquent
 {
-    use Notifiable;
+	protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        //'idcarteras', 'username', 'name', 'lastname', 'email', 'password', 'role', 'active', 'avatar'
-        'username', 'name', 'lastname', 'email', 'status', 'email_verified_at', 'password', 'remember_token'
-    ];
+	protected $casts = [
+		'roles_id' => 'int', 'status' => 'int'
+	];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+	protected $dates = [
+		'email_verified_at'
+	];
 
+	protected $hidden = [
+		'password', 'remember_token'
+	];
 
-    /*
+	protected $fillable = [
+		'roles_id','username','name','lastname','email','status','email_verified_at','password','remember_token'
+	];
+
+	/*
     |------------------------------------------------------------------------------------
     | Validations
     |------------------------------------------------------------------------------------
@@ -55,13 +77,6 @@ class User extends Authenticatable
         ]);
     }
 
-    public function roles() {
-        //return $this->belongsToMany('App\Role')->withTimestamps();
-        return $this->belongsToMany(\App\Role::class, 'role_user', 'roles_id', 'users_id')
-                    ->withPivot('id')
-                    ->withTimestamps();
-    }
-
     public function authorizeRoles($roles)
     {
         if ($this->hasAnyRole($roles)) {
@@ -70,22 +85,6 @@ class User extends Authenticatable
         abort(401, 'Esta acción no está autorizada.');
     }
 
-    public function hasAnyRole($roles)
-    {
-        if (is_array($roles)) {
-            foreach ($roles as $role) {
-                if ($this->hasRole($role)) {
-                    return true;
-                }
-            }
-        } else {
-            if ($this->hasRole($roles)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
     public function hasRole($role)
     {
         if ($this->roles()->where('name', $role)->first()) {
@@ -94,21 +93,29 @@ class User extends Authenticatable
         return false;
     }
 
-    public function carteras()
-    {
-        return $this->belongsToMany(\App\Cartera::class, 'gestores_carteras_users', 'users_id', 'idcarteras')
-                    ->withPivot('idgestores_carteras_users', 'idgestores')
-                    ->withTimestamps();
-    }
+	public function role()
+	{
+		return $this->belongsTo(\App\Role::class, 'roles_id');
+	}
 
-    public function gestores()
-    {
-        return $this->belongsToMany(\App\Gestore::class, 'gestores_carteras_users', 'users_id', 'idgestores')
-                    ->withPivot('idgestores_carteras_users', 'idcarteras')
-                    ->withTimestamps();
-    }
+	public function deudores()
+	{
+		return $this->hasMany(\App\Deudor::class, 'users_id');
+	}
 
-    public function hasCartera($id)
+	public function deudores_gestiones()
+	{
+		return $this->hasMany(\App\DeudoresGestion::class, 'users_id');
+	}
+
+	public function carteras()
+	{
+		return $this->belongsToMany(\App\Cartera::class, 'users_carteras', 'users_id', 'carteras_idcarteras')
+					->withPivot('iduserscarteras', 'status')
+					->withTimestamps();
+	}
+
+	public function hasCartera($id)
     {
         if ($this->carteras()->where('idcarteras', $id)->first()) {
             return true;

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Tue, 09 Apr 2019 10:45:33 +0000.
+ * Date: Thu, 11 Apr 2019 05:50:12 +0000.
  */
 
 namespace App;
@@ -13,41 +13,67 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * Class Cartera
  * 
  * @property int $idcarteras
+ * @property int $idgestores
  * @property string $nombre
+ * @property int $status
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
- * @property \Illuminate\Database\Eloquent\Collection $gestores
+ * @property \App\Gestore $gestore
+ * @property \Illuminate\Database\Eloquent\Collection $deudores
+ * @property \Illuminate\Database\Eloquent\Collection $deudores_gestiones
+ * @property \Illuminate\Database\Eloquent\Collection $gestiones
+ * @property \Illuminate\Database\Eloquent\Collection $pagos
  * @property \Illuminate\Database\Eloquent\Collection $users
  *
  * @package App
  */
 class Cartera extends Eloquent
 {
+	protected $table = 'carteras';
+
 	protected $primaryKey = 'idcarteras';
 
-	protected $fillable = [
-		'nombre'
+	protected $casts = [
+		'idgestores' => 'int',
+		'status' => 'int'
 	];
 
-	public function gestores()
+	protected $fillable = [
+		'idgestores',
+		'nombre',
+		'status'
+	];
+
+	public function gestor()
 	{
-		return $this->belongsToMany(\App\Gestor::class, 'gestores_carteras', 'idcarteras', 'idgestores')
-					->withPivot('idgestorescarteras', 'base', 'host_user', 'host_password')
-					->withTimestamps();
+		return $this->belongsTo(\App\Gestor::class, 'idgestores');
 	}
 
-	/*public function gestores()
+	public function deudores()
 	{
-		return $this->belongsToMany(\App\Gestore::class, 'gestores_carteras_users', 'idcarteras', 'idgestores')
-					->withPivot('idgestorescarterasusers', 'users_id')
-					->withTimestamps();
-	}*/
+		return $this->hasMany(\App\Deudor::class, 'carteras_idcarteras');
+	}
+
+	public function deudores_gestiones()
+	{
+		return $this->hasMany(\App\DeudoresGestion::class, 'carteras_idcarteras');
+	}
+
+	public function gestiones()
+	{
+		return $this->hasMany(\App\Gestion::class, 'carteras_idcarteras');
+	}
+
+	public function pagos()
+	{
+		return $this->hasMany(\App\Pago::class, 'carteras_idcarteras');
+	}
 
 	public function users()
 	{
-		return $this->belongsToMany(\App\User::class, 'gestores_carteras_users', 'idcarteras', 'users_id')
-					->withPivot('idgestorescarterasusers', 'idgestores')
+		return $this->belongsToMany(\App\User::class, 'users_carteras', 'carteras_idcarteras', 'users_id')
+					->withPivot('iduserscarteras', 'status')
 					->withTimestamps();
 	}
 }

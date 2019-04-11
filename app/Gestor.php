@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Fri, 05 Apr 2019 01:15:05 +0000.
+ * Date: Thu, 11 Apr 2019 05:50:13 +0000.
  */
 
 namespace App;
@@ -35,22 +35,6 @@ class Gestor extends Eloquent
 
 	public function carteras()
 	{
-		return $this->belongsToMany(\App\Cartera::class, 'gestores_carteras', 'idgestores', 'idcarteras')
-					->withPivot('idgestorescarteras', 'base', 'host_user', 'host_password')
-					->withTimestamps();
-	}
-	
-	/*public function carteras()
-	{
-		return $this->belongsToMany(\App\Cartera::class, 'gestores_carteras_users', 'idgestores', 'idcarteras')
-					->withPivot('idgestorescarterasusers', 'users_id')
-					->withTimestamps();
-	}*/
-
-	public function users()
-	{
-		return $this->belongsToMany(\App\User::class, 'gestores_carteras_users', 'idgestores', 'users_id')
-					->withPivot('idgestorescarterasusers', 'idcarteras')
-					->withTimestamps();
+		return $this->hasMany(\App\Cartera::class, 'idgestores');
 	}
 }

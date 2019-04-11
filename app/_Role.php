@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 11 Apr 2019 05:59:40 +0000.
+ * Date: Fri, 05 Apr 2019 01:25:23 +0000.
  */
 
 namespace App;
@@ -24,8 +24,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  */
 class Role extends Eloquent
 {
-	protected $table = 'roles';
-
 	protected $fillable = [
 		'name',
 		'description'
@@ -33,6 +31,8 @@ class Role extends Eloquent
 
 	public function users()
 	{
-		return $this->hasMany(\App\User::class, 'roles_id');
+		return $this->belongsToMany(\App\User::class, 'role_user', 'roles_id', 'users_id')
+					->withPivot('id')
+					->withTimestamps();
 	}
 }
