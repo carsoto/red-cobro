@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
         
             $table->increments('id')->unsigned();
             $table->integer('roles_id')->unsigned();
+            $table->integer('idgestores')->unsigned()->nullable();
             $table->string('username', 45)->unique();
             $table->string('name', 191);
             $table->string('lastname', 191);
@@ -26,11 +27,16 @@ class CreateUsersTable extends Migration
             $table->time('email_verified_at')->nullable()->default(null);
             $table->string('password', 191);
             $table->string('remember_token', 100)->nullable()->default(null);
-        
+            
+            
+            $table->index('idgestores','fk_users_gestores1_idx');
             $table->index('roles_id','fk_users_roles1_idx');
         
             $table->foreign('roles_id')
                 ->references('id')->on('roles');
+
+            $table->foreign('idgestores')
+                ->references('idgestores')->on('gestores');
 
             $table->timestamps();
         
