@@ -14,8 +14,6 @@
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-Route::get('/{gestor}', 'Auth\LoginController@showLoginForm');
-Route::get('login/{gestor}', 'Auth\LoginController@showLoginForm');
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::get('login/', 'Auth\LoginController@showLoginForm');
 
