@@ -28,13 +28,13 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showLoginForm($gestor = null)
+    public function showLoginForm()
     {
         // Verificamos si hay sesión activa
-        if (Auth::check()){
+        /*if (Auth::check()){
             // Si tenemos sesión activa mostrará la página de inicio
             return Redirect::to($this->redirectTo);
-        }
+        }*/
 
         /*$gestor = Gestor::where('razon_social', '=', strtolower($gestor))->first();
         $carteras = array();
@@ -76,7 +76,7 @@ class LoginController extends Controller
         }
     }*/
 
-    protected function validateLogin(Request $request)
+    /*protected function validateLogin(Request $request)
     {
         $messages = [
             'username.required' => 'El RUT es obligatorio',
@@ -87,7 +87,7 @@ class LoginController extends Controller
             $this->username() => ['required', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
             'password' => 'required|string',
         ], $messages);
-    }
+    }*/
 
     /*public function login(Request $request)
     {

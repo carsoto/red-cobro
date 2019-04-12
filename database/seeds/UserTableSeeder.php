@@ -24,9 +24,10 @@ class UserTableSeeder extends Seeder
         $user->username = '1234567-1';
         $user->email = 'superadmin@example.com';
         $user->password = bcrypt('12345');
-        $user->status = 'Activo';
+        $user->status = 1;
+        $user->roles_id = $role_superadmin->id;
+        $user->roles_id = $role_superadmin->id;
         $user->save();
-        $user->roles()->sync($role_superadmin, false);
 
         $user = new User();
         $user->name = 'Paola';
@@ -34,9 +35,9 @@ class UserTableSeeder extends Seeder
         $user->username = '1234567-2';
         $user->email = 'admin@example.com';
         $user->password = bcrypt('12345');
-        $user->status = 'Activo';
+        $user->status = 1;
+        $user->roles_id = $role_admin->id;
         $user->save();
-        $user->roles()->sync($role_admin, false);
 
         $user = new User();
         $user->name = 'Andrea';
@@ -44,9 +45,9 @@ class UserTableSeeder extends Seeder
         $user->username = '1234567-3';
         $user->email = 'supervisor@example.com';
         $user->password = bcrypt('12345');
-        $user->status = 'Activo';
+        $user->status = 1;
+        $user->roles_id = $role_supervisor->id;
         $user->save();
-        $user->roles()->sync($role_supervisor, false);
 
         $user = new User();
         $user->name = 'Carmen';
@@ -54,9 +55,9 @@ class UserTableSeeder extends Seeder
         $user->username = '1234567-4';
         $user->email = 'agente@example.com';
         $user->password = bcrypt('12345');
-        $user->status = 'Activo';
+        $user->status = 1;
+        $user->roles_id = $role_agente->id;
         $user->save();
-        $user->roles()->sync($role_agente, false);
     }
 }
 

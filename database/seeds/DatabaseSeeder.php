@@ -13,7 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(GestoresTableSeeder::class);
         $this->call(CarterasTableSeeder::class);
-        $this->call(GestoresCarterasTableSeeder::class);
 
         // La creación de datos de roles debe ejecutarse primero
         $this->call(RoleTableSeeder::class);

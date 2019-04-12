@@ -7,32 +7,11 @@
 
 namespace App;
 
-use Reliese\Database\Eloquent\Model as Eloquent;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-/**
- * Class User
- * 
- * @property int $id
- * @property int $roles_id
- * @property string $username
- * @property string $name
- * @property string $lastname
- * @property string $email
- * @property int $status
- * @property \Carbon\Carbon $email_verified_at
- * @property string $password
- * @property string $remember_token
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * 
- * @property \App\Role $role
- * @property \Illuminate\Database\Eloquent\Collection $deudores
- * @property \Illuminate\Database\Eloquent\Collection $deudores_gestiones
- * @property \Illuminate\Database\Eloquent\Collection $carteras
- *
- * @package App
- */
-class User extends Eloquent
+class User extends Authenticatable
 {
 	protected $table = 'users';
 
