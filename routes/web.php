@@ -25,7 +25,7 @@ Route::get('/admin/exportarDashboard/{tipo}/{marca}/{valor_marca}/{filtro}','Hom
 
 Route::post('admin/cargar/dashboard','HomeController@cargar_dashboard')->name('admin.cargar.dashboard');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
     Route::resource('usuarios', 'UserController');
 
