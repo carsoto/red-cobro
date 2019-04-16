@@ -20,6 +20,10 @@ Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::get('login/', 'Auth\LoginController@showLoginForm');
 
 Route::get('/admin/home', 'HomeController@index');
+Route::get('/admin/exportarDashboard/{tipo}/{marca}/{valor_marca}/{filtro}','HomeController@exportar_dashboard')->name('admin.exportar.dashboard');
+
+
+Route::post('admin/cargar/dashboard','HomeController@cargar_dashboard')->name('admin.cargar.dashboard');
 
 Route::group(['middleware' => 'auth'], function () {
 
