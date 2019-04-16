@@ -73,7 +73,7 @@ class HomeController extends Controller
         $cartera_seleccionada = $carteras_reg[0]->idcarteras;
         $marca_seleccionada = 'MARCA1';
 
-       // DB::select('CALL FUNCION_DASHBOARD('.$cartera_seleccionada.')');
+        DB::select('CALL FUNCION_DASHBOARD('.$cartera_seleccionada.')');
 
         $base = DB::table('base_dashboard')
                 ->select(''.$marca_seleccionada.' AS MARCA',DB::raw('count(*) as casos, sum(OPERACIONES) as operaciones, sum(MONTO) as MONTO , Sum(GESTIONES) AS GESTIONES,SUM(IF(COMPROMISOS > 0,1,0)) AS COMPROMISOS,SUM(IF(TITULAR>0,1,0)) AS TITULAR,SUM(IF(TERCERO>0,1,0)) AS TERCEROS,SUM(IF(SIN_CONTACTO>0,1,0)) AS SIN_CONTACTO'))
@@ -115,8 +115,8 @@ class HomeController extends Controller
             $carteras[$g->idcarteras] = $g->nombre;
         }
 
-        //$cartera_seleccionada = $carteras_reg[0]->idcarteras;
-        //$marca_seleccionada = 'MARCA1';
+        $cartera_seleccionada = $carteras_reg[0]->idcarteras;
+        $marca_seleccionada = 'MARCA1';
 
         DB::select('CALL FUNCION_DASHBOARD('.$cartera_seleccionada.')');
 
