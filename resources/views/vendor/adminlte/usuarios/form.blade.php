@@ -35,40 +35,44 @@
     {!! Form::password('password_confirmation', array('class' => 'form-control', 'placeholder' => trans('adminlte_lang::message.retrypepassword'))) !!} 
 </div>
 
-@if(Auth::user()->hasRole('admin'))
+@if((Auth::user()->hasRole('superadmin')) || (Auth::user()->hasRole('admin')))
     <div class="form-group col-lg-6 col-md-6 col-sm-6">
         {{ Form::label('role', 'Perfil') }}
-        @foreach($roles AS $key => $role)
-            @if(count($usuario->roles) > 0)
-                @foreach($usuario->roles AS $urole)
-                    @if($urole->name == $role)
+        @if($usuario->role != NULL)
+            @foreach($roles AS $key => $role)
+                @if($role == $usuario->role->name)
+                    <div class="iradio icheck">
+                        <label>
+                            <input value="{{ $key }}" type="radio" name="role" checked> {{ ucfirst($role) }}
+                        </label>
+                    </div>
+                @else
+                    <div class="iradio icheck">
+                        <label>
+                            <input value="{{ $key }}" type="radio" name="role"> {{ ucfirst($role) }}
+                        </label>
+                    </div> 
+                @endif
+            @endforeach
+        @else
+            @foreach($roles AS $key => $role)
+                @if($role == 'superadmin')
+                    <div class="iradio icheck">
+                        <label>
+                            <input value="{{ $key }}" type="radio" name="role"> {{ ucfirst($role) }}
+                        </label>
+                    </div> 
+                @else
+                    @if($role != 'superadmin')
                         <div class="iradio icheck">
                             <label>
-                                <input value="{{ $role }}" type="radio" name="role" checked> {{ ucfirst($role) }}
-                            </label>
-                        </div>
-                    @else
-                        <div class="iradio icheck">
-                            <label>
-                                <input value="{{ $role }}" type="radio" name="role"> {{ ucfirst($role) }}
+                                <input value="{{ $key }}" type="radio" name="role"> {{ ucfirst($role) }}
                             </label>
                         </div>
                     @endif
-                @endforeach
-            @else
-                <div class="iradio icheck">
-                    @if(ucfirst($role) == 'Agente')
-                        <label>
-                            <input value="{{ $role }}" type="radio" name="role" checked> {{ ucfirst($role) }}
-                        </label>
-                    @else
-                        <label>
-                            <input value="{{ $role }}" type="radio" name="role"> {{ ucfirst($role) }}
-                        </label>
-                    @endif
-                </div>
-            @endif
-        @endforeach
+                @endif
+            @endforeach
+        @endif
     </div>
 @endif
 
@@ -76,6 +80,16 @@
     {{ Form::label('status', 'Estado') }}
     {!! Form::select('status', $status, $usuario->status, array('class' => 'form-control')) !!}
 </div>
+<div class="form-group col-lg-6 col-md-6 col-sm-6">
+    {{ Form::label('gestor', 'Gestor') }}
+    
+    @if($usuario->gestor != NULL)
+        {!! Form::select('gestor', $gestores, $usuario->gestor->idgestores, array('class' => 'form-control')) !!}
+    @else
+        {!! Form::select('gestor', $gestores, 1, array('class' => 'form-control')) !!}
+    @endif
+</div>
+
 <div class="row">
     <div class="col-xs-12">
         <a href="{!! route('usuarios.index') !!}" class="btn btn-danger btn-flat">Cancelar</a>

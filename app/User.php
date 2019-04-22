@@ -16,7 +16,7 @@ class User extends Authenticatable
 	protected $table = 'users';
 
 	protected $casts = [
-		'roles_id' => 'int', 'idgestores' => 'int', 'status' => 'int',
+		'roles_id' => 'int', 'idgestores' => 'int', 'status' => 'int', 'creado_por' => 'int',
 	];
 
 	protected $dates = [
@@ -28,7 +28,7 @@ class User extends Authenticatable
 	];
 
 	protected $fillable = [
-		'roles_id','idgestores','username','name','lastname','email','status','email_verified_at','password','remember_token'
+		'roles_id','idgestores','username','name','lastname','email','creado_por','status','email_verified_at','password','remember_token'
 	];
 
 	/*

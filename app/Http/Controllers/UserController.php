@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Gestor;
 use Auth;
 use Datatables;
 use Response;
@@ -27,12 +28,17 @@ class UserController extends Controller
     }
 
     public function list(){
-        $usuarios_correspondiente = Funciones::usuarios_correspondiente(Auth::id());
-        $usuarios = User::whereIn('id', $usuarios_correspondiente)->get();
+        $usuarios = Funciones::usuarios_herederos(Auth::id());
+
         return Datatables::of($usuarios)
             ->addColumn('role', function ($usuario) {
-                foreach ($usuario->roles as $role) {
-                    return ucfirst($role->name);
+                return ucfirst($usuario->role->name);
+            })
+            ->addColumn('status', function ($usuario) {
+                if($usuario->status){
+                    return 'Activo';
+                }else{
+                    return 'Inactivo';
                 }
             })
             ->addColumn('action', function ($usuario) {
@@ -52,14 +58,17 @@ class UserController extends Controller
     {
         $usuario = new User();
         $roles = Role::all()->pluck('name', 'id');
-        $status = array('Activo' => 'Activo', 'Inactivo' => 'Inactivo');
-        return view('adminlte::usuarios.create', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status));
+        $status = array(1 => 'Activo', 0 => 'Inactivo');
+        $gestores = Gestor::all()->pluck('razon_social', 'idgestores');
+        return view('adminlte::usuarios.create', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status, 'gestores' => $gestores));
     }
 
     protected function validator(array $data, $usuario = null, $update = null)
     {
+        
         $messages = [
             'username.required' => 'El RUT es obligatorio',
+            'role.required' => 'El perfil es obligatorio',
             'username.max' => 'El RUT no puede tener más de 11 caracteres',
             'username.regex' => 'No es un RUT válido',
             'username.unique' => 'El RUT ya se encuentra registrado',
@@ -88,6 +97,7 @@ class UserController extends Controller
                 'lastname' => 'required|max:255',
                 'email' => 'required|email|max:255|unique:users',
                 'password' => 'required|min:6|confirmed',
+                'role' => 'required',
             ];
         }
         return Validator::make($data, $rules, $messages);
@@ -104,21 +114,17 @@ class UserController extends Controller
         $this->validator($request->all())->validate();
 
         $user = User::create([
-            'created_by' => Auth::id(),
+            'roles_id' => $request->role,
+            'idgestores' => $request->gestor ,
             'username' => $request->username,
             'name' => $request->name,
             'lastname' => $request->lastname,
             'email' => $request->email,
+            'creado_por' => Auth::id(),
+            'status' => $request->status,
             'password' => bcrypt($request->password),
-            'status' => $request->status
         ]);
 
-        if(isset($request->role)){
-            $user->roles()->attach(Role::where('name', $request->role)->first());    
-        }else{
-            $user->roles()->attach(Role::where('name', 'agente')->first());
-        }
-        
         Session::flash('message', "Usuario creado exitosamente");
         return Redirect::back();
     }
@@ -144,8 +150,9 @@ class UserController extends Controller
     {
         $usuario = User::findOrFail(decrypt($id));
         $roles = Role::all()->pluck('name', 'id');
-        $status = array('Activo' => 'Activo', 'Inactivo' => 'Inactivo');
-        return view('adminlte::usuarios.edit', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status));
+        $gestores = Gestor::all()->pluck('razon_social', 'idgestores');
+        $status = array(1 => 'Activo', 0 => 'Inactivo');
+        return view('adminlte::usuarios.edit', array('usuario' => $usuario, 'roles' => $roles, 'status' => $status, 'gestores' => $gestores));
     }
 
     /**
@@ -160,18 +167,22 @@ class UserController extends Controller
         $usuario = User::findOrFail(decrypt($id));
 
         $this->validator($request->all(), $usuario, true)->validate();
-
+        
         $usuario->username = $request->username;
         $usuario->name = $request->name;
         $usuario->lastname = $request->lastname;
         $usuario->email = $request->email;
 
-        if($request->password != ""){
+        if(($request->password != "") || ($request->password != NULL)){
             $usuario->password = bcrypt($request->password);    
         }
 
         if(isset($request->role)){
-            $usuario->roles()->sync(Role::where('name', $request->role)->first());    
+            $usuario->roles_id = $request->role;
+        }
+
+        if(isset($request->gestor)){
+            $usuario->idgestores = $request->gestor;
         }
 
         $usuario->status = $request->status;
@@ -189,16 +200,8 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        /*if(User::destroy(decrypt($id))){
-            $status = 'success';
-            $msg = 'El registro fue eliminado exitosamente!';
-   
-        } else {
-            $status = 'failed';
-            $msg = 'Disculpe, el registro no pudo ser eliminado!';
-        }*/
         $usuario = User::findOrFail(decrypt($id));
-        $usuario->status = 'Inactivo';
+        $usuario->status = 0;
         if($usuario->save()){
             $status = 'success';
             $msg = 'El usuario fue deshabilitado exitosamente!';
