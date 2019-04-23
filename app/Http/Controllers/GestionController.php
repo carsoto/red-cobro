@@ -62,7 +62,7 @@ class GestionController extends Controller
             $direcciones = $deudor->direcciones;
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
-            $documentos = $deudor->documentos()->where('activo', '=', 1)->get();
+            $documentos = $deudor->documentos()->get();
             $marcas = $deudor->marcas->take(6);
             $cantd_marcas = count($marcas);
 
@@ -82,14 +82,14 @@ class GestionController extends Controller
                 }
             }
             
-            $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+            //$asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
             
             $ultima_asignacion = array();
-            $ultima_asignacion['fecha_asignacion'] = Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
-            $ultima_asignacion['deuda'] = number_format($asignacion->deuda, 2, ",", ".");
+            $ultima_asignacion['fecha_asignacion'] = Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
+            $ultima_asignacion['deuda'] = number_format($deudor->monto_asignacion, 2, ",", ".");
             $ultima_asignacion['dias_mora'] = $documentos->max('dias_mora');
 
-            $saldo_hoy = $asignacion->deuda - $deuda_recuperada;
+            $saldo_hoy = $deudor->monto_asignacion - $deuda_recuperada;
             $deuda_recuperada = number_format($deuda_recuperada, 2, ",", ".");
             $saldo_hoy = number_format($saldo_hoy, 2, ",", ".");
 

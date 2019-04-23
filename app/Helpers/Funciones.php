@@ -86,6 +86,38 @@ class Funciones{
         return $saldos;
     }
 
+    function carteras(){
+        $rol = Auth::user()->role->name;
+        print_r($rol);die();
+        if($rol == 'agente' || $rol == 'supervisor') {
+            $carteras_reg = DB::table('carteras')
+                    ->join('users_carteras', 'carteras.idcarteras', '=', 'users_carteras.carteras_idcarteras')
+                    ->where('users_carteras.users_id','=',Auth::user()->id)
+                    ->where('users_carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        } elseif($rol == 'admin'){
+            //$idgestor = Auth::user()->gestor->idgestores;
+            $idgestor = 1;
+            $carteras_reg = DB::table('carteras')
+                    ->where('carteras.idgestores','=',$idgestor)
+                    ->where('carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        } else {
+            $carteras_reg = DB::table('carteras')
+                    ->where('carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        }
+        $carteras = array();
+       
+        foreach ($carteras_reg as $key => $g) {
+            $carteras[$g->idcarteras] = $g->nombre;
+        }
+        return $carteras;
+    }
+
     /*public static function carteras(){
         if(Auth::user()->hasRole('superadmin')){
             $carteras = Cartera::pluck('descripcion', 'idcarteras');
