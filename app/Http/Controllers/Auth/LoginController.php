@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use App\Gestor;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -31,17 +30,10 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         // Verificamos si hay sesión activa
-        /*if (Auth::check()){
+        if (Auth::check()){
             // Si tenemos sesión activa mostrará la página de inicio
             return Redirect::to($this->redirectTo);
-        }*/
-
-        /*$gestor = Gestor::where('razon_social', '=', strtolower($gestor))->first();
-        $carteras = array();
-
-        if($gestor != null){
-            $carteras = $gestor->carteras;
-        }*/
+        }
 
         return view('adminlte::auth.login');
     }
@@ -68,15 +60,7 @@ class LoginController extends Controller
         return 'username';
     }
 
-    /*public function authenticate()
-    {
-        if (Auth::attempt(['email' => $email, 'password' => $password])) {
-            // Authentication passed...
-            return redirect()->intended('dashboard');
-        }
-    }*/
-
-    /*protected function validateLogin(Request $request)
+    protected function validateLogin(Request $request)
     {
         $messages = [
             'username.required' => 'El RUT es obligatorio',
@@ -87,31 +71,5 @@ class LoginController extends Controller
             $this->username() => ['required', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
             'password' => 'required|string',
         ], $messages);
-    }*/
-
-    /*public function login(Request $request)
-    {
-        
-        $this->validateLogin($request);
-        dd($request);
-        // If the class is using the ThrottlesLogins trait, we can automatically throttle
-        // the login attempts for this application. We'll key this by the username and
-        // the IP address of the client making these requests into this application.
-        /*if ($this->hasTooManyLoginAttempts($request)) {
-            $this->fireLockoutEvent($request);
-
-            return $this->sendLockoutResponse($request);
-        }
-
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
-
-        // If the login attempt was unsuccessful we will increment the number of attempts
-        // to login and redirect the user back to the login form. Of course, when this
-        // user surpasses their maximum number of attempts they will get locked out.
-        $this->incrementLoginAttempts($request);
-
-        return $this->sendFailedLoginResponse($request);
-    }*/
+    }
 }

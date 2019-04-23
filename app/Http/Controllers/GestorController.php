@@ -46,21 +46,21 @@ class GestorController extends Controller
     protected function validator(array $data, $gestor = null, $update = null)
     {
         $messages = [
-            'rut_dv.required' => 'El RUT es obligatorio',
-            'rut_dv.max' => 'El RUT no puede tener más de 11 caracteres',
-            'rut_dv.regex' => 'No es un RUT válido',
-            'rut_dv.unique' => 'El RUT ya se encuentra registrado',
+            'rut.required' => 'El RUT es obligatorio',
+            'rut.max' => 'El RUT no puede tener más de 11 caracteres',
+            'rut.regex' => 'No es un RUT válido',
+            'rut.unique' => 'El RUT ya se encuentra registrado',
             'razon_social.required' => 'La razón social es obligatoria'
         ];
 
         if($update){
             $rules = [
-                'rut_dv' => ['required', 'max:11', 'unique:gestores,rut_dv,'.$gestor->idgestores.',idgestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
+                'rut' => ['required', 'max:11', 'unique:gestores,rut,'.$gestor->idgestores.',idgestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
                 'razon_social' => 'required|max:255',
             ];
         }else{
             $rules = [
-                'rut_dv' => ['required', 'max:11', 'unique:gestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
+                'rut' => ['required', 'max:11', 'unique:gestores', 'regex:/^(\d{7,9}-)([a-zA-Z]{1}$|\d{1}$)/'],
                 'razon_social' => 'required|max:255',
             ];
         }
@@ -115,12 +115,9 @@ class GestorController extends Controller
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
-        
-        $rut = explode('-', $request->rut_dv);
 
         Gestor::create([
-            'rut' => $rut[0],
-            'rut_dv' => $request->rut_dv,
+            'rut' => $request->rut,
             'razon_social' => $request->razon_social,
         ]);
         
@@ -165,10 +162,7 @@ class GestorController extends Controller
     {
         $gestor = Gestor::where('idgestores', '=', decrypt($id))->first();
         $this->validator($request->all(), $gestor, true)->validate();
-        $rut = explode('-', $request->rut_dv);
-        //$gestor->idgestores = decrypt($id);
-        $gestor->rut = $rut[0];
-        $gestor->rut_dv = $request->rut_dv;
+        $gestor->rut = $request->rut;
         $gestor->razon_social = $request->razon_social;  
         $gestor->save();
         Session::flash('message', "Gestor actualizado exitosamente");

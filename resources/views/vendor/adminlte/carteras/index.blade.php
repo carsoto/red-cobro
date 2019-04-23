@@ -1,11 +1,11 @@
 @extends('adminlte::layouts.app')
 
 @section('htmlheader_title')
-	Gestores
+	Carteras
 @endsection
 
 @section('contentheader_title')
-	Gestores
+	Carteras
 @endsection
 
 @section('contentheader_description')
@@ -19,10 +19,9 @@
 				<div class="box box-primary">
 					<div class="box-header with-border">
 						<h3 class="box-title"></h3>
-						<!-- Buttons, labels, and many other things can be placed here! -->
-						<!-- Here is a label for example -->
-						<a class="btn btn-sm btn-success" href="{{ route('gestores.create') }}" title="Nuevo gestor">
-							<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nuevo gestor</span>
+						
+						<a class="btn btn-sm btn-success" href="{{ route('carteras.create') }}" title="Nueva cartera">
+							<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nueva cartera</span>
 						</a>
 						
 					<!-- /.box-tools -->
@@ -30,11 +29,11 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<div class="table-responsive" style="padding-top: 15px;">
-							<table id='tabla_gestores' class="table table-hover table-bordered table-striped datatable" style="width:100%">
+							<table id='tabla_carteras' class="table table-hover table-bordered table-striped datatable" style="width:100%">
 		                        <thead>
 		                            <tr>
-		                                <th>Rut</th>
-		                                <th>Razón social</th>
+		                                <th>Nombre</th>
+		                                <th>Estado</th>
 		                                <th><i class="fa fa-gears"></i></th>
 		                            </tr>
 		                        </thead>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use DB;
+
 class Funciones{
 
     public static function usuarios_correspondiente($id_logueado){
@@ -116,6 +117,31 @@ class Funciones{
             $carteras[$g->idcarteras] = $g->nombre;
         }
         return $carteras;
+    }
+
+    public static function usuarios_herederos($id_usuario){
+        $usarios_ids = $id_usuario;
+        $user_search = "";
+        $users = array();
+        
+        if(Auth::user()->hasRole('superadmin')){
+            $users = User::all();
+        }else if(Auth::user()->hasRole('admin')){
+            do{
+                $ids_usarios = DB::select(DB::raw("SELECT GROUP_CONCAT(id) AS id FROM users WHERE creado_por IN(".$usarios_ids.")"));    
+                if($ids_usarios){
+                    $usarios_ids = $ids_usarios[0]->id;
+                    if($usarios_ids != ""){
+                        $user_search .= $usarios_ids.","; 
+                    }
+                }
+            }while($usarios_ids != "");
+
+            if($user_search != ""){
+                $users = User::whereIn('id', explode(",", $user_search))->get();
+            }
+        }
+        return $users;
     }
 
     /*public static function carteras(){

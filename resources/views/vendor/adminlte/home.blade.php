@@ -67,6 +67,7 @@
 					$total_sin_gestion = 0;
 					?>
 					<div class="box-body">
+						<div class="table-responsive">
 						<table class="table">
 							<tr>
 								<th>Marca</th>
@@ -88,7 +89,7 @@
 									<td><?php echo $value->MARCA ?></td>
 									<td><a href="{{ ('exportarDashboard/individual/'.$marca_seleccionada.'/'.$value->MARCA.'/casos') }}"><?php echo number_format($value->casos,0,',','.') ?></a></td>
 									<td><a href="{{ ('exportarDashboard/individual/'.$marca_seleccionada.'/'.$value->MARCA.'/operaciones') }}"><?php echo number_format($value->operaciones,0,',','.') ?></a></td>
-									<td><?php echo number_format($value->MONTO,0,',','.') ?></a></td>
+									<td>{{ number_format($value->MONTO,0,',','.') }}</a></td>
 									<td><a href="{{ ('exportarDashboard/individual/'.$marca_seleccionada.'/'.$value->MARCA.'/gestiones') }}"><?php echo number_format($value->GESTIONES,0,',','.') ?></a></td>
 									<td><a href="{{ ('exportarDashboard/individual/'.$marca_seleccionada.'/'.$value->MARCA.'/titular') }}"><?php echo number_format($value->TITULAR,0,',','.') ?></a></td>
 									<td><a href="{{ ('exportarDashboard/individual/'.$marca_seleccionada.'/'.$value->MARCA.'/tercero') }}"><?php echo number_format($value->TERCEROS,0,',','.') ?></a></td>
@@ -153,6 +154,7 @@
 								 ?></td>
 							</tr>
 						</table>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -162,28 +164,6 @@
 
 <!--
 @section('main-content')
-	<div class="container-fluid spark-screen">
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="box box-primary">
-					<!-- /.box-header --
-					<div class="box-body">
-						if(Auth::user()->hasRole('admin'))
-						    <div>Acceso administrador</div>
 
-						elseif(Auth::user()->hasRole('supervisor'))
-						    <div>Acceso supervisor</div>
-
-						elseif(Auth::user()->hasRole('agente'))
-						    <div>Acceso agente</div>
-
-						endif
-
-						{{ trans('adminlte_lang::message.logged') }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>-->
 @endsection
 -->

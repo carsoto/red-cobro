@@ -44,6 +44,9 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'usuarios/table/listado',
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
 		            {data: 'name', name: 'name'},
 		            {data: 'email', name: 'email'},
@@ -103,6 +106,9 @@
 		            	text: '<i class="fa fa-download"></i> Exportar a excel',
 		            }
 		        ],
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
@@ -180,10 +186,32 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'gestores/table/listado',
+				language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
-		            {data: 'rut_dv', name: 'rut_dv'},
+		            {data: 'rut', name: 'rut'},
 		            {data: 'razon_social', name: 'razon_social'},
-		            {data: 'cartera', name: 'cartera'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+    	}
+
+    	var table_cartera = document.getElementById('tabla_carteras');
+    	if(table_cartera != undefined){
+    		var datatable_carteras = $('#tabla_carteras').DataTable({
+		        processing: true,
+		        serverSide: true,
+		        ajax: 'carteras/table/listado',
+		        searching: true,
+	            responsive: true,
+	            filter:true,
+				language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
+		        columns: [		
+		            {data: 'nombre', name: 'nombre'},
+		            {data: 'status', name: 'status'},
 		            {data: 'action', name: 'action', orderable: false}
 		        ]
 		    });
@@ -195,6 +223,9 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'regiones/table/listado',
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
 		            {data: 'region', name: 'region'},
 		            //{data: 'action', name: 'action', orderable: false}
@@ -208,6 +239,9 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'provincias/table/listado',
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
 		            {data: 'provincia', name: 'provincia'},
 		            //{data: 'action', name: 'action', orderable: false}
@@ -221,6 +255,9 @@
 		        processing: true,
 		        serverSide: true,
 		        ajax: 'comunas/table/listado',
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 		        columns: [		
 		            {data: 'comuna', name: 'comuna'},
 		            //{data: 'action', name: 'action', orderable: false}
@@ -553,6 +590,9 @@
 				        processing: true,
 				        serverSide: true,
 				        ajax: 'documentos/table/listado/'+iddeudor,
+				        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 				        columns: [
 							{data: 'numero', name: 'numero'},
 							{data: 'folio', name: 'folio'},
@@ -635,6 +675,9 @@
 						        processing: true,
 						        destroy: true,
 						        data: response.data,
+						        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 						        columns: [
 			            			{data: 'contacto', name: 'contacto'},
 			            			{data: 'gestor', name: 'gestor'},
