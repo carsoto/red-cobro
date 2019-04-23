@@ -55,6 +55,11 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('table/listado', 'GestorController@list')->name('gestores.listado');  
 	});
 
+	Route::resource('carteras', 'CarteraController');
+	Route::group(['prefix' => 'carteras'], function () {
+		Route::get('table/listado', 'CarteraController@list')->name('carteras.listado');  
+	});
+
 	Route::resource('documentos', 'DocumentoController');
 	Route::group(['prefix' => 'documentos'], function () {
 		Route::get('table/listado/{iddeudor}', 'DocumentoController@documentos')->name('documentos.listado');  

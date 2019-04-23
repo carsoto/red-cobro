@@ -48,11 +48,13 @@
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
                 <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
+                <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
             @endif  
             @if(Auth::user()->hasRole('admin'))
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
+                <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
             @endif  
             @if(Auth::user()->hasRole('supervisor'))
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
