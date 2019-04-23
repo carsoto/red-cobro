@@ -16,7 +16,7 @@ class User extends Authenticatable
 	protected $table = 'users';
 
 	protected $casts = [
-		'roles_id' => 'int', 'status' => 'int'
+		'roles_id' => 'int', 'idgestores' => 'int', 'status' => 'int', 'creado_por' => 'int',
 	];
 
 	protected $dates = [
@@ -28,7 +28,7 @@ class User extends Authenticatable
 	];
 
 	protected $fillable = [
-		'roles_id','username','name','lastname','email','status','email_verified_at','password','remember_token'
+		'roles_id','idgestores','username','name','lastname','email','creado_por','status','email_verified_at','password','remember_token'
 	];
 
 	/*
@@ -51,9 +51,25 @@ class User extends Authenticatable
         }
 
         return array_merge($commun, [
-            'email'    => 'required|email|max:255|unique:users',
+            'username' => 'required|min:9|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
+    }
+
+    public function hasAnyRole($roles)
+    {
+        if (is_array($roles)) {
+            foreach ($roles as $role) {
+                if ($this->hasRole($role)) {
+                    return true;
+                }
+            }
+        } else {
+            if ($this->hasRole($roles)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public function authorizeRoles($roles)
@@ -66,10 +82,15 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-        if ($this->roles()->where('name', $role)->first()) {
+        if ($this->role->name == $role) {
             return true;
         }
         return false;
+    }
+
+    public function gestor()
+    {
+        return $this->belongsTo(\App\Gestor::class, 'idgestores');
     }
 
 	public function role()

@@ -14,8 +14,6 @@
 /*Route::get('/', function () {
     return view('welcome');
 });*/
-Route::get('/{gestor}', 'Auth\LoginController@showLoginForm');
-Route::get('login/{gestor}', 'Auth\LoginController@showLoginForm');
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::get('login/', 'Auth\LoginController@showLoginForm');
 
@@ -59,6 +57,11 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('crear/cartera','GestorController@nuevacartera')->name('gestores.nueva.cartera');
 		Route::post('crear/cartera', 'GestorController@crearcartera')->name('gestores.store.cartera');
 		Route::get('table/listado', 'GestorController@list')->name('gestores.listado');  
+	});
+
+	Route::resource('carteras', 'CarteraController');
+	Route::group(['prefix' => 'carteras'], function () {
+		Route::get('table/listado', 'CarteraController@list')->name('carteras.listado');  
 	});
 
 	Route::resource('documentos', 'DocumentoController');

@@ -18,9 +18,9 @@
 			<div class="col-lg-12">
 				<div class="box box-primary">
 		            <div class="box-body">
-	                    {!! Form::open(['route' => 'gestores.store.cartera']) !!}
+	                    {!! Form::open(['route' => 'carteras.store']) !!}
 
-	                        @include('adminlte::gestores.form_cartera')
+	                        @include('adminlte::carteras.form')
 
 	                    {!! Form::close() !!}
 		            </div>

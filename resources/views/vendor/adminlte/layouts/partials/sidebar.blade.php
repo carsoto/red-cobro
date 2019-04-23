@@ -43,30 +43,26 @@
             <!--<li class="header">{{ trans('adminlte_lang::message.header') }}</li>-->
             <!-- Optionally, you can add icons to the links -->
             <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
-            <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
-            <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
-            <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
-            <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
-            <!--if(Auth::user()->hasRole('superadmin'))
+            @if(Auth::user()->hasRole('superadmin'))
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
                 <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
-            endif  
-            if(Auth::user()->hasRole('admin'))
+                <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
+            @endif  
+            @if(Auth::user()->hasRole('admin'))
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
-                <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
-               <!-- <li><a href="{{ route('gestiones.index') }}"><i class='fa fa-gears'></i><span>Gestiones</span></a></li>
-                <li><a href="{{ route('documentos.index') }}"><span>Documentos</span></a></li>
-                <li><a href="{{ route('regiones.index') }}"><span>Regiones</span></a></li>
-                <li><a href="{{ route('provincias.index') }}"><span>Provincias</span></a></li>
-                <li><a href="{{ route('comunas.index') }}"><span>Comunas</span></a></li>--
-            endif
-            if(Auth::user()->hasRole('supervisor'))
-                <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
-            endif-->
+                <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
+            @endif  
+            @if(Auth::user()->hasRole('supervisor'))
+                <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
+                <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
+            @endif
+            @if(Auth::user()->hasRole('agente'))
+                <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
+            @endif
             <!--<li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
             <li class="treeview">
                 <a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.multilevel') }}</span> <i class="fa fa-angle-left pull-right"></i></a>
