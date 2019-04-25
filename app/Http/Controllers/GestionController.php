@@ -35,8 +35,10 @@ class GestionController extends Controller
     }
 
     public function consultarrespuesta($idgestion){
+        print_r($idgestion);
         $gestion = Gestion::where('idgestiones', '=', $idgestion)->get();
         $gestion = $gestion[0];
+        print_r($gestion);
         $respuestas = $gestion->respuestas;
         return Response::json(array('respuestas' => $respuestas));
     }
