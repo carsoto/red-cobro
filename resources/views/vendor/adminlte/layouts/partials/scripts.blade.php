@@ -477,7 +477,7 @@
             	if(respuestas.length > 0){
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
             		for (var i = 0; i < respuestas.length; i++) {
-	            		$('#select-respuestas').append('<option id="'+respuestas[i].idrespuesta+'" value="'+ respuestas[i].codigo + ' - ' + respuestas[i].respuesta +'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
+	            		$('#select-respuestas').append('<option id="'+respuestas[i].idrespuesta+'" value="'+ respuestas[i].idrespuesta +'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
 	            	}
             	}else{
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
