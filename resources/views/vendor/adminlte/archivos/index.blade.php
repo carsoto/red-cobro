@@ -45,13 +45,17 @@
 							        </div>
 								</div>
 							</div>
-							<div class="col-lg-10 col-md-8 col-sm-6">
+							<!--<div class="col-lg-10 col-md-8 col-sm-6">
 								<input type="file" class="form-control" name="file" accept="text/plain, .csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
 							</div>
 
 							<div class="col-md-2 col-md-2 col-sm-6">
 								<button class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
-							</div>
+							</div>-->
+
+							<div class="col-lg-12 col-md-8 col-sm-6">
+						        <input type="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="BSbtninfo">
+						    </div>
 						</form>
 					</div>
 				</div>

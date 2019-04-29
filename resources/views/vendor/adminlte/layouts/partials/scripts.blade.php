@@ -17,6 +17,8 @@
 <script src="{{ asset('/public/plugins/datatables/vfs_fonts.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datatables/buttons.html5.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('/public/plugins/datatables/buttons.print.min.js') }}" type="text/javascript"></script>
+<script src="https://www.jquery-az.com/boots/js/bootstrap-filestyle.min.js" type="text/javascript"></script>
+
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are reommended to enhance the
@@ -314,6 +316,18 @@
 	    });
 
 
+    	$('#BSbtndanger').filestyle({
+				buttonName : 'btn-danger',
+                buttonText : ' File selection'
+			});
+			$('#BSbtnsuccess').filestyle({
+				buttonName : 'btn-success',
+                buttonText : ' Open'
+			});
+			$('#BSbtninfo').filestyle({
+				buttonName : 'btn-primary',
+                buttonText : ' Importar'
+			});
     })(jQuery);
 
     function buscar_por_rut(){
