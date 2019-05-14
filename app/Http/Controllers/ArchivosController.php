@@ -34,35 +34,65 @@ use DB;
 class ArchivosController extends Controller
 {
     public function cargar(){
-        return view('adminlte::archivos.index');
+        $rol = Auth::user()->role->name;
+        $idgestor = Auth::user()->idgestores;
+        $carteras = Funciones::carteras($rol, Auth::user()->id, $idgestor);
+
+        return view('adminlte::archivos.index', ['carteras' => $carteras['carteras']]);
     }
     
     public function importar(Request $request)
     {
         //$mimetype_file = $request->file('file')->getClientMimeType();
         $tipo_archivo = $request->tipo_archivo;
-
+        //dd($request);
         if($tipo_archivo == "Asignaciones"){
             $tiempo_inicial = microtime(true);
             $registros = Excel::load($request->file('file'), 'UTF-8')->all()->toArray();
-            //Deudor::where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
-            $deuda_total = 0;
             $fecha_actual = date('Y-m-d');
-            foreach ($registros as $index => $asignacion) {
+            
+            Deudor::where('carteras_idcarteras', $request->cartera)->where('users_id', Auth::id())->where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
+            
+            foreach ($registros[0] as $index => $asignacion) {
                 if((isset($asignacion['rut'])) && ($asignacion['rut'] != "")) {
                     $rut = Funciones::rut_sin_dv($asignacion['rut']);
 
                     $deudor = Deudor::updateOrCreate(['rut' => $rut], [ 
+                        'carteras_idcarteras' => $request->cartera,
+                        'users_id' => Auth::id(),
                         'rut' => Funciones::rut_sin_dv($asignacion['rut']),
                         'rut_dv' => strtoupper($asignacion['rut']),
                         'razon_social' => $asignacion['razon_social_nombre'],
-                        'en_gestion' => 1
+                        'en_gestion' => 1,
+                        'fecha_asignacion' => $fecha_actual,
+                        'fecha_carga' => $fecha_actual,
+                        'monto_asignacion' => $asignacion["deuda"],
+                        'ano_asignacion' => date('Y'),
+                        'mes_asignacion' => date('m'),
                     ]);
 
                     if(($asignacion["region"] != "") && ($asignacion["ciudad"] != "") && ($asignacion["comuna"] != "")){
                         $comuna = $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]);
                         $direccion = Direccion::firstOrCreate(['idcomunas' => $comuna, 'direccion' => $asignacion["direccion"]], [
                             'idcomunas' => $comuna, 
+                            'direccion' => $asignacion["direccion"],
+                            'complemento' => $asignacion["complemento"]
+                        ]);
+
+                        $deudor->direcciones()->sync($direccion->iddirecciones, false);
+                    }
+
+                    if(($asignacion["region"] != "") && ($asignacion["ciudad"] != "") && ($asignacion["comuna"] != "")){
+                        $comuna = $this->getComuna($asignacion["region"], $asignacion["ciudad"], $asignacion["comuna"]);
+                        $direccion = Direccion::firstOrCreate(['idcomunas' => $comuna, 'direccion' => $asignacion["direccion"]], [
+                            'idcomunas' => $comuna, 
+                            'direccion' => $asignacion["direccion"],
+                            'complemento' => $asignacion["complemento"]
+                        ]);
+
+                        $deudor->direcciones()->sync($direccion->iddirecciones, false);
+                    }else{
+                        $direccion = Direccion::firstOrCreate(['idcomunas' => $comuna, 'direccion' => $asignacion["direccion"]], [
                             'direccion' => $asignacion["direccion"],
                             'complemento' => $asignacion["complemento"]
                         ]);
@@ -110,6 +140,7 @@ class ArchivosController extends Controller
                         'numero' => $asignacion['num_documento'],
                         'fecha_emision' => $fecha_emision,
                     ],[
+                        'deudores_iddeudores' => $deudor->iddeudores,
                         'numero' => $asignacion['num_documento'], 
                         'folio' => $asignacion['folio'], 
                         'deuda' => $asignacion['deuda'], 
@@ -118,50 +149,12 @@ class ArchivosController extends Controller
                         'dias_mora' => $dias_mora
                     ]);
 
-                    $deudor->documentos()->sync($documento->iddocumentos, false);
-
-                    $gestor = Gestor::firstOrCreate(['razon_social' => $asignacion['proveedor']], [
-                        'razon_social' => $asignacion['proveedor']
-                    ]);               
-
-                    //$gestor->documentos()->sync($documento->iddocumentos, false);
-                    $gestor->documentos()->sync(array($documento->iddocumentos => array('deudores_iddeudores' => $deudor->iddeudores)), false);
-                    if((isset($asignacion['cartera'])) && ($asignacion['cartera'] != "")){
-                        $cartera = Cartera::firstOrCreate([
-                            'descripcion' => $asignacion['cartera'],
-                        ],[
-                            'descripcion' => $asignacion['cartera']
+                    if(($asignacion['proveedor'] != "") || ($asignacion['proveedor'] != null)){
+                        $gestor = Gestor::firstOrCreate(['razon_social' => $asignacion['proveedor']], [
+                            'razon_social' => $asignacion['proveedor']
                         ]);    
-                    }else{
-                        $cartera = Cartera::firstOrCreate([
-                            'descripcion' => 'SIN CARTERA'
-                        ],[
-                            'descripcion' => 'SIN CARTERA'
-                        ]);
                     }
                     
-                    $gestor->carteras()->sync(array($cartera->idcarteras => array('users_id' => Auth::id())), true);
-
-                    $hist_asignacion = Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->get();
-                    
-                    $documentos = $deudor->documentos;
-                    foreach ($documentos as $key => $doc) {
-                        $deuda_total += $doc->deuda; 
-                    }
-
-                    if(count($hist_asignacion) == 0){
-                        Asignacion::create([
-                            'deudores_iddeudores' => $deudor->iddeudores,
-                            'fecha_asignacion' => $fecha_actual,
-                            'deuda' => $deuda_total
-                        ]);
-                        $deuda_total = 0;
-                    }
-
-                    else{
-                        Asignacion::where('deudores_iddeudores', '=', $deudor->iddeudores)->where('fecha_asignacion', '=', $fecha_actual)->update(['deuda' => $deuda_total]);
-                        $deuda_total = 0;
-                    }
                 }
             }
         
@@ -189,11 +182,13 @@ class ArchivosController extends Controller
                             if((is_a($saldos, "Illuminate\Database\Eloquent\Collection")) && ($saldos->pendiente != 0)){
                                 Pago::firstOrCreate([
                                     'rut' => strtoupper($info->rut),
+                                    'carteras_idcarteras' => $request->cartera,
                                     'documentos_iddocumentos' => $saldos->iddocumentos,
                                     'monto' => $info->monto_pago,
                                     'fecha' => $fecha_pago
                                 ], [
                                     'rut' => strtoupper($info->rut),
+                                    'carteras_idcarteras' => $request->cartera,
                                     'documentos_iddocumentos' => $documentos[$info->num_documento],
                                     'monto' => $info->monto_pago,
                                     'fecha' => $fecha_pago
@@ -204,6 +199,7 @@ class ArchivosController extends Controller
                                 if(array_key_exists(intval($info->num_documento), $documentos)){
                                     Pago::create([
                                         'rut' => strtoupper($info->rut),
+                                        'carteras_idcarteras' => $request->cartera,
                                         'documentos_iddocumentos' => $documentos[$info->num_documento],
                                         'monto' => $info->monto_pago,
                                         'fecha' => $fecha_pago
@@ -211,10 +207,10 @@ class ArchivosController extends Controller
                                 }
                             }
 
-                            $nuevo_saldo = Funciones::revisar_saldo($info->num_documento, $info->rut);
+                            /*$nuevo_saldo = Funciones::revisar_saldo($info->num_documento, $info->rut);
                             if($nuevo_saldo->pendiente == 0){
                                 Deudor::find($nuevo_saldo->iddeudores)->documentos()->updateExistingPivot($nuevo_saldo->iddocumentos, ['activo' => 0]);
-                            }
+                            }*/
                         }
                     }
                 }

@@ -316,18 +316,11 @@
 	    });
 
 
-    	$('#BSbtndanger').filestyle({
-				buttonName : 'btn-danger',
-                buttonText : ' File selection'
-			});
-			$('#BSbtnsuccess').filestyle({
-				buttonName : 'btn-success',
-                buttonText : ' Open'
-			});
-			$('#BSbtninfo').filestyle({
-				buttonName : 'btn-primary',
-                buttonText : ' Importar'
-			});
+		$('#BSbtninfo').filestyle({
+			buttonName : 'btn-primary',
+            buttonText : ' Importar',
+            iconName: "fa fa-upload"
+		});
     })(jQuery);
 
     function buscar_por_rut(){

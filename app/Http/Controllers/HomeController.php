@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Cartera;
+use Funciones;
 use DB;
 use Auth;
 use Excel;
@@ -43,34 +44,10 @@ class HomeController extends Controller
     {
         //$request->user()->authorizeRoles(['superadmin', 'admin', 'supervisor', 'agente']);
         $rol = Auth::user()->role->name;
-        if($rol == 'agente' || $rol == 'supervisor') {
-            $carteras_reg = DB::table('carteras')
-                    ->join('users_carteras', 'carteras.idcarteras', '=', 'users_carteras.carteras_idcarteras')
-                    ->where('users_carteras.users_id','=',Auth::user()->id)
-                    ->where('users_carteras.status','=',1)
-                    ->select('carteras.idcarteras', 'carteras.nombre')
-                    ->get();
-        } elseif($rol == 'admin'){
-            //$idgestor = Auth::user()->gestor->idgestores;
-            $idgestor = 1;
-            $carteras_reg = DB::table('carteras')
-                    ->where('carteras.idgestores','=',$idgestor)
-                    ->where('carteras.status','=',1)
-                    ->select('carteras.idcarteras', 'carteras.nombre')
-                    ->get();
-        } else {
-            $carteras_reg = DB::table('carteras')
-                    ->where('carteras.status','=',1)
-                    ->select('carteras.idcarteras', 'carteras.nombre')
-                    ->get();
-        }
-        $carteras = array();
-       
-        foreach ($carteras_reg as $key => $g) {
-            $carteras[$g->idcarteras] = $g->nombre;
-        }
+        $idgestor = Auth::user()->idgestores;
+        $carteras = Funciones::carteras($rol, Auth::user()->id, $idgestor);
 
-        $cartera_seleccionada = $carteras_reg[0]->idcarteras;
+        $cartera_seleccionada = $carteras['carteras_reg'][0]->idcarteras;
         $marca_seleccionada = 'MARCA1';
 
         DB::select('CALL FUNCION_DASHBOARD('.$cartera_seleccionada.')');
@@ -81,7 +58,7 @@ class HomeController extends Controller
                 ->get();
     
 
-        return view('adminlte::home',array('carteras' => $carteras,'base' => $base,'cartera_seleccionada' => $cartera_seleccionada, 'marca_seleccionada' => $marca_seleccionada));
+        return view('adminlte::home',array('carteras' => $carteras['carteras'],'base' => $base,'cartera_seleccionada' => $cartera_seleccionada, 'marca_seleccionada' => $marca_seleccionada));
     }
 
     public function cargar_dashboard(Request $request){

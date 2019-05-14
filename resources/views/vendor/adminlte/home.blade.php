@@ -45,7 +45,7 @@
 						</div>
 						<div class="col-md-4">
 						<br>
-						<button type="submit" class="btn btn-primary" style=""><i ></i>Actualizar dashboard</button>
+						<button type="submit" class="btn btn-block btn-primary" style=""><i class="fa fa-refresh"></i> Actualizar dashboard</button>
 						</div>
 						{!! Form::close() !!}
 					</div>

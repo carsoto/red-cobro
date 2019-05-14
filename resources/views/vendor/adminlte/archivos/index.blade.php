@@ -53,8 +53,18 @@
 								<button class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
 							</div>-->
 
-							<div class="col-lg-12 col-md-8 col-sm-6">
+							<div class="col-lg-4 col-md-4 col-sm-6">
+								<select class="form-control" name="cartera">
+									@foreach($carteras AS $key => $value)
+									<option value="{{ $key }}">{{ $value }}</option>
+									@endforeach
+								</select>
+							</div>
+							<div class="col-lg-8 col-md-8 col-sm-6">
 						        <input type="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="BSbtninfo">
+						    </div>
+						    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+						    	<button type="submit" class="btn btn-success btn-md">Cargar archivo</button>
 						    </div>
 						</form>
 					</div>

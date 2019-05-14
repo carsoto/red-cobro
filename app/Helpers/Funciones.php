@@ -112,18 +112,39 @@ class Funciones{
         return $users;
     }
 
-    /*public static function carteras(){
-        if(Auth::user()->hasRole('superadmin')){
-            $carteras = Cartera::pluck('descripcion', 'idcarteras');
-        }else{
-            //$carteras = Cartera::where('iduser', '=', Auth::id())->pluck('descripcion', 'idcarteras');
-            $carteras    
+    public static function carteras($rol, $user_id, $idgestor){
+        if($rol == 'agente' || $rol == 'supervisor') {
+            $carteras_reg = DB::table('carteras')
+                    ->join('users_carteras', 'carteras.idcarteras', '=', 'users_carteras.carteras_idcarteras')
+                    ->where('users_carteras.users_id','=', $user_id)
+                    ->where('users_carteras.status','=', 1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        } elseif($rol == 'admin'){
+            if(($idgestor != null) || ($idgestor != "")){
+                $carteras_reg = DB::table('carteras')
+                    ->where('carteras.idgestores','=',$idgestor)
+                    ->where('carteras.status','=', 1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+            }
+        } else {
+            $carteras_reg = DB::table('carteras')
+                    ->where('carteras.status','=', 1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
         }
         
-        return $carteras;
+        $carteras = array();
+       
+        foreach ($carteras_reg as $key => $g) {
+            $carteras[$g->idcarteras] = $g->nombre;
+        }
+        
+        return array('carteras' => $carteras, 'carteras_reg' => $carteras_reg);
     }
 
-    public static function usuario_gestores_carteras(){
+    /*public static function usuario_gestores_carteras(){
         $ugc = DB::select(DB::raw("SELECT GROUP_CONCAT(c.idcarteras) AS id FROM carteras c, users_gestores_carteras gc WHERE gc.users_id = ".Auth::id()." AND gc.carteras_idcarteras = c.idcarteras"));
         return $ugc[0]->id;
     }*/
