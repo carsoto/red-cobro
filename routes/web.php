@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 	});
 
 	Route::resource('deudores', 'DeudorController');
-	
+	Route::post('deudores/listado_filtro','DeudorController@listado_filtro')->name('deudores.listado_filtro');
 
 	Route::group(['prefix' => 'deudores'], function () {
 		Route::get('table/listado', 'DeudorController@list')->name('deudores.listado');

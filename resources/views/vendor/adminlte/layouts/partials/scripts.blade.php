@@ -98,7 +98,7 @@
     	var table_deudor = document.getElementById('tabla_deudores');
     	if(table_deudor != undefined){
     		var datatable_deudores = $('#tabla_deudores').DataTable({
-		        ajax: 'deudores/table/listado',
+		        url: 'deudores/table/listado',
 		        dom: 'Bfrtip',
 		        buttons: [
 		            { 
@@ -109,6 +109,10 @@
 		        language: {
 					url: "{{ asset('public/js/datatable_spanish.json') }}",
 				},
+				dataType: "JSON",
+		            
+				type: "POST",
+				data: {cartera:2},
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
@@ -776,4 +780,10 @@
         	}
 		});
     }
+
+
+/*	$(".boton_listado_deudores").click(function(){
+   $("#tabla_deudores").removeAttr("id");
+   $(".tabla_deudores").attr("id","tabla_deudores_filtro");
+});*/
 </script>
