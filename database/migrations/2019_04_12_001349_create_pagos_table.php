@@ -20,7 +20,6 @@ class CreatePagosTable extends Migration
             $table->integer('carteras_idcarteras')->unsigned()->nullable();
             $table->integer('documentos_iddocumentos')->unsigned();
             $table->string('rut', 45);
-            $table->string('documento', 45);
             $table->date('fecha');
             $table->decimal('monto', 9, 2);
         

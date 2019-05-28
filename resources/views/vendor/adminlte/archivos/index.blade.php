@@ -27,7 +27,7 @@
 							<!--<div class="col-lg-4 col-md-6 hidden-xs" >
 								<img src="{{ asset('public/img/cobranza/etl-bg.png') }}" width="250px">
 							</div>-->
-							<div class="col-lg-12 col-md-12 col-sm-12">
+							<div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px; margin-bottom: 20px;">
 								<div class="form-inline">
 									<div class="iradio icheck">
 							        	<label>
@@ -53,17 +53,18 @@
 								<button class="btn btn-primary"><i class="fa fa-upload"></i> Importar</button>
 							</div>-->
 
-							<div class="col-lg-4 col-md-4 col-sm-6">
+							<div class="col-lg-4 col-md-4 col-sm-6" style="margin-bottom: 20px;">
 								<select class="form-control" name="cartera">
 									@foreach($carteras AS $key => $value)
 									<option value="{{ $key }}">{{ $value }}</option>
 									@endforeach
 								</select>
 							</div>
-							<div class="col-lg-8 col-md-8 col-sm-6">
+							<div class="col-lg-8 col-md-8 col-sm-6" style="margin-bottom: 20px;">
 						        <input type="file" name="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="BSbtninfo">
 						    </div>
-						    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+						   	<div class="clearfix"></div>
+						    <div class="col-lg-12 col-md-12 col-sm-12 text-center" style="margin-top: 20px;">
 						    	<button type="submit" class="btn btn-success btn-md">Cargar archivo</button>
 						    </div>
 						</form>

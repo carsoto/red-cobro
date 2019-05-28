@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 11 Apr 2019 05:50:13 +0000.
+ * Date: Tue, 28 May 2019 03:51:21 +0000.
  */
 
 namespace App;
@@ -16,20 +16,18 @@ use Reliese\Database\Eloquent\Model as Eloquent;
  * @property int $carteras_idcarteras
  * @property int $documentos_iddocumentos
  * @property string $rut
- * @property string $documento
  * @property \Carbon\Carbon $fecha
  * @property float $monto
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * 
  * @property \App\Cartera $cartera
+ * @property \App\Documento $documento
  *
  * @package App
  */
 class Pago extends Eloquent
 {
-	protected $table = 'pagos';
-
 	protected $primaryKey = 'idpagos';
 
 	protected $casts = [
@@ -46,7 +44,6 @@ class Pago extends Eloquent
 		'carteras_idcarteras',
 		'documentos_iddocumentos',
 		'rut',
-		'documento',
 		'fecha',
 		'monto'
 	];

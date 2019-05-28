@@ -71,8 +71,19 @@ class Funciones{
         return $nombre_completo;
     }
 
-    public static function revisar_saldo($numero, $rut_dv){
-        $saldos = DB::select(DB::raw("SELECT d.iddocumentos, de.iddeudores, d.deuda, SUM(p.monto) AS pagos, d.deuda - SUM(p.monto) AS pendiente
+    public static function revisar_saldo($cartera, $numero, $rut_dv){
+        $sql = "SELECT d.iddocumentos, de.iddeudores, d.deuda, SUM(p.monto) AS pagos, d.deuda - SUM(p.monto) AS pendiente
+                FROM
+                    deudores de, documentos d, pagos p
+                WHERE 
+                    de.carteras_idcarteras = ".$cartera."
+                AND d.numero = ".$numero."
+                AND de.rut_dv = '".$rut_dv."'
+                AND de.carteras_idcarteras = p.carteras_idcarteras
+                AND p.rut = de.rut_dv GROUP BY d.iddocumentos";
+        $saldos = DB::select(DB::raw($sql));
+        
+        /*$saldos = DB::select(DB::raw("SELECT d.iddocumentos, de.iddeudores, d.deuda, SUM(p.monto) AS pagos, d.deuda - SUM(p.monto) AS pendiente
                                         FROM
                                             deudores de, documentos d, deudores_documentos dd, pagos p
                                         WHERE
@@ -80,7 +91,7 @@ class Funciones{
                                         AND de.rut_dv = '".$rut_dv."'
                                         AND dd.iddocumentos = d.iddocumentos
                                         AND dd.iddeudores = de.iddeudores
-                                        AND p.rut = de.rut_dv GROUP BY d.iddocumentos"));
+                                        AND p.rut = de.rut_dv GROUP BY d.iddocumentos"));*/
         if(count($saldos) > 0){
             $saldos = $saldos[0];
         }

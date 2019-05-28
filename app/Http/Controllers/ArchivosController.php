@@ -50,9 +50,9 @@ class ArchivosController extends Controller
             $tiempo_inicial = microtime(true);
             $registros = Excel::load($request->file('file'), 'UTF-8')->all()->toArray();
             $fecha_actual = date('Y-m-d');
-            
+
             Deudor::where('carteras_idcarteras', $request->cartera)->where('users_id', Auth::id())->where('en_gestion', '=', 1)->update(['en_gestion' => 0]);
-            
+
             foreach ($registros[0] as $index => $asignacion) {
                 if((isset($asignacion['rut'])) && ($asignacion['rut'] != "")) {
                     $rut = Funciones::rut_sin_dv($asignacion['rut']);
@@ -141,6 +141,7 @@ class ArchivosController extends Controller
                         'fecha_emision' => $fecha_emision,
                     ],[
                         'deudores_iddeudores' => $deudor->iddeudores,
+                        'carteras_idcarteras' => $request->cartera,
                         'numero' => $asignacion['num_documento'], 
                         'folio' => $asignacion['folio'], 
                         'deuda' => $asignacion['deuda'], 
@@ -164,14 +165,60 @@ class ArchivosController extends Controller
 
 
         }else if($tipo_archivo == "Pagos"){
-            Excel::load($request->file('file'), function($hoja) {
-                $documentos = Documento::all()->pluck('iddocumentos', 'numero')->toArray();
-                $tiempo_inicial = microtime(true);
+            $documentos = Documento::where('carteras_idcarteras', '=', $request->cartera)->pluck('iddocumentos', 'numero')->toArray();
+            $tiempo_inicial = microtime(true);
+
+            /*$registros = Excel::load($request->file('file'), 'UTF-8')->all()->toArray();
+            dd($registros);
+            foreach ($registros as $index => $info) {
+                dd($info);
+            }*/
+            if(count($documentos) > 0){
+                Excel::load($request->file('file'), function($hoja) use($request, $documentos) {
+
+                    foreach ($hoja->all() as $key => $registro) {
+                        foreach ($registro as $index => $info) {
+                            if($info->rut != ""){
+                                if($info->fecha_pago != ""){
+                                    $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');    
+                                }else{
+                                   $fecha_pago = date('Y-m-d');
+                                } 
+
+                                Pago::create([
+                                    'carteras_idcarteras' => $request->cartera,
+                                    'documentos_iddocumentos' => $documentos[$info->num_documento],
+                                    'rut' => strtoupper($info->rut),
+                                    'fecha' => $fecha_pago,
+                                    'monto' => $info->monto_pago,
+                                ]);
+
+                                $nuevo_saldo = Funciones::revisar_saldo($request->cartera, $info->num_documento, $info->rut);
+
+                                if($nuevo_saldo->pendiente == 0){
+                                    Documento::where('iddocumentos', $documentos[$info->num_documento])->update(['activo' => 0]);
+                                }  
+                            }
+                        }
+                    }
+
+                });
+
+                $tiempo_final = microtime(true);
+                $tiempo = $tiempo_final - $tiempo_inicial;
+                Session::flash('message', "Archivo de pagos importado con éxito. Tiempo estimado de carga: ".$tiempo);    
+            }else{
+                Session::flash('message', "No hay documentos registrados en esta cartera");
+            }
+            
+            /*Excel::load($request->file('file'), function($hoja) {
+                
+                
                 foreach ($hoja->all() as $key => $registro) {
                     foreach ($registro as $index => $info) {
                         if($info->rut != ""){
 
-                            $saldos = Funciones::revisar_saldo($info->num_documento, $info->rut);
+                           //$saldos = Funciones::revisar_saldo($info->num_documento, $info->rut);
                             
                             if($info->fecha_pago != ""){
                                 $fecha_pago = Carbon::parse($info->fecha_pago)->format('Y-m-d');    
@@ -210,15 +257,13 @@ class ArchivosController extends Controller
                             /*$nuevo_saldo = Funciones::revisar_saldo($info->num_documento, $info->rut);
                             if($nuevo_saldo->pendiente == 0){
                                 Deudor::find($nuevo_saldo->iddeudores)->documentos()->updateExistingPivot($nuevo_saldo->iddocumentos, ['activo' => 0]);
-                            }*/
+                            }*
                         }
                     }
                 }
                 
-                $tiempo_final = microtime(true);
-                $tiempo = $tiempo_final - $tiempo_inicial;
-                Session::flash('message', "Archivo de pagos importado con éxito. Tiempo estimado de carga: ".$tiempo);
-            });
+                
+            });*/
 
         }else if($tipo_archivo == "Marcar_deudores"){
             
