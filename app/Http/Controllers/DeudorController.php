@@ -12,6 +12,9 @@ use App\Correo;
 use Carbon\Carbon;
 use Response;
 use DateTime;
+use Funciones;
+USE Auth;
+use DB;
 
 class DeudorController extends Controller
 {
@@ -22,22 +25,58 @@ class DeudorController extends Controller
      */
     public function index()
     {
-        return view('adminlte::deudores.index');
+
+        $rol = Auth::user()->role->name;
+        if($rol == 'agente' || $rol == 'supervisor') {
+            $carteras_reg = DB::table('carteras')
+                    ->join('users_carteras', 'carteras.idcarteras', '=', 'users_carteras.carteras_idcarteras')
+                    ->where('users_carteras.users_id','=',Auth::user()->id)
+                    ->where('users_carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        } elseif($rol == 'admin'){
+            //$idgestor = Auth::user()->gestor->idgestores;
+            $idgestor = 1;
+            $carteras_reg = DB::table('carteras')
+                    ->where('carteras.idgestores','=',$idgestor)
+                    ->where('carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        } else {
+            $carteras_reg = DB::table('carteras')
+                    ->where('carteras.status','=',1)
+                    ->select('carteras.idcarteras', 'carteras.nombre')
+                    ->get();
+        }
+        $carteras = array();
+       
+        foreach ($carteras_reg as $key => $g) {
+            $carteras[$g->idcarteras] = $g->nombre;
+        }
+        $carteras[0] = 'TODAS';
+        $cartera_seleccionada = $carteras_reg[0]->idcarteras;
+        $marca_seleccionada = 'MARCA1';
+        return view('adminlte::deudores.index',array('carteras' => $carteras,'cartera_seleccionada' => $cartera_seleccionada,'marca_seleccionada'=>$marca_seleccionada));
     }
 
-    public function list(){
+    public function list(Request $request){
         //return DataTables::of(User::query())->make(true);
-        
-        $deudores = Deudor::all();
-        
+        $cartera = $request->cartera;
+        $deudores = DB::table('deudores')
+                    ->where('carteras_idcarteras','=',$request->cartera)
+                    ->get();
+        //print_r($request->cartera);die();
+        //$carteras = Funciones::carteras();
+      // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
+              
         return Datatables::of($deudores)
         	->addColumn('fecha_asignacion', function ($deudor) { 
-				$asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
-				return Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
+				return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
         	})
             ->addColumn('asignado', function ($deudor) { 
-                $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
-                return number_format($asignacion->deuda, 2, ",", ".");
+               // $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+                //return number_format($asignacion->deuda, 2, ",", ".");
+                return number_format($deudor->monto_asignacion, 2, ",", ".");
             })
         	->addColumn('dias_mora', function ($deudor) { 
         		return $deudor->documentos->max('dias_mora');
@@ -50,6 +89,7 @@ class DeudorController extends Controller
         			$mark = $m->marca;
         		}
         		return $mark; 
+            
         	})
         	->addColumn('marca_2', function ($deudor) { 
         		$m = $deudor->marcas()->where('orden', '=', 2)->first();
@@ -71,8 +111,70 @@ class DeudorController extends Controller
         		return number_format($deuda_recuperada, 2, ",", ".");
         	})
             ->addColumn('action', function ($deudor) {
-                /*return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>';*/
+               /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
                 return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
+               
+            })
+            ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
+            ->make(true);
+    }
+
+        public function listado_filtro(Request $request){
+        //return DataTables::of(User::query())->make(true);
+        $cartera = $request->cartera;
+        print_r($cartera);
+        $deudores = DB::table('deudores')
+                    ->where('carteras_idcarteras','=',$request->cartera)
+                    ->get();
+        print_r($deudores);die();
+        //$carteras = Funciones::carteras();
+      // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
+              
+        return Datatables::of($deudores)
+            ->addColumn('fecha_asignacion', function ($deudor) { 
+                return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
+            })
+            ->addColumn('asignado', function ($deudor) { 
+               // $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+                //return number_format($asignacion->deuda, 2, ",", ".");
+                return number_format($deudor->monto_asignacion, 2, ",", ".");
+            })
+            ->addColumn('dias_mora', function ($deudor) { 
+                return $deudor->documentos->max('dias_mora');
+            })
+            ->addColumn('marca_1', function ($deudor) { 
+                $m = $deudor->marcas()->where('orden', '=', 1)->first();
+                if($m == null){
+                    $mark = "-";
+                }else{
+                    $mark = $m->marca;
+                }
+                return $mark; 
+            
+            })
+            ->addColumn('marca_2', function ($deudor) { 
+                $m = $deudor->marcas()->where('orden', '=', 2)->first();
+                if($m == null){
+                    $mark = "-";
+                }else{
+                    $mark = $m->marca;
+                }
+                return $mark; 
+            })
+            ->addColumn('deuda_recuperada', function ($deudor) { 
+                $deuda_recuperada = 0;
+                $documentos = $deudor->documentos;
+                foreach ($documentos as $clave_doc => $doc) {
+                    foreach ($doc->pagos as $clave_pago => $pago) {
+                        $deuda_recuperada += $pago->monto;
+                    }
+                }
+                return number_format($deuda_recuperada, 2, ",", ".");
+            })
+            ->addColumn('action', function ($deudor) {
+               /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
+                return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
+               
             })
             ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
             ->make(true);
@@ -150,6 +252,7 @@ class DeudorController extends Controller
 
     public function gestion($id_deudor)
     {
+        
         return view('adminlte::deudores.gestion.index');
     }
 

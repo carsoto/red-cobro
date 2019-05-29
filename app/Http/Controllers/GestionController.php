@@ -17,6 +17,7 @@ use Datatables;
 use Redirect;
 use Carbon\Carbon;
 use DB;
+use Auth;
 
 class GestionController extends Controller
 {
@@ -35,8 +36,10 @@ class GestionController extends Controller
     }
 
     public function consultarrespuesta($idgestion){
+        //print_r($idgestion);
         $gestion = Gestion::where('idgestiones', '=', $idgestion)->get();
         $gestion = $gestion[0];
+       //print_r($gestion);
         $respuestas = $gestion->respuestas;
         return Response::json(array('respuestas' => $respuestas));
     }
@@ -62,7 +65,7 @@ class GestionController extends Controller
             $direcciones = $deudor->direcciones;
             $telefonos = $deudor->telefonos;
             $correos = $deudor->correos;
-            $documentos = $deudor->documentos()->where('activo', '=', 1)->get();
+            $documentos = $deudor->documentos()->get();
             $marcas = $deudor->marcas->take(6);
             $cantd_marcas = count($marcas);
 
@@ -82,14 +85,14 @@ class GestionController extends Controller
                 }
             }
             
-            $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+            //$asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
             
             $ultima_asignacion = array();
-            $ultima_asignacion['fecha_asignacion'] = Carbon::parse($asignacion->fecha_asignacion)->format('d-m-Y');
-            $ultima_asignacion['deuda'] = number_format($asignacion->deuda, 2, ",", ".");
+            $ultima_asignacion['fecha_asignacion'] = Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
+            $ultima_asignacion['deuda'] = number_format($deudor->monto_asignacion, 2, ",", ".");
             $ultima_asignacion['dias_mora'] = $documentos->max('dias_mora');
 
-            $saldo_hoy = $asignacion->deuda - $deuda_recuperada;
+            $saldo_hoy = $deudor->monto_asignacion - $deuda_recuperada;
             $deuda_recuperada = number_format($deuda_recuperada, 2, ",", ".");
             $saldo_hoy = number_format($saldo_hoy, 2, ",", ".");
 
@@ -252,19 +255,43 @@ class GestionController extends Controller
         $nueva_gestion = new DeudoresGestiones();
 
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
-        $nueva_gestion->gestor = Funciones::nombre_completo_usuario();
-        $nueva_gestion->contacto = $request->contacto;
+        //$nueva_gestion->gestor = Funciones::nombre_completo_usuario();
+       // $nueva_gestion->contacto = ;
+        if(!empty($request->contacto)){
+            $nueva_gestion->contacto = $request->contacto;
+        }
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
-        $nueva_gestion->respuesta = $request->respuesta;
+        $nueva_gestion->respuestas_idrespuesta = $request->respuesta;
+        $nueva_gestion->users_id = Auth::user()->id;
+        //busco que tipo de gestion es la respuesta
+        $respuesta = Respuesta::where('idrespuesta', $request->respuesta)->get();
+        $respuesta = $respuesta[0];
+        $contacto_directo = $respuesta->contacto_directo;
+        if(!empty($contacto_directo) && $contacto_directo == 1) {
+            $nueva_gestion->contacto_directo = 1;
+            $compromiso = $respuesta->compromiso;
+            if(!empty($compromiso) && $compromiso == 1){
+                $nueva_gestion->compromiso = 1;
+            }
+        }
+        $contacto_indirecto = $respuesta->contacto_indirecto;
+        if(!empty($contacto_indirecto) && $contacto_indirecto == 1) {
+            $nueva_gestion->contacto_indirecto = 1;
+        }
+        $sin_contacto = $respuesta->sin_contacto;
+        if(!empty($sin_contacto) && $sin_contacto == 1) {
+            $nueva_gestion->sin_contacto = 1;
+        }
+
 
         if(isset($request->detalle)){
-            $nueva_gestion->detalle = $request->detalle;
+            $nueva_gestion->idrespuestas_detalles = $request->detalle;
         }
         
         $nueva_gestion->observacion = $request->observacion;
-        $nueva_gestion->anyo = date('Y');
+        $nueva_gestion->ano = date('Y');
         $nueva_gestion->mes = date('m');
-        $nueva_gestion->fecha_gestion = date('Y-m-d');
+        $nueva_gestion->fecha = date('Y-m-d');
         $prox_gestion = null;
         $fecha_prox_gestion = null;
 
@@ -276,8 +303,8 @@ class GestionController extends Controller
             $fecha_prox_gestion = Carbon::parse($request->fecha_prox_gestion)->format('Y-m-d');
         }
 
-        $nueva_gestion->prox_gestion = $prox_gestion;
-        $nueva_gestion->fecha_prox_gestion = $fecha_prox_gestion;
+        $nueva_gestion->idgestion_futura = $prox_gestion;
+        $nueva_gestion->fecha_futura = $fecha_prox_gestion;
 
         
         if($nueva_gestion->save()){

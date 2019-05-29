@@ -23,7 +23,7 @@ Route::get('/admin/exportarDashboard/{tipo}/{marca}/{valor_marca}/{filtro}','Hom
 
 Route::post('admin/cargar/dashboard','HomeController@cargar_dashboard')->name('admin.cargar.dashboard');
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
     Route::resource('usuarios', 'UserController');
 
@@ -39,15 +39,21 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	Route::resource('deudores', 'DeudorController');
+	Route::post('deudores/listado_filtro','DeudorController@listado_filtro')->name('deudores.listado_filtro');
+
 	Route::group(['prefix' => 'deudores'], function () {
 		Route::get('table/listado', 'DeudorController@list')->name('deudores.listado');
-		Route::get('gestion/nueva/{iddeudor}', 'DeudorController@gestion')->name('deudores.gestion');
+		
+		//Route::get('gestion/nueva/{iddeudor}', 'DeudorController@gestion')->name("deudores.gestion");
+		
 		Route::get('gestion/historico/{iddeudor}', 'DeudorController@gestionhistorica')->name('deudores.gestion.historico'); 
 		Route::get('detalles-resumen/{iddeudor}', 'DeudorController@detallesdeudor')->name('deudores.resumen');  
 		Route::get('gestion/direcciones/{iddeudor}','DeudorController@direcciones')->name('deudores.direcciones');
 		Route::get('gestion/documentos/{iddeudor}','DeudorController@documentos')->name('deudores.documentos');
 		Route::get('gestion/historial/{iddeudor}','DeudorController@gestioneshistorial')->name('deudores.gestion.historial');
-		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion.nueva');
+		
+		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion');
+		
 		Route::post('agregar/contacto/','DeudorController@agregar_contacto')->name('deudores.agregar.contacto');
 		Route::post('modificar/contacto/','DeudorController@modificar_contacto')->name('deudores.modificar.contacto');
 	});

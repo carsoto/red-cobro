@@ -100,7 +100,7 @@
     	var table_deudor = document.getElementById('tabla_deudores');
     	if(table_deudor != undefined){
     		var datatable_deudores = $('#tabla_deudores').DataTable({
-		        ajax: 'deudores/table/listado',
+		        url: 'deudores/table/listado',
 		        dom: 'Bfrtip',
 		        buttons: [
 		            { 
@@ -111,6 +111,10 @@
 		        language: {
 					url: "{{ asset('public/js/datatable_spanish.json') }}",
 				},
+				dataType: "JSON",
+		            
+				type: "POST",
+				data: {cartera:2},
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
@@ -484,7 +488,7 @@
             	if(respuestas.length > 0){
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
             		for (var i = 0; i < respuestas.length; i++) {
-	            		$('#select-respuestas').append('<option id="'+respuestas[i].idrespuesta+'" value="'+ respuestas[i].codigo + ' - ' + respuestas[i].respuesta +'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
+	            		$('#select-respuestas').append('<option id="'+respuestas[i].idrespuesta+'" value="'+ respuestas[i].idrespuesta +'">' + respuestas[i].codigo + ' - ' + respuestas[i].respuesta + '</option>');
 	            	}
             	}else{
             		$('#select-respuestas').html('<option value="0">SELECCIONE UNA RESPUESTA</option>');
@@ -783,4 +787,10 @@
         	}
 		});
     }
+
+
+/*	$(".boton_listado_deudores").click(function(){
+   $("#tabla_deudores").removeAttr("id");
+   $(".tabla_deudores").attr("id","tabla_deudores_filtro");
+});*/
 </script>
