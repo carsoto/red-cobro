@@ -13,43 +13,6 @@
 @endsection
 
 @section('main-content')
-			<div class="col-lg-12">
-				<div class="box box-primary" style="text-align: center;">
-					
-					<div class="box-body">
-						{!! Form::open(['id' => 'form-dashboard', 'method' => 'POST', 'route' => 'deudores.listado_filtro']) !!}
-						<div class="col-md-4">
-							<div class="form-group"> 
-							<label>Selecciona la cartera</label>
-							<?php
-							if(empty($cartera_seleccionada)){
-								$cartera_seleccionada = null;
-							}
-							?>
-							{!! Form::select('cartera', $carteras, $cartera_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-cartera')) !!}
-							</div>	
-						</div>
-						<div class="col-md-4">
-							<div class="form-group"> 
-							<label>Selecciona el parámetro de busqueda</label>
-							<?php
-							if(empty($marca_seleccionada)){
-								$marca_seleccionada = null;
-							}
-
-							?>
-							{!! Form::select('marcas', array('MARCA1' => 'Marca 1','MARCA2' => 'Marca 2',
-							'MARCA3' => 'Marca 3','MARCA4' => 'Marca 4', 'MARCA5' => 'Marca 5'), $marca_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-narca')) !!}
-							</div>	
-						</div>
-						<div class="col-md-4">
-						<br>
-						<button type="submit" class="btn btn-primary boton_listado_deudores" style=""><i ></i>Actualizar dashboard</button>
-						</div>
-						{!! Form::close() !!}
-					</div>
-				</div>
-			</div>
 		
 	<div class="container-fluid spark-screen">
 		<div class="row">
@@ -59,6 +22,20 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						<div class="table-responsive" style="padding-top: 15px;">
+							<div class="col-lg-4 col-md-4 col-sm-12">
+								<div class="form-group"> 
+									{!! Form::select('cartera', $carteras['carteras'], NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-cartera', 'placeholder' => 'SELECCIONAR TODAS LAS CARTERAS')) !!}
+								</div>	
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-12">
+								<div class="form-group"> 
+									{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-marca', 'placeholder' => 'SELECCIONAR TODAS LAS MARCAS')) !!}
+								</div>	
+							</div>
+							<div class="col-lg-4 col-md-4 col-sm-12">
+								<button type="button" class="btn btn-sm btn-primary btn-block btn-flat" onclick="filtrar_deudores()"><i class="fa fa-fw fa-refresh"></i>Cargar lista</button>
+							</div>
+							<br><br><br>
 							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable tabla_deudores" style="width:100%; font-size: 11px;">
 		                        <thead>
 		                            <tr>

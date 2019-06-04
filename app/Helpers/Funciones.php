@@ -98,7 +98,7 @@ class Funciones{
         return $saldos;
     }
 
-    function carteras(){
+    /*function carteras(){
         $rol = Auth::user()->role->name;
         print_r($rol);die();
         if($rol == 'agente' || $rol == 'supervisor') {
@@ -128,7 +128,7 @@ class Funciones{
             $carteras[$g->idcarteras] = $g->nombre;
         }
         return $carteras;
-    }
+    }*/
 
     public static function usuarios_herederos($id_usuario){
         $usarios_ids = $id_usuario;
@@ -140,6 +140,7 @@ class Funciones{
         }else if(Auth::user()->hasRole('admin')){
             do{
                 $ids_usarios = DB::select(DB::raw("SELECT GROUP_CONCAT(id) AS id FROM users WHERE creado_por IN(".$usarios_ids.")"));    
+                
                 if($ids_usarios){
                     $usarios_ids = $ids_usarios[0]->id;
                     if($usarios_ids != ""){
