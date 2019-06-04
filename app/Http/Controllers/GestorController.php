@@ -37,7 +37,7 @@ class GestorController extends Controller
             })
             ->addColumn('action', function ($gestor) {
                 //<a href="#" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_gestor"><i class="fa fa-trash"></i></a>
-                return '<a href="'.route('gestores.edit', encrypt($gestor->idgestores)).'" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+                return '<a href="'.route('gestores.edit', encrypt($gestor->idgestores)).'" data-id="'.encrypt($gestor->idgestores).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-pencil"></i></a>';
             })
             ->editColumn('idgestores', '{{ encrypt($idgestores) }}')
             ->make(true);

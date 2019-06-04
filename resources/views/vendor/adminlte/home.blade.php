@@ -16,7 +16,16 @@
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="box box-primary" style="text-align: center;">
-					
+					<?php
+					$total_casos = 0;
+					$total_operaciones = 0;
+					$total_monto = 0;
+					$total_gestiones = 0;
+					$total_titular = 0;
+					$total_tercero = 0;
+					$total_sin_contacto = 0;
+					$total_sin_gestion = 0;
+					?>
 					<div class="box-body">
 						{!! Form::open(['id' => 'form-dashboard', 'method' => 'POST', 'route' => 'admin.cargar.dashboard']) !!}
 						<div class="col-md-4">
@@ -45,28 +54,10 @@
 						</div>
 						<div class="col-md-4">
 						<br>
-						<button type="submit" class="btn btn-block btn-primary" style=""><i class="fa fa-refresh"></i> Actualizar dashboard</button>
+						<button type="submit" class="btn btn-block btn-sm btn-flat btn-primary" style=""><i class="fa fa-refresh"></i> Actualizar dashboard</button>
 						</div>
 						{!! Form::close() !!}
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-lg-12">
-				<div class="box box-primary" style="text-align: center;">
-					<?php
-					$total_casos = 0;
-					$total_operaciones = 0;
-					$total_monto = 0;
-					$total_gestiones = 0;
-					$total_titular = 0;
-					$total_tercero = 0;
-					$total_sin_contacto = 0;
-					$total_sin_gestion = 0;
-					?>
-					<div class="box-body">
+						<br><br><br><br>
 						<div class="table-responsive">
 						<table class="table">
 							<tr>

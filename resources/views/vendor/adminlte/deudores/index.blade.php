@@ -13,12 +13,16 @@
 @endsection
 
 @section('main-content')
-			<div class="col-lg-12">
-				<div class="box box-primary" style="text-align: center;">
-					
+	<div class="container-fluid spark-screen">
+		<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12">
+
+				<div class="box box-primary">
+					<!-- /.box-header -->
 					<div class="box-body">
-						{!! Form::open(['id' => 'form-dashboard', 'method' => 'POST', 'route' => 'deudores.listado_filtro']) !!}
-						<div class="col-md-4">
+						<div class="table-responsive" style="padding-top: 15px;">
+							{!! Form::open(['id' => 'form-dashboard', 'method' => 'POST', 'route' => 'deudores.listado_filtro']) !!}
+						<div class="col-lg-4 col-md-12 col-sm-12">
 							<div class="form-group"> 
 							<label>Selecciona la cartera</label>
 							<?php
@@ -29,9 +33,9 @@
 							{!! Form::select('cartera', $carteras, $cartera_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-cartera')) !!}
 							</div>	
 						</div>
-						<div class="col-md-4">
+						<div class="col-lg-4 col-md-12 col-sm-12">
 							<div class="form-group"> 
-							<label>Selecciona el parámetro de busqueda</label>
+							<label>Selecciona el parámetro de búsqueda</label>
 							<?php
 							if(empty($marca_seleccionada)){
 								$marca_seleccionada = null;
@@ -42,23 +46,14 @@
 							'MARCA3' => 'Marca 3','MARCA4' => 'Marca 4', 'MARCA5' => 'Marca 5'), $marca_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-narca')) !!}
 							</div>	
 						</div>
-						<div class="col-md-4">
+						<div class="col-lg-4 col-md-12 col-sm-12">
 						<br>
-						<button type="submit" class="btn btn-primary boton_listado_deudores" style=""><i ></i>Actualizar dashboard</button>
+						<button type="submit" class="btn btn-primary btn-sm btn-block btn-flat boton_listado_deudores" style=""><i class="fa fa-refresh fa-fw"></i>Actualizar dashboard</button>
 						</div>
 						{!! Form::close() !!}
-					</div>
-				</div>
-			</div>
-		
-	<div class="container-fluid spark-screen">
-		<div class="row">
-			<div class="col-lg-12">
 
-				<div class="box box-primary">
-					<!-- /.box-header -->
-					<div class="box-body">
-						<div class="table-responsive" style="padding-top: 15px;">
+						<br><br><br><br>
+
 							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable tabla_deudores" style="width:100%; font-size: 11px;">
 		                        <thead>
 		                            <tr>

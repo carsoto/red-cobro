@@ -20,7 +20,7 @@
 					<div class="box-header with-border">
 						<h3 class="box-title"></h3>
 						
-						<a class="btn btn-sm btn-success" href="{{ route('carteras.create') }}" title="Nueva cartera">
+						<a class="btn btn-sm btn-flat btn-success" href="{{ route('carteras.create') }}" title="Nueva cartera">
 							<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nueva cartera</span>
 						</a>
 						

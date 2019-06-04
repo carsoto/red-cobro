@@ -42,8 +42,8 @@ class UserController extends Controller
                 }
             })
             ->addColumn('action', function ($usuario) {
-                return '<a href="'.route('usuarios.edit', encrypt($usuario->id)).'" data-id="'.encrypt($usuario->id).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>
-                        <a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_usuario"><i class="fa fa-trash"></i></a>';
+                return '<a href="'.route('usuarios.edit', encrypt($usuario->id)).'" data-id="'.encrypt($usuario->id).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-flat btn-xs"><i class="fa fa-pencil"></i></a>
+                        <a href="#" data-id="'.encrypt($usuario->id).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs btn-flat eliminar_usuario"><i class="fa fa-trash"></i></a>';
             })
             ->editColumn('id', '{{ encrypt($id) }}')
             ->make(true);

@@ -98,7 +98,7 @@ class Funciones{
         return $saldos;
     }
 
-    function carteras(){
+    /*function carteras(){
         $rol = Auth::user()->role->name;
         print_r($rol);die();
         if($rol == 'agente' || $rol == 'supervisor') {
@@ -128,7 +128,7 @@ class Funciones{
             $carteras[$g->idcarteras] = $g->nombre;
         }
         return $carteras;
-    }
+    }*/
 
     public static function usuarios_herederos($id_usuario){
         $usarios_ids = $id_usuario;

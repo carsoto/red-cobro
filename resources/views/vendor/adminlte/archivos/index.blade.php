@@ -65,7 +65,7 @@
 						    </div>
 						   	<div class="clearfix"></div>
 						    <div class="col-lg-12 col-md-12 col-sm-12 text-center" style="margin-top: 20px;">
-						    	<button type="submit" class="btn btn-success btn-md">Cargar archivo</button>
+						    	<button type="submit" class="btn btn-success btn-flat btn-md">Cargar archivo</button>
 						    </div>
 						</form>
 					</div>

@@ -39,7 +39,7 @@ class CarteraController extends Controller
             })
             ->addColumn('action', function ($cartera) {
                 //<a href="#" data-id="'.encrypt($cartera->idcarteras).'" title="'.trans('app.delete_title').'" class="btn btn-danger btn-xs eliminar_cartera"><i class="fa fa-trash"></i></a>
-                return '<a href="'.route('carteras.edit', encrypt($cartera->idcarteras)).'" data-id="'.encrypt($cartera->idcarteras).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></a>';
+                return '<a href="'.route('carteras.edit', encrypt($cartera->idcarteras)).'" data-id="'.encrypt($cartera->idcarteras).'" title="'.trans('app.edit_title').'" class="btn btn-primary btn-xs btn-flat"><i class="fa fa-pencil"></i></a>';
             })
             ->editColumn('idcarteras', '{{ encrypt($idcarteras) }}')
             ->make(true);

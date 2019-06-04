@@ -22,7 +22,7 @@
 						<h3 class="box-title"></h3>
 						<!-- Buttons, labels, and many other things can be placed here! -->
 						<!-- Here is a label for example -->
-							<a class="btn btn-sm btn-success" href="{{ route('usuarios.create') }}" title="Nuevo usuario">
+							<a class="btn btn-flat btn-sm btn-success" href="{{ route('usuarios.create') }}" title="Nuevo usuario">
 								<i class="fa fa-plus" style="vertical-align:middle" ></i> <span>Crear nuevo usuario</span>
 							</a>
 						
