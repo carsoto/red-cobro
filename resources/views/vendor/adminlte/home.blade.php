@@ -28,29 +28,21 @@
 					?>
 					<div class="box-body">
 						{!! Form::open(['id' => 'form-dashboard', 'method' => 'POST', 'route' => 'admin.cargar.dashboard']) !!}
-						<div class="col-md-4">
+						<div class="col-lg-4 col-md-4 col-sm-12">
 							<div class="form-group"> 
-							<label>Selecciona la cartera</label>
-							<?php
-							if(empty($cartera_seleccionada)){
-								$cartera_seleccionada = null;
-							}
-							?>
-							{!! Form::select('cartera', $carteras, $cartera_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-cartera')) !!}
+								{!! Form::select('cartera', $carteras, NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-cartera', 'placeholder' => 'SELECCIONAR TODAS LAS CARTERAS')) !!}
 							</div>	
 						</div>
-						<div class="col-md-4">
+						<div class="col-lg-4 col-md-4 col-sm-12">
 							<div class="form-group"> 
-							<label>Selecciona el parámetro de busqueda</label>
-							{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-narca')) !!}
+								{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-marca', 'placeholder' => 'SELECCIONAR TODAS LAS MARCAS')) !!}
 							</div>	
 						</div>
-						<div class="col-md-4">
-						<br>
-						<button type="submit" class="btn btn-block btn-sm btn-flat btn-primary" style=""><i class="fa fa-refresh"></i> Actualizar dashboard</button>
+						<div class="col-lg-4 col-md-4 col-sm-12">
+							<button type="submit" class="btn btn-sm btn-primary btn-block btn-flat" style=""><i class="fa fa-refresh"></i> Actualizar dashboard</button>
 						</div>
 						{!! Form::close() !!}
-						<br><br><br><br>
+						<br><br><br>
 						<div class="table-responsive">
 						<table class="table">
 							<tr>

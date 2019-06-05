@@ -20,22 +20,23 @@
 				<div class="box box-primary">
 					<!-- /.box-header -->
 					<div class="box-body">
+						
+						<div class="col-lg-4 col-md-4 col-sm-12">
+							<div class="form-group"> 
+								{!! Form::select('cartera', $carteras['carteras'], NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-cartera', 'placeholder' => 'SELECCIONAR TODAS LAS CARTERAS')) !!}
+							</div>	
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12">
+							<div class="form-group"> 
+								{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-marca', 'placeholder' => 'SELECCIONAR TODAS LAS MARCAS')) !!}
+							</div>	
+						</div>
+						<div class="col-lg-4 col-md-4 col-sm-12">
+							<button type="button" class="btn btn-sm btn-primary btn-block btn-flat" onclick="filtrar_deudores()"><i class="fa fa-fw fa-refresh"></i>Cargar lista</button>
+						</div>
+						<br><br><br>
 						<div class="table-responsive" style="padding-top: 15px;">
-							<div class="col-lg-4 col-md-4 col-sm-12">
-								<div class="form-group"> 
-									{!! Form::select('cartera', $carteras['carteras'], NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-cartera', 'placeholder' => 'SELECCIONAR TODAS LAS CARTERAS')) !!}
-								</div>	
-							</div>
-							<div class="col-lg-4 col-md-4 col-sm-12">
-								<div class="form-group"> 
-									{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-marca', 'placeholder' => 'SELECCIONAR TODAS LAS MARCAS')) !!}
-								</div>	
-							</div>
-							<div class="col-lg-4 col-md-4 col-sm-12">
-								<button type="button" class="btn btn-sm btn-primary btn-block btn-flat" onclick="filtrar_deudores()"><i class="fa fa-fw fa-refresh"></i>Cargar lista</button>
-							</div>
-							<br><br><br>
-							<table id='tabla_deudores' class="table table-hover table-bordered table-striped datatable tabla_deudores" style="width:100%; font-size: 11px;">
+							<table id='tabla_deudores' class="table datatable tabla_deudores" style="width:100%; font-size: 11px;">
 		                        <thead>
 		                            <tr>
 		                                <th width="60px">Rut</th>
