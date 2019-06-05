@@ -189,7 +189,7 @@
 							</div>
 							<!-- /.box-header -->
 							<div class="box-body table-responsive no-padding">
-								<table class="table table-hover">
+								<table id='tabla-contactos' class="table table-hover">
 									<tbody>
 										<tr>
 											<th>Fonos/Mail</th>
@@ -199,6 +199,8 @@
 											<th>Opciones</th>
 										</tr>
 										@if((count($datos_deudor['contactos']['telefonos']) > 0) || (count($datos_deudor['contactos']['correos']) > 0))
+				                            
+
 				                            @foreach($datos_deudor['contactos']['telefonos'] as $key => $value)
 				                            	<tr style="font-size: 11px;">
 					                                <td><a href="skype:{{ $key }}?call">{{ $key }}</a></td>

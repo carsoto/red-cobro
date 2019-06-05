@@ -734,14 +734,14 @@
         			if(isValidEmail(value)){
         				tipo = 'correo';
         			}else{
-        				swal(`Disculpe, el contacto ingresado (${value}) no es un correo electrónico válido`);
+        				swal('Disculpe, el contacto ingresado <strong>(${value})</strong> no es un correo electrónico válido');
 						return false;
         			}
         		}else{
         			if(isValidPhone(value)){
         				tipo = 'telefono';
         			}else{
-        				swal(`Disculpe, el contacto ingresado (${value}) no es un teléfono válido`);
+        				swal('Disculpe, el contacto ingresado <strong>(${value})</strong> no es un teléfono válido');
 						return false;
         			}
         		}
@@ -762,10 +762,12 @@
 							if(tipo == 'telefono'){
 								row.append($("<td><a href='skype:"+contacto+"?call'>"+contacto+"</a></td>"))
 								   .append($("<td>-</td>"))
+								   .append($("<td>-</td>"))
 								   .append($('<td><span id="status_telefono'+ response.id +'" class="label label-success" style="font-size: 11px;">Activo</span></td>'))
 								   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="telefono" id-contacto="' + response.id + '" id-deudor="' + iddeudor + '"><i class="fa fa-edit"></i></a></td>'));
 							} else{
 								row.append($("<td><a href='skype:"+contacto+"?chat'>"+contacto+"</a></td>"))
+								   .append($("<td>-</td>"))
 								   .append($("<td>-</td>"))
 								   .append($('<td><span id="status_correo'+ response.id +'" class="label label-success" style="font-size: 11px;">Activo</span></td>'))
 								   .append($('<td><a href="#" class="cambiar_estatus_contacto" tipo="correo" id-contacto="' + response.id + '" id-deudor="' + iddeudor + '"><i class="fa fa-edit"></i></a></td>'));

@@ -132,23 +132,23 @@ class GestionController extends Controller
 
             if(count($telefonos) > 0){
                 foreach($telefonos AS $key => $value){
-                    $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->telefono)->orderBy('pivot_created_at', 'desc')->first();
+                    $ult_gestion_contacto = $deudor->gestiones()->where('deudores_telefonos_id', '=', $value->idtelefonos)->orderBy('pivot_created_at', 'desc')->first();
             
                     if($ult_gestion_contacto != null){
                         $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'fecha' => Carbon::parse($ult_gestion_contacto->pivot->fecha_gestion)->format('d-m-Y'), 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
+                        $contactos['telefonos'][$value->telefono] = array('id' => $value->idtelefonos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->status);
                     }
                 }
             }
             
             if(count($correos) > 0){
                 foreach($correos AS $key => $value){
-                    $ult_gestion_contacto = $deudor->gestiones()->where('contacto', '=', $value->correo)->orderBy('pivot_created_at', 'desc')->first();
+                    $ult_gestion_contacto = $deudor->gestiones()->where('deudores_correos_id', '=', $value->idcorreos_electronicos)->orderBy('pivot_created_at', 'desc')->first();
                     if($ult_gestion_contacto != null){
                         $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'fecha' => Carbon::parse($ult_gestion_contacto->pivot->fecha_gestion)->format('d-m-Y'), 'gestion' => $ult_gestion_contacto->codigo." - ".$ult_gestion_contacto->descripcion, 'respuesta' => $ultima_gestion_reg->pivot->respuesta, 'estatus' => $value->pivot->activo);
                     }else{
-                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->activo);
+                        $contactos['correos'][$value->correo] = array('id' => $value->idcorreos_electronicos, 'fecha' => '-', 'gestion' => '-', 'respuesta' => '-', 'estatus' => $value->pivot->status);
                     }
                 }
             }

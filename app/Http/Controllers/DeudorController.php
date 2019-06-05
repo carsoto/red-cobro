@@ -160,71 +160,9 @@ class DeudorController extends Controller
             ->make(true);
     }
 
-    public function listado_filtro(Request $request){
-    //return DataTables::of(User::query())->make(true);
-    $cartera = $request->cartera;
-    print_r($cartera);
-    $deudores = DB::table('deudores')
-                ->where('carteras_idcarteras','=',$request->cartera)
-                ->get();
-    print_r($deudores);die();
-    //$carteras = Funciones::carteras();
-  // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
-          
-    return Datatables::of($deudores)
-        ->addColumn('fecha_asignacion', function ($deudor) { 
-            return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
-        })
-        ->addColumn('asignado', function ($deudor) { 
-           // $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
-            //return number_format($asignacion->deuda, 2, ",", ".");
-            return number_format($deudor->monto_asignacion, 2, ",", ".");
-        })
-        ->addColumn('dias_mora', function ($deudor) { 
-            return $deudor->documentos->max('dias_mora');
-        })
-        ->addColumn('marca_1', function ($deudor) { 
-            $m = $deudor->marcas()->where('orden', '=', 1)->first();
-            if($m == null){
-                $mark = "-";
-            }else{
-                $mark = $m->marca;
-            }
-            return $mark; 
-        
-        })
-        ->addColumn('marca_2', function ($deudor) { 
-            $m = $deudor->marcas()->where('orden', '=', 2)->first();
-            if($m == null){
-                $mark = "-";
-            }else{
-                $mark = $m->marca;
-            }
-            return $mark; 
-        })
-        ->addColumn('deuda_recuperada', function ($deudor) { 
-            $deuda_recuperada = 0;
-            $documentos = $deudor->documentos;
-            foreach ($documentos as $clave_doc => $doc) {
-                foreach ($doc->pagos as $clave_pago => $pago) {
-                    $deuda_recuperada += $pago->monto;
-                }
-            }
-            return number_format($deuda_recuperada, 2, ",", ".");
-        })
-        ->addColumn('action', function ($deudor) {
-           /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
-            return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
-           
-        })
-        ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
-        ->make(true);
-    }
-
     public function direcciones($id_deudor)
     {
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
+        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->first();
         $direcciones = $deudor->direcciones;
         return view('adminlte::deudores.direcciones', array('direcciones' => $direcciones))->render();
     }
@@ -362,31 +300,29 @@ class DeudorController extends Controller
         $deudor = Deudor::findOrFail(decrypt($id_deudor));
 
         if($tipo == 'telefono'){
-            $contacto = $deudor->telefonos()->where('telefonos.idtelefonos', '=', $id_contacto)->get();
+            $contacto = $deudor->telefonos()->where('telefonos.idtelefonos', '=', $id_contacto)->first();
         }
 
         if($tipo == 'correo'){
-            $contacto = $deudor->correos()->where('correos.idcorreos_electronicos', '=', $id_contacto)->get();
+            $contacto = $deudor->correos()->where('correos.idcorreos_electronicos', '=', $id_contacto)->first();
         }
-
-        $contacto = $contacto[0];
         
-        if($contacto->pivot->activo){
-            $contacto->pivot->activo = 0;
+        if($contacto->pivot->status){
+            $contacto->pivot->status = 0;
         } else {
-            $contacto->pivot->activo = 1;
+            $contacto->pivot->status = 1;
         }
 
         if($contacto->pivot->save()){
             $status = 'success';
-            if($contacto->pivot->activo){
+            if($contacto->pivot->status){
                 $msg = 'El contacto fue activado exitosamente!';
             } else {
                 $msg = 'El contacto fue inactivado exitosamente!';
             }
         } else {
             $status = 'failed';
-            if($contacto->pivot->activo){
+            if($contacto->pivot->status){
                 $msg = 'Disculpe, el contacto no pudo ser activado!';
             }else{
                 $msg = 'Disculpe, el contacto no pudo ser inactivado!';
