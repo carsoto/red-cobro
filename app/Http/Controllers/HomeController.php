@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Cartera;
+use App\Marca;
 use Funciones;
 use DB;
 use Auth;
@@ -47,18 +48,24 @@ class HomeController extends Controller
         $idgestor = Auth::user()->idgestores;
         $carteras = Funciones::carteras($rol, Auth::user()->id, $idgestor);
 
-        $cartera_seleccionada = $carteras['carteras_reg'][0]->idcarteras;
-        $marca_seleccionada = 'MARCA1';
+        if(count($carteras['carteras_reg']) > 0){
+            $cartera_seleccionada = $carteras['carteras_reg'][0]->idcarteras;    
+        }else{
+            $cartera_seleccionada = 0;
+        }
+        
+        $marcas = Marca::all()->pluck('marca','idmarcas');
 
         DB::select('CALL FUNCION_DASHBOARD('.$cartera_seleccionada.')');
-
+        $marca_seleccionada = 'MARCA1';
+        
         $base = DB::table('base_dashboard')
                 ->select(''.$marca_seleccionada.' AS MARCA',DB::raw('count(*) as casos, sum(OPERACIONES) as operaciones, sum(MONTO) as MONTO , Sum(GESTIONES) AS GESTIONES,SUM(IF(COMPROMISOS > 0,1,0)) AS COMPROMISOS,SUM(IF(TITULAR>0,1,0)) AS TITULAR,SUM(IF(TERCERO>0,1,0)) AS TERCEROS,SUM(IF(SIN_CONTACTO>0,1,0)) AS SIN_CONTACTO'))
                 ->groupBy($marca_seleccionada)
                 ->get();
     
 
-        return view('adminlte::home',array('carteras' => $carteras['carteras'],'base' => $base,'cartera_seleccionada' => $cartera_seleccionada, 'marca_seleccionada' => $marca_seleccionada));
+        return view('adminlte::home',array('carteras' => $carteras['carteras'],'base' => $base,'cartera_seleccionada' => $cartera_seleccionada, 'marca_seleccionada' => $marca_seleccionada, 'marcas' => $marcas));
     }
 
     public function cargar_dashboard(Request $request){
@@ -73,8 +80,8 @@ class HomeController extends Controller
                     ->select('carteras.idcarteras', 'carteras.nombre')
                     ->get();
         } elseif($rol == 'admin'){
-            //$idgestor = Auth::user()->gestor->idgestores;
-            $idgestor = 1;
+            $idgestor = Auth::user()->gestor->idgestores;
+            //$idgestor = Auth::user()->idgestores;
             $carteras_reg = DB::table('carteras')
                     ->where('carteras.idgestores','=',$idgestor)
                     ->where('carteras.status','=',1)

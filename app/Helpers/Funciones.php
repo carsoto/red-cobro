@@ -140,6 +140,7 @@ class Funciones{
         }else if(Auth::user()->hasRole('admin')){
             do{
                 $ids_usarios = DB::select(DB::raw("SELECT GROUP_CONCAT(id) AS id FROM users WHERE creado_por IN(".$usarios_ids.")"));    
+                
                 if($ids_usarios){
                     $usarios_ids = $ids_usarios[0]->id;
                     if($usarios_ids != ""){

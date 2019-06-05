@@ -9,6 +9,7 @@ use App\Deudor;
 use App\Gestion;
 use App\Telefono;
 use App\Correo;
+use App\Marca;
 use Carbon\Carbon;
 use Response;
 use DateTime;
@@ -26,7 +27,7 @@ class DeudorController extends Controller
     public function index()
     {
 
-        $rol = Auth::user()->role->name;
+        /*$rol = Auth::user()->role->name;
         if($rol == 'agente' || $rol == 'supervisor') {
             $carteras_reg = DB::table('carteras')
                     ->join('users_carteras', 'carteras.idcarteras', '=', 'users_carteras.carteras_idcarteras')
@@ -55,19 +56,58 @@ class DeudorController extends Controller
         }
         $carteras[0] = 'TODAS';
         $cartera_seleccionada = $carteras_reg[0]->idcarteras;
-        $marca_seleccionada = 'MARCA1';
-        return view('adminlte::deudores.index',array('carteras' => $carteras,'cartera_seleccionada' => $cartera_seleccionada,'marca_seleccionada'=>$marca_seleccionada));
+        $marca_seleccionada = 'MARCA1';*/
+
+        $rol = Auth::user()->role->name;
+        $idgestor = Auth::user()->idgestores;
+        $carteras = Funciones::carteras($rol, Auth::user()->id, $idgestor);
+
+        if(count($carteras['carteras_reg']) > 0){
+            $cartera_seleccionada = $carteras['carteras_reg'][0]->idcarteras;    
+        }else{
+            $cartera_seleccionada = 0;
+        }
+        
+        $marcas = Marca::all()->pluck('marca','idmarcas');
+
+        return view('adminlte::deudores.index',array('carteras' => $carteras, 'cartera_seleccionada' => $cartera_seleccionada, 'marcas' => $marcas));
     }
 
-    public function list(Request $request){
-        //return DataTables::of(User::query())->make(true);
-        $cartera = $request->cartera;
-        $deudores = DB::table('deudores')
+    public function list($cartera, $marca){
+        $usuarios = Funciones::usuarios_herederos(Auth::id());
+        if(count($usuarios) > 0){
+            foreach ($usuarios as $key => $usuario) {
+                $id_usuarios[] = $usuario->id; 
+            }
+        }else{
+            $id_usuarios[0] = Auth::id();
+        }
+
+        if(($cartera == 0) && ($marca == 0)){
+            //TODAS
+            $deudores = Deudor::whereIn('users_id', $id_usuarios)->get();
+
+        }else if(($cartera != 0) && ($marca == 0)){
+            //Todas las marcas y cartera especifica
+            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->whereIn('users_id', $id_usuarios)->get();
+
+        }else if(($cartera == 0) && ($marca != 0)){
+            //Todas las carteras y marca especifica
+            $deudores = Deudor::whereIn('users_id', $id_usuarios)->whereHas('marcas', function ($query) use($marca) {
+                $query->where('deudores_marcas.idmarcas', '=', $marca);
+            })->get();
+        }else{
+            //Cartera y marca especifica
+            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->whereIn('users_id', $id_usuarios)->whereHas('marcas', function ($query) use($marca) {
+                $query->where('deudores_marcas.idmarcas', '=', $marca);
+            })->get();
+        }
+        /*$deudores = DB::table('deudores')
                     ->where('carteras_idcarteras','=',$request->cartera)
                     ->get();
         //print_r($request->cartera);die();
         //$carteras = Funciones::carteras();
-      // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
+      // $asignacion = $deudores->orderBy('created_at', 'desc')->first();*/
               
         return Datatables::of($deudores)
         	->addColumn('fecha_asignacion', function ($deudor) { 
@@ -79,7 +119,7 @@ class DeudorController extends Controller
                 return number_format($deudor->monto_asignacion, 2, ",", ".");
             })
         	->addColumn('dias_mora', function ($deudor) { 
-        		return $deudor->documentos->max('dias_mora');
+               return $deudor->documentos->max('dias_mora');
         	})
         	->addColumn('marca_1', function ($deudor) { 
         		$m = $deudor->marcas()->where('orden', '=', 1)->first();
@@ -101,14 +141,15 @@ class DeudorController extends Controller
         		return $mark; 
         	})
         	->addColumn('deuda_recuperada', function ($deudor) { 
-				$deuda_recuperada = 0;
+				/*$deuda_recuperada = 0;
 				$documentos = $deudor->documentos;
 				foreach ($documentos as $clave_doc => $doc) {
 				    foreach ($doc->pagos as $clave_pago => $pago) {
 				        $deuda_recuperada += $pago->monto;
 				    }
 				}
-        		return number_format($deuda_recuperada, 2, ",", ".");
+        		return number_format($deuda_recuperada, 2, ",", ".");*/
+                return "-";
         	})
             ->addColumn('action', function ($deudor) {
                /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
@@ -119,65 +160,65 @@ class DeudorController extends Controller
             ->make(true);
     }
 
-        public function listado_filtro(Request $request){
-        //return DataTables::of(User::query())->make(true);
-        $cartera = $request->cartera;
-        print_r($cartera);
-        $deudores = DB::table('deudores')
-                    ->where('carteras_idcarteras','=',$request->cartera)
-                    ->get();
-        print_r($deudores);die();
-        //$carteras = Funciones::carteras();
-      // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
-              
-        return Datatables::of($deudores)
-            ->addColumn('fecha_asignacion', function ($deudor) { 
-                return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
-            })
-            ->addColumn('asignado', function ($deudor) { 
-               // $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
-                //return number_format($asignacion->deuda, 2, ",", ".");
-                return number_format($deudor->monto_asignacion, 2, ",", ".");
-            })
-            ->addColumn('dias_mora', function ($deudor) { 
-                return $deudor->documentos->max('dias_mora');
-            })
-            ->addColumn('marca_1', function ($deudor) { 
-                $m = $deudor->marcas()->where('orden', '=', 1)->first();
-                if($m == null){
-                    $mark = "-";
-                }else{
-                    $mark = $m->marca;
+    public function listado_filtro(Request $request){
+    //return DataTables::of(User::query())->make(true);
+    $cartera = $request->cartera;
+    print_r($cartera);
+    $deudores = DB::table('deudores')
+                ->where('carteras_idcarteras','=',$request->cartera)
+                ->get();
+    print_r($deudores);die();
+    //$carteras = Funciones::carteras();
+  // $asignacion = $deudores->orderBy('created_at', 'desc')->first();
+          
+    return Datatables::of($deudores)
+        ->addColumn('fecha_asignacion', function ($deudor) { 
+            return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
+        })
+        ->addColumn('asignado', function ($deudor) { 
+           // $asignacion = $deudor->asignaciones()->orderBy('created_at', 'desc')->first();
+            //return number_format($asignacion->deuda, 2, ",", ".");
+            return number_format($deudor->monto_asignacion, 2, ",", ".");
+        })
+        ->addColumn('dias_mora', function ($deudor) { 
+            return $deudor->documentos->max('dias_mora');
+        })
+        ->addColumn('marca_1', function ($deudor) { 
+            $m = $deudor->marcas()->where('orden', '=', 1)->first();
+            if($m == null){
+                $mark = "-";
+            }else{
+                $mark = $m->marca;
+            }
+            return $mark; 
+        
+        })
+        ->addColumn('marca_2', function ($deudor) { 
+            $m = $deudor->marcas()->where('orden', '=', 2)->first();
+            if($m == null){
+                $mark = "-";
+            }else{
+                $mark = $m->marca;
+            }
+            return $mark; 
+        })
+        ->addColumn('deuda_recuperada', function ($deudor) { 
+            $deuda_recuperada = 0;
+            $documentos = $deudor->documentos;
+            foreach ($documentos as $clave_doc => $doc) {
+                foreach ($doc->pagos as $clave_pago => $pago) {
+                    $deuda_recuperada += $pago->monto;
                 }
-                return $mark; 
-            
-            })
-            ->addColumn('marca_2', function ($deudor) { 
-                $m = $deudor->marcas()->where('orden', '=', 2)->first();
-                if($m == null){
-                    $mark = "-";
-                }else{
-                    $mark = $m->marca;
-                }
-                return $mark; 
-            })
-            ->addColumn('deuda_recuperada', function ($deudor) { 
-                $deuda_recuperada = 0;
-                $documentos = $deudor->documentos;
-                foreach ($documentos as $clave_doc => $doc) {
-                    foreach ($doc->pagos as $clave_pago => $pago) {
-                        $deuda_recuperada += $pago->monto;
-                    }
-                }
-                return number_format($deuda_recuperada, 2, ",", ".");
-            })
-            ->addColumn('action', function ($deudor) {
-               /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
-                return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
-               
-            })
-            ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
-            ->make(true);
+            }
+            return number_format($deuda_recuperada, 2, ",", ".");
+        })
+        ->addColumn('action', function ($deudor) {
+           /* return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a> <a href="'.route('deudores.gestion', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Agregar gestión" class="btn btn-warning btn-xs"><i class="fa fa-files-o"></i></a> <a href="'.route('deudores.gestion.historico', encrypt($deudor->iddeudores)).'" data-id="'.encrypt($deudor->iddeudores).'" title="Gestiones" class="btn btn-info btn-xs"><i class="fa fa-history"></i></a>'; */
+            return '<a href="'.route('gestiones.index', ['rut' => encrypt($deudor->rut)]).'" data-id="'.encrypt($deudor->iddeudores).'" title="Detalles de deudas" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></a>';
+           
+        })
+        ->editColumn('iddeudores', '{{ encrypt($iddeudores) }}')
+        ->make(true);
     }
 
     public function direcciones($id_deudor)

@@ -42,14 +42,7 @@
 						<div class="col-md-4">
 							<div class="form-group"> 
 							<label>Selecciona el parámetro de busqueda</label>
-							<?php
-							if(empty($marca_seleccionada)){
-								$marca_seleccionada = null;
-							}
-
-							?>
-							{!! Form::select('marcas', array('MARCA1' => 'Marca 1','MARCA2' => 'Marca 2',
-							'MARCA3' => 'Marca 3','MARCA4' => 'Marca 4', 'MARCA5' => 'Marca 5'), $marca_seleccionada, array('class' => 'form-control input-sm', 'id' => 'select-narca')) !!}
+							{!! Form::select('marcas', $marcas, NULL, array('class' => 'form-control input-sm', 'id' => 'select-narca')) !!}
 							</div>	
 						</div>
 						<div class="col-md-4">

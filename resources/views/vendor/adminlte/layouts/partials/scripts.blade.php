@@ -100,7 +100,9 @@
     	var table_deudor = document.getElementById('tabla_deudores');
     	if(table_deudor != undefined){
     		var datatable_deudores = $('#tabla_deudores').DataTable({
-		        url: 'deudores/table/listado',
+		        ajax: 'deudores/table/listado/0/0',
+				dataType: "JSON",
+				type: "GET",
 		        dom: 'Bfrtip',
 		        buttons: [
 		            { 
@@ -111,10 +113,6 @@
 		        language: {
 					url: "{{ asset('public/js/datatable_spanish.json') }}",
 				},
-				dataType: "JSON",
-		            
-				type: "POST",
-				data: {cartera:2},
 		        columns: [		
 		            {data: 'rut_dv', name: 'rut_dv'},
 		            {data: 'razon_social', name: 'razon_social'},
@@ -786,6 +784,52 @@
 		        });
         	}
 		});
+    }
+
+    function filtrar_deudores(){
+    	var cartera = $('#select-filtro-cartera').val();
+		var marca = $('#select-filtro-marca').val();
+
+		if(cartera == ""){
+			cartera = 0;
+		}
+		
+		if(marca == ""){
+			marca = 0;
+		}
+		//alert(cartera + " - " + marca);
+		//console.log(datatable_deudores);
+		//$('#tabla_deudores').DataTable().ajax.url("?cartera="+cartera+"&marca="+marca).load();
+		$('#tabla_deudores').DataTable().clear().destroy();
+
+		$('#tabla_deudores').DataTable({
+		        ajax: 'deudores/table/listado/'+cartera+'/'+marca,
+				dataType: "JSON",
+				type: "GET",
+		        dom: 'Bfrtip',
+		        buttons: [
+		            { 
+		            	extend: 'excel', 
+		            	text: '<i class="fa fa-download"></i> Exportar a excel',
+		            }
+		        ],
+		        language: {
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
+		        columns: [		
+		            {data: 'rut_dv', name: 'rut_dv'},
+		            {data: 'razon_social', name: 'razon_social'},
+					{data: 'fecha_asignacion', name:'fecha_asignacion'},
+					{data: 'asignado', name:'asignado'},
+					{data: 'dias_mora', name:'dias_mora'},
+					{data: 'marca_1', name:'marca_1'},
+					{data: 'marca_2', name:'marca_2'},
+					{data: 'deuda_recuperada', name:'deuda_recuperada'},
+		            {data: 'action', name: 'action', orderable: false}
+		        ]
+		    });
+
+		//table.ajax.data({ware: warehouseIDReload});
     }
 
 
