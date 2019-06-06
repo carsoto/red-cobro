@@ -28,24 +28,39 @@ class Gestion extends Eloquent
 	protected $table = 'gestiones';
 	protected $primaryKey = 'idgestiones';
 
-	protected $fillable = [
-		'codigo',
-		'descripcion'
+	protected $casts = [
+		'carteras_idcarteras' => 'int',
+		'contacto_directo' => 'int',
+		'contacto_indirecto' => 'int',
+		'sin_contacto' => 'int',
+		'status' => 'int'
 	];
+
+	protected $fillable = [
+		'carteras_idcarteras',
+		'codigo',
+		'descripcion',
+		'contacto_directo',
+		'contacto_indirecto',
+		'sin_contacto',
+		'status'
+	];
+
+	public function cartera()
+	{
+		return $this->belongsTo(\App\Cartera::class, 'carteras_idcarteras');
+	}
 
 	public function deudores()
 	{
-		return $this->belongsToMany(\App\Deudor::class, 'deudores_gestiones', 'gestiones_idgestiones', 'deudores_iddeudores')
-					->withPivot('iddeudores_gestiones', 'contacto', 'gestor', 'respuesta', 'detalle', 'observacion', 'anyo', 'mes', 'fecha_gestion', 'prox_gestion', 'fecha_prox_gestion')
+		return $this->belongsToMany(\App\Deudore::class, 'deudores_gestiones', 'gestiones_idgestiones', 'deudores_iddeudores')
+					->withPivot('iddeudoresgestiones', 'users_id', 'carteras_idcarteras', 'respuestas_idrespuesta', 'idrespuestas_detalles', 'deudores_correos_id', 'deudores_telefonos_id', 'fecha', 'fecha_futura', 'idgestion_futura', 'observacion', 'mes', 'ano', 'compromiso', 'contacto_directo', 'contacto_indirecto', 'sin_contacto')
 					->withTimestamps();
 	}
 
 	public function respuestas()
 	{
-		return $this->belongsToMany(\App\Respuesta::class, 'gestiones_respuestas', 'gestiones_idgestiones', 'respuestas_idrespuesta')
-					->withPivot('idgestiones_respuestas')
-					->orderby('codigo', 'ASC')
-					->withTimestamps();
+		return $this->hasMany(\App\Respuesta::class, 'gestiones_idgestiones');
 	}
 }
 

@@ -253,7 +253,7 @@ class GestionController extends Controller
     public function store(Request $request)
     {
         $nueva_gestion = new DeudoresGestiones();
-
+        dd($request);
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
         //$nueva_gestion->gestor = Funciones::nombre_completo_usuario();
        // $nueva_gestion->contacto = ;
@@ -262,7 +262,7 @@ class GestionController extends Controller
         }
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
         $nueva_gestion->respuestas_idrespuesta = $request->respuesta;
-        $nueva_gestion->users_id = Auth::user()->id;
+        $nueva_gestion->users_id = Auth::id();
         //busco que tipo de gestion es la respuesta
         $respuesta = Respuesta::where('idrespuesta', $request->respuesta)->get();
         $respuesta = $respuesta[0];
@@ -274,15 +274,16 @@ class GestionController extends Controller
                 $nueva_gestion->compromiso = 1;
             }
         }
+
         $contacto_indirecto = $respuesta->contacto_indirecto;
         if(!empty($contacto_indirecto) && $contacto_indirecto == 1) {
             $nueva_gestion->contacto_indirecto = 1;
         }
+
         $sin_contacto = $respuesta->sin_contacto;
         if(!empty($sin_contacto) && $sin_contacto == 1) {
             $nueva_gestion->sin_contacto = 1;
         }
-
 
         if(isset($request->detalle)){
             $nueva_gestion->idrespuestas_detalles = $request->detalle;
@@ -305,7 +306,6 @@ class GestionController extends Controller
 
         $nueva_gestion->idgestion_futura = $prox_gestion;
         $nueva_gestion->fecha_futura = $fecha_prox_gestion;
-
         
         if($nueva_gestion->save()){
             return Response::json(array('mensaje' => 'Gestión agregada con éxito'));

@@ -2,7 +2,7 @@
 
 /**
  * Created by Reliese Model.
- * Date: Thu, 11 Apr 2019 05:50:13 +0000.
+ * Date: Thu, 06 Jun 2019 03:25:04 +0000.
  */
 
 namespace App;
@@ -32,7 +32,6 @@ use Reliese\Database\Eloquent\Model as Eloquent;
 class Respuesta extends Eloquent
 {
 	protected $table = 'respuestas';
-
 	protected $primaryKey = 'idrespuesta';
 
 	protected $casts = [
@@ -53,14 +52,14 @@ class Respuesta extends Eloquent
 		'status'
 	];
 
-	public function gestion()
+	public function gestiones()
 	{
 		return $this->belongsTo(\App\Gestion::class, 'gestiones_idgestiones');
 	}
 
 	public function deudores_gestiones()
 	{
-		return $this->hasMany(\App\DeudoresGestion::class, 'respuestas_idrespuesta');
+		return $this->hasMany(\App\DeudoresGestiones::class, 'respuestas_idrespuesta');
 	}
 
 	public function respuestas_detalles()
