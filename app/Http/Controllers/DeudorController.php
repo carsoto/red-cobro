@@ -188,25 +188,24 @@ class DeudorController extends Controller
         $gestiones_reg = Gestion::all();
         $gestiones = array();
         $respuestas = array();
-
+        
         foreach ($gestiones_reg as $key => $g) {
             $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;
         }
 
         if(count($telefonos) > 0){
             foreach ($telefonos as $key => $t) {
-                $contactos[$t->telefono] = $t->telefono;
+                $contactos['telefonos'][$t->idtelefonos] = $t->telefono;
                 //array_push($contactos, $t->telefono);
             }    
         }
 
         if(count($correos) > 0){
             foreach ($correos as $key => $c) {
-                $contactos[$c->correo] = $c->correo;
+                $contactos['correos'][$c->idcorreos_electronicos] = $c->correo;
                 //array_push($contactos, $c->correo);
             }    
         }
-        
         return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones, 'respuestas' => $respuestas))->render();
     }
 
