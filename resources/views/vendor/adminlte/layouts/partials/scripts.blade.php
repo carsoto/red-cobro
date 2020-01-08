@@ -580,8 +580,9 @@
             	$('#rut-modal-detalles .modal-title').html(title);
             	$('#rut-modal-detalles .modal-body').html(response);
             	if(document.getElementById('consultar-gestiones') != null){
-			document.getElementById('consultar-gestiones').click();
-		}
+					document.getElementById('consultar-gestiones').click();
+				}
+
     			$('#rut-modal-detalles').modal('show');
     			$('.date-picker').datepicker({
     				language: "es",
@@ -593,6 +594,12 @@
 				    toggleActive: true,
     			});
 
+    			$('input').iCheck({
+		            checkboxClass: 'icheckbox_square-blue',
+		            radioClass: 'iradio_square-blue',
+		            //increaseArea: '2%' // optional
+		        });
+
 		    	var table_documentos = document.getElementById('tabla_documentos');
 		    	if(table_documentos != undefined){
 			    	var datatable_documentos = $('#tabla_documentos').DataTable({
@@ -600,8 +607,8 @@
 				        serverSide: true,
 				        ajax: 'documentos/table/listado/'+iddeudor,
 				        language: {
-					url: "{{ asset('public/js/datatable_spanish.json') }}",
-				},
+							url: "{{ asset('public/js/datatable_spanish.json') }}",
+						},
 				        columns: [
 							{data: 'numero', name: 'numero'},
 							{data: 'folio', name: 'folio'},
@@ -621,6 +628,15 @@
 
         });
     }
+
+    $('input[name="tipo_contacto"]').on('ifChecked', function() {
+    	if(this.value == 'telefonico'){
+    		document.getElementById('select-contacto-correo').style.display = 'none';
+    	}else{
+    		document.getElementById('select-contacto-telefonico').style.display = 'none';
+    	}
+    	document.getElementById('select-contacto-'+this.value).style.display = 'block';
+	});
 
     function agregar_gestion(){
     	var contacto = document.getElementById('select-contacto');

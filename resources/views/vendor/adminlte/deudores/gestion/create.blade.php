@@ -2,8 +2,23 @@
 	<div class="modal-body">
 		<div id='message' class="alert" style="display: none;"></div>
 		{!! Form::hidden('id_deudor', $deudor->iddeudores, null, array('class' => 'form-control input-sm')) !!}
-		
-		{!! Form::select('contacto', $contactos, null, array('placeholder' => 'SELECCIONE UN CONTACTO', 'class' => 'form-control input-sm', 'id' => 'select-contacto')) !!}
+
+		<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">
+			<div class="radio icheck">
+				<label style="font-size: 11px;"><input type="radio" name="tipo_contacto" value="telefonico">  CONTACTO TELEFÓNICO</label>
+			</div>
+		</div>
+
+		<div class="col-lg-2 col-md-2 col-sm-6 col-xs-6">
+			<div class="radio icheck">
+				<label style="font-size: 11px;"><input type="radio" name="tipo_contacto" value="correo">  CONTACTO E-MAIL</label>
+			</div>
+		</div>
+
+		{!! Form::select('contacto', $contactos['telefonos'], null, array('placeholder' => 'SELECCIONE UN CONTACTO', 'class' => 'form-control input-sm', 'id' => 'select-contacto-telefonico', 'style' => 'display: none;')) !!}
+		<br>
+
+		{!! Form::select('contacto', $contactos['correos'], null, array('placeholder' => 'SELECCIONE UN CONTACTO', 'class' => 'form-control input-sm', 'id' => 'select-contacto-correo', 'style' => 'display: none;')) !!}
 		<br>
 		
 		{!! Form::select('gestion', $gestiones, null, array('placeholder' => 'SELECCIONE UNA GESTIÓN', 'class' => 'form-control input-sm', 'onchange' => 'cargar_respuestas(this);', 'id' => 'select-gestion')) !!}
