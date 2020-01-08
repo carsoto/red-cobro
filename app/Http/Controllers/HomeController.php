@@ -188,4 +188,19 @@ class HomeController extends Controller
         return view(‘some.view’);
     }
     */
+    public function carteras(Request $request)
+    {
+        return view('adminlte::home.carteras',array());
+    }
+
+    public function resumen_ejecutivos(Request $request)
+    {
+        return view('adminlte::home.resumen_ejecutivos',array());
+    }
+
+    public function seleccion(Request $request)
+    {
+        return view('adminlte::home.seleccion',array());
+    }
+
 }

@@ -21,7 +21,7 @@
 					<!-- /.box-header -->
 					<div class="box-body">
 						
-						<div class="col-lg-4 col-md-4 col-sm-12">
+						<!--<div class="col-lg-4 col-md-4 col-sm-12">
 							<div class="form-group"> 
 								{!! Form::select('cartera', $carteras['carteras'], NULL, array('class' => 'form-control input-sm', 'id' => 'select-filtro-cartera', 'placeholder' => 'SELECCIONAR TODAS LAS CARTERAS')) !!}
 							</div>	
@@ -34,7 +34,19 @@
 						<div class="col-lg-4 col-md-4 col-sm-12">
 							<button type="button" class="btn btn-sm btn-primary btn-block btn-flat" onclick="filtrar_deudores()"><i class="fa fa-fw fa-refresh"></i>Cargar lista</button>
 						</div>
-						<br><br><br>
+						<br><br><br>-->
+						<div class="row">
+							<div class="col-md-2 col-sm-12 col-xs-12">
+								<button type="button" class="btn btn-sm btn-default btn-block btn-flat" onclick="">Asignar a cobrador</button>
+							</div>
+							<div class="col-md-2 col-sm-12 col-xs-12">
+								<button type="button" class="btn btn-sm btn-default btn-block btn-flat" onclick="">Generar campaña</button>
+							</div>
+							<div class="col-md-2 col-sm-12 col-xs-12">
+								<button type="button" class="btn btn-sm btn-default btn-block btn-flat" onclick="">Agregar gestión masiva</button>
+							</div>	
+						</div>
+						
 						<div class="table-responsive" style="padding-top: 15px;">
 							<table id='tabla_deudores' class="table datatable tabla_deudores" style="width:100%; font-size: 11px;">
 		                        <thead>

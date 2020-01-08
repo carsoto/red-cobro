@@ -17,13 +17,16 @@
 Route::get('/', 'Auth\LoginController@showLoginForm');
 Route::get('login/', 'Auth\LoginController@showLoginForm');
 
-Route::get('/admin/home', 'HomeController@index');
+/*Route::get('/admin/home', 'HomeController@index');
 Route::get('/admin/exportarDashboard/{tipo}/{marca}/{valor_marca}/{filtro}','HomeController@exportar_dashboard')->name('admin.exportar.dashboard');
-
-
-Route::post('admin/cargar/dashboard','HomeController@cargar_dashboard')->name('admin.cargar.dashboard');
+Route::post('admin/cargar/dashboard','HomeController@cargar_dashboard')->name('admin.cargar.dashboard');*/
 
 Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
+
+	Route::get('/home', 'HomeController@carteras')->name('home');
+	Route::get('/resumen-ejecutivos', 'HomeController@resumen_ejecutivos')->name('resumen-ejecutivos');
+	Route::get('/seleccion', 'HomeController@seleccion')->name('seleccion');
+	Route::get('/gestion-diaria', 'GestionController@gestion_diaria')->name('gestion-diaria');
 
     Route::resource('usuarios', 'UserController');
 

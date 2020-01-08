@@ -10927,6 +10927,7 @@ a:focus {
   float: right;
 }
 /* Remove margins from progress bars when put in a table */
+
 .table tr > td .progress {
   margin: 0;
 }
@@ -21867,6 +21868,15 @@ button.toast-close-button {
   .margin-ult-gestion-det{ padding-top: 140px; margin-bottom: 70px; }
 }
 
+
+.table-borderless > thead > tr > th, 
+.table-borderless > tbody > tr > th, 
+.table-borderless > tfoot > tr > th, 
+.table-borderless > thead > tr > td, 
+.table-borderless > tbody > tr > td, 
+.table-borderless > tfoot > tr > td {
+  border: 0px;
+}
 /*@media (max-width: 768px) { 
   .margin-marcas{ padding-top: 100px; }
   .margin-deudas{ padding-top: 50px; }

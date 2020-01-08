@@ -312,6 +312,9 @@ class GestionController extends Controller
         }
     }
 
+    public function gestion_diaria(){
+        return view('adminlte::gestiones.diaria');
+    }
     /**
      * Display the specified resource.
      *

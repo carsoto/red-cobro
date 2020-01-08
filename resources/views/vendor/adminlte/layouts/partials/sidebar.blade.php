@@ -28,39 +28,51 @@
         @endif
 
         <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
+        <!--<form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="{{ trans('adminlte_lang::message.search') }}..."/>
               <span class="input-group-btn">
                 <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
               </span>
             </div>
-        </form>
+        </form>-->
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <!--<li class="header">{{ trans('adminlte_lang::message.header') }}</li>-->
             <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="{{ url('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
             @if(Auth::user()->hasRole('superadmin'))
+                <li class="active"><a href="{{ route('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+                <li><a href="{{ route('resumen-ejecutivos') }}"><i class='fa fa-line-chart'></i> <span>Resumen ejecutivos</span></a></li>
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
+                <li><a href="{{ route('seleccion') }}"><i class='fa fa-list'></i> <span>Selección</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
                 <li><a href="{{ route('gestores.index') }}"><i class='fa fa-folder-open-o'></i><span>Gestores</span></a></li>
                 <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
             @endif  
             @if(Auth::user()->hasRole('admin'))
+                <li class="active"><a href="{{ route('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+                <li><a href="{{ route('resumen-ejecutivos') }}"><i class='fa fa-line-chart'></i> <span>Resumen ejecutivos</span></a></li>
                 <li><a href="{{ route('usuarios.index') }}"><i class='fa fa-user'></i><span>Usuarios</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
                 <li><a href="{{ route('carteras.index') }}"><i class='fa fa-database'></i><span>Carteras</span></a></li>
+                <li><a href="{{ route('seleccion') }}"><i class='fa fa-list'></i> <span>Selección</span></a></li>
             @endif  
             @if(Auth::user()->hasRole('supervisor'))
+                <!--<li class="active"><a href="{{ route('home') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>-->
+                <li class="active"><a href="{{ route('resumen-ejecutivos') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+                <li><a href="{{ route('gestion-diaria') }}"><i class='fa fa-clock-o'></i><span>Gestión diaria</span></a></li>
                 <li><a href="{{ route('archivos.cargar') }}"><i class='fa fa-upload'></i><span>Cargar Archivos</span></a></li>
+                <li><a href="{{ route('seleccion') }}"><i class='fa fa-list'></i> <span>Selección</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
             @endif
             @if(Auth::user()->hasRole('agente'))
+                <li class="active"><a href="{{ route('resumen-ejecutivos') }}"><i class='fa fa-home'></i> <span>{{ trans('adminlte_lang::message.home') }}</span></a></li>
+                <li><a href="{{ route('gestion-diaria') }}"><i class='fa fa-clock-o'></i><span>Gestión diaria</span></a></li>
+                <li><a href="{{ route('seleccion') }}"><i class='fa fa-list'></i> <span>Selección</span></a></li>
                 <li><a href="{{ route('deudores.index') }}"><i class='fa fa-users'></i><span>Deudores</span></a></li>
             @endif
             <!--<li><a href="#"><i class='fa fa-link'></i> <span>{{ trans('adminlte_lang::message.anotherlink') }}</span></a></li>
