@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 	Route::group(['prefix' => 'archivos'], function () {
 		Route::get('cargar', 'ArchivosController@cargar')->name('archivos.cargar'); 
 		Route::get('exportar', 'ArchivosController@exportar');
+		Route::get('promocion', 'ArchivosController@exportarCampana')->name('archivos.promocion');
 		Route::post('importar', 'ArchivosController@importar')->name('archivos.importar'); 
 	});
 
@@ -55,10 +56,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 		Route::get('gestion/documentos/{iddeudor}','DeudorController@documentos')->name('deudores.documentos');
 		Route::get('gestion/historial/{iddeudor}','DeudorController@gestioneshistorial')->name('deudores.gestion.historial');
 		
-		Route::get('gestion/nueva/{iddeudor}','DeudorController@gestionnueva')->name('deudores.gestion');
+		Route::get('gestion/nueva/{iddeudor?}','DeudorController@gestionnueva')->name('deudores.gestion');
 		
 		Route::post('agregar/contacto/','DeudorController@agregar_contacto')->name('deudores.agregar.contacto');
 		Route::post('modificar/contacto/','DeudorController@modificar_contacto')->name('deudores.modificar.contacto');
+		
+		Route::post('modificar/ejecutivo/','DeudorController@modificar_ejecutivo')->name('deudores.ejecutivo');
 	});
 
 	Route::resource('gestores', 'GestorController');

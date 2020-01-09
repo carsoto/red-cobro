@@ -183,16 +183,28 @@ class GestionController extends Controller
             $fin_gestion = Carbon::parse($request->fecha_fin_consulta)->format('Y-m-d');
 
             if($id_gestion == 0){
-                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha_gestion', [$inicio_gestion, $fin_gestion])->get();
+                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha', [$inicio_gestion, $fin_gestion])->get();
             }else{
-                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha_gestion', [$inicio_gestion, $fin_gestion])->where('gestiones_idgestiones', '=', $id_gestion)->get();
+                $filtered_gestiones_fecha = $deudor->gestiones()->whereBetween('fecha', [$inicio_gestion, $fin_gestion])->where('gestiones_idgestiones', '=', $id_gestion)->get();
             }
 
         }else{
             $mensaje_error = 'Por favor, seleccione una fecha inicio y fin válida a consultar.';
         }
-        
+        //"deudores_iddeudores" => 10
+        //"gestiones_idgestiones" => 2
+        //"iddeudoresgestiones" => 3
+        //"users_id" => 1
+        //"carteras_idcarteras" => null
+        //"respuestas_idrespuesta" => 14
+        //"idrespuestas_detalles" => 15
+        //"deudores_correos_id" => null
+        //"deudores_telefonos_id" => 19
+        //"fecha" => "2020-01-09 00:00:00"
+        //"fecha_futura" => "2020-01-10 00:00:00"
+        //"idgestion_futura" => 5
         if(count($filtered_gestiones_fecha) > 0){
+
             return Datatables::of($filtered_gestiones_fecha)->editColumn('contacto', function($gestiones) {
                 return $gestiones->pivot->contacto;
 
@@ -253,13 +265,24 @@ class GestionController extends Controller
     public function store(Request $request)
     {
         $nueva_gestion = new DeudoresGestiones();
-        dd($request);
         $nueva_gestion->deudores_iddeudores = $request->id_deudor;
+        
+        if(!empty($request->contacto)){
+            $datos_contacto = Funciones::identificar_contacto($request->id_deudor, $request->contacto);
+
+            if(!empty($datos_contacto)){
+                if($datos_contacto['tipo'] == 'telefono'){
+                    $nueva_gestion->deudores_telefonos_id = $datos_contacto['id'];
+                }else{
+                    $nueva_gestion->deudores_correos_id = $datos_contacto['id'];
+                }
+            }
+        }
         //$nueva_gestion->gestor = Funciones::nombre_completo_usuario();
        // $nueva_gestion->contacto = ;
-        if(!empty($request->contacto)){
+        /*if(!empty($request->contacto)){
             $nueva_gestion->contacto = $request->contacto;
-        }
+        }*/
         $nueva_gestion->gestiones_idgestiones = $request->gestion;
         $nueva_gestion->respuestas_idrespuesta = $request->respuesta;
         $nueva_gestion->users_id = Auth::id();

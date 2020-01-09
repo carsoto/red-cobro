@@ -35,48 +35,48 @@
 									<tbody>
 										<tr>
 											<td>LLAMADOS</td>
-											<td>125</td>
-											<td>20</td>
-											<td>46</td>
-											<td>95</td>
-											<td rowspan="7" style="text-align: center; vertical-align: center;">286</td>
+											<td><a href="{{ route('deudores.index') }}">125</a></td>
+											<td><a href="{{ route('deudores.index') }}">20</a></td>
+											<td><a href="{{ route('deudores.index') }}">46</a></td>
+											<td><a href="{{ route('deudores.index') }}">95</a></td>
+											<td rowspan="7" style="text-align: center; vertical-align: center;"><a href="{{ route('deudores.index') }}">286</a></td>
 										</tr>
 										<tr>
 											<td>MAIL</td>
 											<td></td>
-											<td>30</td>
-											<td>40</td>
-											<td>15</td>
+											<td><a href="{{ route('deudores.index') }}">30</a></td>
+											<td><a href="{{ route('deudores.index') }}">40</a></td>
+											<td><a href="{{ route('deudores.index') }}">15</a></td>
 										</tr>
 										<tr>
 											<td>SMS</td>
 											<td></td>
-											<td>5</td>
-											<td>7</td>
-											<td>4</td>
+											<td><a href="{{ route('deudores.index') }}">5</a></td>
+											<td><a href="{{ route('deudores.index') }}">7</a></td>
+											<td><a href="{{ route('deudores.index') }}">4</a></td>
 										</tr>
 										<tr>
 											<td>WHATSAPP</td>
 											<td></td>
-											<td>10</td>
-											<td>15</td>
-											<td>17</td>
+											<td><a href="{{ route('deudores.index') }}">10</a></td>
+											<td><a href="{{ route('deudores.index') }}">15</a></td>
+											<td><a href="{{ route('deudores.index') }}">17</a></td>
 										</tr>
 										<tr>
 											<td>TERRENO</td>
 											<td></td>
-											<td>0</td>
-											<td>0</td>
-											<td>2</td>
+											<td><a href="{{ route('deudores.index') }}">0</a></td>
+											<td><a href="{{ route('deudores.index') }}">0</a></td>
+											<td><a href="{{ route('deudores.index') }}">2</a></td>
 										</tr>
 									</tbody>
 									<tfoot>
 										<tr>
 											<th>CASOS</th>
-											<th>125</th>
-											<th>65</th>
-											<th>108</th>
-											<th>133</th>
+											<th><a href="{{ route('deudores.index') }}">125</a></th>
+											<th><a href="{{ route('deudores.index') }}">65</a></th>
+											<th><a href="{{ route('deudores.index') }}">108</a></th>
+											<th><a href="{{ route('deudores.index') }}">133</a></th>
 										</tr>
 									</tfoot>
 								</table>
@@ -100,43 +100,43 @@
 									<tbody>
 										<tr>
 											<td>LLAMADOS SALIENTES</td>
-											<td>115</td>
-											<td>575</td>
-											<td>1150</td>
-											<td>4600</td>
-											<td>13800</td>
+											<td><a href="{{ route('deudores.index') }}">115</a></td>
+											<td><a href="{{ route('deudores.index') }}">575</a></td>
+											<td><a href="{{ route('deudores.index') }}">1150</a></td>
+											<td><a href="{{ route('deudores.index') }}">4600</a></td>
+											<td><a href="{{ route('deudores.index') }}">13800</a></td>
 										</tr>
 										<tr>
 											<td>LLAMADOS RECIBIDOS</td>
-											<td>5</td>
-											<td>25</td>
-											<td>50</td>
-											<td>200</td>
-											<td>600</td>
+											<td><a href="{{ route('deudores.index') }}">5</a></td>
+											<td><a href="{{ route('deudores.index') }}">25</a></td>
+											<td><a href="{{ route('deudores.index') }}">50</a></td>
+											<td><a href="{{ route('deudores.index') }}">200</a></td>
+											<td><a href="{{ route('deudores.index') }}">600</a></td>
 										</tr>
 										<tr>
 											<td>MAIL</td>
-											<td>18</td>
-											<td>90</td>
-											<td>180</td>
-											<td>720</td>
-											<td>2160</td>
+											<td><a href="{{ route('deudores.index') }}">18</a></td>
+											<td><a href="{{ route('deudores.index') }}">90</a></td>
+											<td><a href="{{ route('deudores.index') }}">180</a></td>
+											<td><a href="{{ route('deudores.index') }}">720</a></td>
+											<td><a href="{{ route('deudores.index') }}">2160</a></td>
 										</tr>
 										<tr>
 											<td>SMS</td>
-											<td>4</td>
-											<td>20</td>
-											<td>40</td>
-											<td>160</td>
-											<td>480</td>
+											<td><a href="{{ route('deudores.index') }}">4</a></td>
+											<td><a href="{{ route('deudores.index') }}">20</a></td>
+											<td><a href="{{ route('deudores.index') }}">40</a></td>
+											<td><a href="{{ route('deudores.index') }}">160</a></td>
+											<td><a href="{{ route('deudores.index') }}">480</a></td>
 										</tr>
 										<tr>
 											<td>WHATSAPP</td>
-											<td>19</td>
-											<td>95</td>
-											<td>190</td>
-											<td>760</td>
-											<td>2280</td>
+											<td><a href="{{ route('deudores.index') }}">19</a></td>
+											<td><a href="{{ route('deudores.index') }}">95</a></td>
+											<td><a href="{{ route('deudores.index') }}">190</a></td>
+											<td><a href="{{ route('deudores.index') }}">760</a></td>
+											<td><a href="{{ route('deudores.index') }}">2280</a></td>
 										</tr>
 										<tr>
 											<td>TERRENO</td>
@@ -150,11 +150,11 @@
 									<tfoot>
 										<tr>
 											<th>GESTIONES</th>
-											<th>161</th>
-											<th>805</th>
-											<th>1610</th>
-											<th>6440</th>
-											<th>19320</th>
+											<th><a href="{{ route('deudores.index') }}">161</a></th>
+											<th><a href="{{ route('deudores.index') }}">805</a></th>
+											<th><a href="{{ route('deudores.index') }}">1610</a></th>
+											<th><a href="{{ route('deudores.index') }}">6440</a></th>
+											<th><a href="{{ route('deudores.index') }}">19320</a></th>
 										</tr>
 									</tfoot>
 								</table>

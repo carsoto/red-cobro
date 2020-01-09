@@ -36,9 +36,8 @@ class ArchivosController extends Controller
     public function cargar(){
         $rol = Auth::user()->role->name;
         $idgestor = Auth::user()->idgestores;
-        $carteras = Funciones::carteras($rol, Auth::user()->id, $idgestor);
-
-        return view('adminlte::archivos.index', ['carteras' => $carteras['carteras']]);
+        $carteras = Cartera::pluck('nombre','idcarteras');
+        return view('adminlte::archivos.index', ['carteras' => $carteras]);
     }
     
     public function importar(Request $request)
@@ -357,6 +356,33 @@ class ArchivosController extends Controller
                  * Impresión de los encabezados
                  * )*/
                 $sheet->with($data, null, 'A1', false, false);
+            });
+            /** Descargamos nuestro archivo pasandole la extensión deseada (xls, xlsx) */
+        })->download('xlsx');
+    }
+
+    public function exportarCampana()
+    {
+        /** Fuente de Datos Eloquent */
+        $data = Telefono::select(DB::raw('DISTINCT(telefono)'))->get();
+
+        foreach ($data as $key => $d) {
+            $datos[]=array('Telefono'=>$d->telefono, 'Rut' => '...', 'Nombre' => '...', 'Asignado' => '...');
+        }
+        /** Creamos nuestro archivo Excel */
+        Excel::create('Campaña '.date('d-m-Y'), function ($excel) use ($datos) {
+            /** Creamos una hoja */
+            $excel->sheet('Campaña '.date('d-m-Y'), function ($sheet) use ($datos) {
+                /**
+                 * Insertamos los datos en la hoja con el método with/fromArray
+                 * Parametros: (
+                 * Datos,
+                 * Valores del encabezado de la asignacion,
+                 * Celda de Inicio,
+                 * Comparación estricta de los valores del encabezado
+                 * Impresión de los encabezados
+                 * )*/
+                $sheet->with($datos, null, 'A1', false, false);
             });
             /** Descargamos nuestro archivo pasandole la extensión deseada (xls, xlsx) */
         })->download('xlsx');

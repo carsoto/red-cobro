@@ -526,7 +526,7 @@
 	            		$('#detalles-por-respuesta').append('<div class="overlay cargando_modal" style="display: none;"><i class="fa fa-spinner fa-spin"></i></div>');
 	            		//$('#detalles-por-respuesta').css({"height": "170px", "overflow-y":"scroll"});
 	            		for (var i = 0; i < detalles.length; i++) {
-		            		$('#detalles-por-respuesta').append('<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><div class="radio icheck"><label style="font-size: 11px;"><input type="radio" name="detalle" value="'+detalles[i].literal+' - '+detalles[i].detalle+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div></div>');
+		            		$('#detalles-por-respuesta').append('<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6"><div class="radio icheck"><label style="font-size: 11px;"><input type="radio" name="detalle" value="'+detalles[i].idrespuestas_detalles+'"> '+detalles[i].literal+' - '+detalles[i].detalle+'</label></div></div>');
 
 		            		$('input').iCheck({
 					            checkboxClass: 'icheckbox_square-blue',
@@ -553,6 +553,12 @@
 			$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
 			title = '<i class="fa fa-plus"></i> AGREGAR GESTIÓN';
     		dir_url = "deudores/gestion/nueva/"+iddeudor;
+		}
+
+		if(modulo == "agregar_gestion_masiva"){
+			$('#rut-modal-detalles .modal-dialog').addClass('modal-lg');
+			title = '<i class="fa fa-plus"></i> AGREGAR GESTIÓN MASIVA';
+    		dir_url = "deudores/gestion/nueva/";
 		}
 
 		if(modulo == "historial_gestiones"){
@@ -582,7 +588,6 @@
             	if(document.getElementById('consultar-gestiones') != null){
 					document.getElementById('consultar-gestiones').click();
 				}
-
     			$('#rut-modal-detalles').modal('show');
     			$('.date-picker').datepicker({
     				language: "es",
@@ -594,12 +599,6 @@
 				    toggleActive: true,
     			});
 
-    			$('input').iCheck({
-		            checkboxClass: 'icheckbox_square-blue',
-		            radioClass: 'iradio_square-blue',
-		            //increaseArea: '2%' // optional
-		        });
-
 		    	var table_documentos = document.getElementById('tabla_documentos');
 		    	if(table_documentos != undefined){
 			    	var datatable_documentos = $('#tabla_documentos').DataTable({
@@ -607,8 +606,8 @@
 				        serverSide: true,
 				        ajax: 'documentos/table/listado/'+iddeudor,
 				        language: {
-							url: "{{ asset('public/js/datatable_spanish.json') }}",
-						},
+					url: "{{ asset('public/js/datatable_spanish.json') }}",
+				},
 				        columns: [
 							{data: 'numero', name: 'numero'},
 							{data: 'folio', name: 'folio'},
@@ -628,15 +627,6 @@
 
         });
     }
-
-    $('input[name="tipo_contacto"]').on('ifChecked', function() {
-    	if(this.value == 'telefonico'){
-    		document.getElementById('select-contacto-correo').style.display = 'none';
-    	}else{
-    		document.getElementById('select-contacto-telefonico').style.display = 'none';
-    	}
-    	document.getElementById('select-contacto-'+this.value).style.display = 'block';
-	});
 
     function agregar_gestion(){
     	var contacto = document.getElementById('select-contacto');

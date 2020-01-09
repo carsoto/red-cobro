@@ -96,7 +96,7 @@
 								<tfoot>
 									<tr>
 										<td></td>
-										<td><button class="btn btn-primary btn-sm btn-flat btn-block">Ver listado</button></td>
+										<td><a class="btn btn-primary btn-sm btn-flat btn-block" href="{{ route('deudores.index') }}">Ver listado</a></td>
 										<td><button class="btn btn-primary btn-sm btn-flat btn-block"><i class='fa fa-refresh'></i>  <span>Reset</span></button></td>
 										<td></td>
 										<td></td>

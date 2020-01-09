@@ -10,6 +10,7 @@ use App\Gestion;
 use App\Telefono;
 use App\Correo;
 use App\Marca;
+use App\User;
 use Carbon\Carbon;
 use Response;
 use DateTime;
@@ -69,8 +70,8 @@ class DeudorController extends Controller
         }
         
         $marcas = Marca::all()->pluck('marca','idmarcas');
-
-        return view('adminlte::deudores.index',array('carteras' => $carteras, 'cartera_seleccionada' => $cartera_seleccionada, 'marcas' => $marcas));
+        $ejecutivos = User::where('roles_id', 4)->get();
+        return view('adminlte::deudores.index',array('carteras' => $carteras, 'cartera_seleccionada' => $cartera_seleccionada, 'marcas' => $marcas, 'ejecutivos' => $ejecutivos));
     }
 
     public function list($cartera, $marca){
@@ -85,20 +86,20 @@ class DeudorController extends Controller
 
         if(($cartera == 0) && ($marca == 0)){
             //TODAS
-            $deudores = Deudor::whereIn('users_id', $id_usuarios)->get();
+            $deudores = Deudor::all();
 
         }else if(($cartera != 0) && ($marca == 0)){
             //Todas las marcas y cartera especifica
-            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->whereIn('users_id', $id_usuarios)->get();
+            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->get();
 
         }else if(($cartera == 0) && ($marca != 0)){
             //Todas las carteras y marca especifica
-            $deudores = Deudor::whereIn('users_id', $id_usuarios)->whereHas('marcas', function ($query) use($marca) {
+            $deudores = Deudor::whereHas('marcas', function ($query) use($marca) {
                 $query->where('deudores_marcas.idmarcas', '=', $marca);
             })->get();
         }else{
             //Cartera y marca especifica
-            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->whereIn('users_id', $id_usuarios)->whereHas('marcas', function ($query) use($marca) {
+            $deudores = Deudor::where('carteras_idcarteras','=', $cartera)->whereHas('marcas', function ($query) use($marca) {
                 $query->where('deudores_marcas.idmarcas', '=', $marca);
             })->get();
         }
@@ -109,7 +110,7 @@ class DeudorController extends Controller
         //$carteras = Funciones::carteras();
       // $asignacion = $deudores->orderBy('created_at', 'desc')->first();*/
               
-        return Datatables::of($deudores)
+        return Datatables::of($deudores->take(100))
         	->addColumn('fecha_asignacion', function ($deudor) { 
 				return Carbon::parse($deudor->fecha_asignacion)->format('d-m-Y');
         	})
@@ -122,13 +123,14 @@ class DeudorController extends Controller
                return $deudor->documentos->max('dias_mora');
         	})
         	->addColumn('marca_1', function ($deudor) { 
-        		$m = $deudor->marcas()->where('orden', '=', 1)->first();
+        		/*$m = $deudor->marcas()->where('orden', '=', 1)->first();
         		if($m == null){
         			$mark = "-";
         		}else{
         			$mark = $m->marca;
         		}
-        		return $mark; 
+        		return $mark; */
+                return $deudor->user->name." ".$deudor->user->lastname;
             
         	})
         	->addColumn('marca_2', function ($deudor) { 
@@ -179,33 +181,40 @@ class DeudorController extends Controller
         return view('adminlte::deudores.historial-gestiones', array('iddeudor' => $id_deudor, 'tipos_gestion' => $tipos_gestion))->render();
     }
 
-    public function gestionnueva($id_deudor){
-        $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
-        $deudor = $deudor[0];
-        $telefonos = $deudor->telefonos;
-        $correos = $deudor->correos;
+    public function gestionnueva($id_deudor=null){
         $contactos = array();
+        $deudor = "";
+
+        if($id_deudor != null){
+            $deudor = Deudor::where('iddeudores', decrypt($id_deudor))->get();
+            $deudor = $deudor[0];
+            $telefonos = $deudor->telefonos;
+            $correos = $deudor->correos;
+            
+            if(count($telefonos) > 0){
+                foreach ($telefonos as $key => $t) {
+                    $contactos[$t->telefono] = $t->telefono;
+                    //array_push($contactos, $t->telefono);
+                }    
+            }
+
+            if(count($correos) > 0){
+                foreach ($correos as $key => $c) {
+                    $contactos[$c->correo] = $c->correo;
+                    //array_push($contactos, $c->correo);
+                }    
+            }
+        }
+        
+        
         $gestiones_reg = Gestion::all();
         $gestiones = array();
         $respuestas = array();
-        
+
         foreach ($gestiones_reg as $key => $g) {
             $gestiones[$g->idgestiones] = $g->codigo.' - '.$g->descripcion;
         }
 
-        if(count($telefonos) > 0){
-            foreach ($telefonos as $key => $t) {
-                $contactos['telefonos'][$t->idtelefonos] = $t->telefono;
-                //array_push($contactos, $t->telefono);
-            }    
-        }
-
-        if(count($correos) > 0){
-            foreach ($correos as $key => $c) {
-                $contactos['correos'][$c->idcorreos_electronicos] = $c->correo;
-                //array_push($contactos, $c->correo);
-            }    
-        }
         return view('adminlte::deudores.gestion.create', array('deudor' => $deudor, 'contactos' => $contactos, 'gestiones' => $gestiones, 'respuestas' => $respuestas))->render();
     }
 
@@ -394,5 +403,13 @@ class DeudorController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function modificar_ejecutivo(Request $request){
+        if($request->nuevo_ejecutivo > 0){
+            DB::table('deudores')
+                ->update(['users_id' => $request->nuevo_ejecutivo]);
+                return redirect('admin/deudores');
+        }
     }
 }

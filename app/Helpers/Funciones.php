@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Deudor;
 use DB;
 
 class Funciones{
@@ -188,6 +189,29 @@ class Funciones{
         return array('carteras' => $carteras, 'carteras_reg' => $carteras_reg);
     }
 
+    public static function identificar_contacto($id_deudor, $contacto){
+        $deudor = Deudor::find($id_deudor);
+        $datos_contacto = [];
+
+        foreach ($deudor->telefonos as $key => $t) {
+            if($t->telefono == $contacto){
+                $datos_contacto['id'] = $t->idtelefonos;
+                $datos_contacto['tipo'] = 'telefono';
+                $datos_contacto['contacto'] = $contacto;
+            }
+        }
+
+        if(empty($datos_contacto)){
+            foreach ($deudor->correos as $key => $c) {
+                if($c->correo == $contacto){
+                    $datos_contacto['id'] = $c->idcorreos_electronicos;
+                    $datos_contacto['tipo'] = 'correo';
+                    $datos_contacto['contacto'] = $contacto;   
+                }
+            }
+        }
+        return $datos_contacto;
+    }
     /*public static function usuario_gestores_carteras(){
         $ugc = DB::select(DB::raw("SELECT GROUP_CONCAT(c.idcarteras) AS id FROM carteras c, users_gestores_carteras gc WHERE gc.users_id = ".Auth::id()." AND gc.carteras_idcarteras = c.idcarteras"));
         return $ugc[0]->id;
